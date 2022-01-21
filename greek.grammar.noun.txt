@@ -1,0 +1,233 @@
+parsing noun endings [noun-(MFN)(SP)(NGDAV)]:
+    gender:
+        masculine:
+            usually ends with (ος, ας, ησ)
+            most 2nd declension ending -ος
+        feminine:
+            usually ends with (η, α)
+        neuter:
+            usually ends with (ι, ο, μα)
+            all 2nd declension ending in -ον
+    number:
+        singular
+        plural
+    case:
+        nominative: subject
+        genitive: posession
+        dative: indirect object
+        accusative: object of a transitive verb, direct object of verbs
+        vocative: direct address (directly addressing someone by noun-id)
+
+inflections:
+    first (stem ending in α/η, feminine) and second (stem ending in ο, masculine):
+                                         2       1       2
+                            SQUISH      mas     fem     neu
+                            ----        ----    ----    ----
+        singluar:
+            nominative      ς|ν         ς       -       ν
+            genitive        ς|υ         υ       ς       υ
+            dative          ...         ι>ῳ     ι>(ῇᾷ)  ι>ῳ
+            accusative      ν           ν       ν       ν
+        plural:
+            nominative      ι|α         ι       ι       α
+            genitive        ων          ων      ων      ων
+            dative          ις          ις      ις      ις
+            accusative      ...         υς      ς       α
+        rules:
+            samness:
+                (nominative|accusative, neu):
+                    all singluar same
+                    all plural same
+                (genitive|dative, mas|neu):
+                    all mas same
+                    all neu same
+            (first, singular, genitive|dative):
+                α -> η
+                    except after (ε|ι|ρ)
+            (singular, dative):
+                ηι -> ῃ (iota subscript)
+                αι -> ᾳ (iota subscript)
+                οι -> ῳ (iota subscript) (stem vowel "lengthens", called ablaut)
+            long vowels eat short vowles before them:
+                (nominative|accusative, neu):
+                    οα -> α
+                (plural, genative):
+                    οων -> ων
+                    αων -> ων
+                    ηων -> ων
+            (plural, nominative|accusative, neu):
+                αα -> α
+    third (ending in consonant):
+        singluar:
+            nominative      ς
+            genitive        ος
+            dative          ι
+            accusative      α
+        plural:
+            nominative      εσ
+            genitive        ων
+            dative          σιν
+            accusative      ας
+    exceptions:
+        Ἰησοῦς - Jesus
+            nominative: ὁ   Ἰησοῦς
+            genitive:   τοῦ Ἰησοῦ
+            ** dative:  τῷ  Ἰησοῦ (missing ι ending)
+            accusative: τὸν Ἰησοῦν
+
+definite article:
+    note: there is no indefinite article in greek
+    the definite article helps parse the noun after it
+                        mas         fem         neu
+                        ----        ----        ----
+    singular:
+        nominative      ὁ (RB)      ἡ           τό
+        genitive        τοῦ         τῆς         τοῦ
+        dative          τῷ          τῇ          τῷ
+        accusative      τόν         τήν         τό      (some use acute -> grave)
+    plural:
+        nominative      οἱ          αἱ          τά      (some use acute -> grave)
+        genitive        τῶν         τῶν         τῶν
+        dative          τοῖς        ταῖς        τοῖς
+        accusative      τούς        τάς         τά
+
+prepositions:
+    <noun|verb> <preposition> <object of preposition>
+    prepositional phrase: <preposition> <object of preposition>
+        order must be maintained in greek in a prepositional phrase
+    the meaning of the preposition depends on the case of the object
+            prep        case        meaning
+            ----        ----        ----
+        1:1 prep to case:
+            από         genitive    from|away from
+            εκ          genitive    from|out of
+            εν          dative      in|on|among
+            εις         accusative  into|in|among
+            πρός        accusative  to|towards|with
+        gennative/accusative
+            δια         genitive    through
+            δια         accusative  on account of
+            μετα        genitive    with
+            μετα        accusative  after
+            ὑπο         genitive    by
+            ὑπο         accusative  under
+        gennative/dative/accusative
+            παρα        genitive    from
+            παρα        dative      beside|in the presence of
+            παρα        accusative  along side of
+
+    prepositions will contract (have their last letter, a vowel, removed)
+        if followed by a word beginning with a vowel
+    prepositions follow the (aspiration) rule:
+        if the following vowel (first letter of next word) has a rough breating mark:
+            π -> φ
+            τ -> θ
+        note: happens after contraction removed the vowel at the end of the preposition
+
+dependent clause:
+    a clause that can't stand alone, but depends on the "main clause"
+        "<after I jumped>, <I fell down>"
+        "<if I go to my room>, <I can take a nap>"
+    indicators:
+        ἵνα
+        ὅτι
+    order:
+        <main> <indicator> <dependent>
+
+
+personal pronoun (EN: "I,me,my", "you,your", "them,their"):
+    GR (posessive)
+                            1st person      2nd person      3rd person
+                            ----------      ----------      ----------
+        singular:
+            nominative:     εγω (εμου)      συ
+            genitive:       μον (εμοι)      σου
+            dative:         μοι (εμε)       σοι
+            accusative:     με (εμε)        σε
+        plural:
+            nominative:     ημεις           υμεις
+            genitive:       ημων            υμων
+            dative:         ημιν            υμιν
+            accusative:     ημας            υμας
+
+sample:
+                            mas         fem         neu
+                            ----        ----        ----
+    λογ[ο], γραφ[η], ἔργ[ο]:
+        singluar:
+            nominative      λογο-ς      γραφή       ἔργο-ν
+            genitive        λόγο-υ      γραφὴ-σ     ἔργο-υ
+            dative          λόγ-ῳ       γραφ-ὼν     ἔργ-ῳ
+            accusative      λόγο-ν      γραφἤ-ν     ἔργο-ν
+        plural:
+            nominative      λογο-ι      γραφα-ί     ἔργ-α
+            genitive        λόγ-ων      γραφ-ὼν     ἔργ-ων
+            dative          λόγο-ις     γραφα-ὶσ    ἔργο-ις
+            accusative      λόγο-υς     γραφά-σ     ἔργ-α
+    σαρ[κ]
+        note: κσ -> ξ
+        singluar:
+            nominative      σαρ-ξ
+            genitive        σαρκ-ος
+            dative          σαρκ-ι
+            accusative      σαρκ-α
+        plural:
+            nominative      σαρκ-εσ
+            genitive        σαρκ-ων
+            dative          σαρ-ξιν
+            accusative      σαρκ-ας
+
+declension changes:
+    first (ending in α/η)
+        singluar:
+            nominative      -η       -ᾱ
+            genitive        -ης      -ᾱς
+            dative          -ῃ       -ᾱ+ᾳ
+            accusative      -ην      -ᾱν
+            vocative        -η       -ᾱ
+        plural:
+            nominative      -αι      -αι
+            genitive        -ῶν      -ῶν
+            dative          -αις     -αις
+            accusative      -ᾱς      -ας
+            vocative        -αι      -αι
+    second (ending in ο):
+    third (ending in consonant):
+
+sample:
+    τεχνη           singular    plural
+                    ----        ----
+        nominative  τέχνη       τέχναι
+        genitive    τέχνης      τεχνῶν
+        dative      τέχνῃ       τέχναις
+        accusative  τέχνην      τέχνᾱς
+        vocative    τέχνη       τέχναι
+
+box:
+                              (on)
+                               |
+                    +--------------------+
+                    |          |         |
+    ACCUSATIVE  --->|       DATIVE       |--->  GENITIVE (motion away-from/out)
+     (motion        |   inside |         |<---  GENITIVE (motion in)
+      to/into)      |          v         |
+                    |         (in)       |
+                    |                    |
+      GENITIVE -----|--------------------|----> (prodeeding out of)
+                    |                    |
+                    +--------------------+
+                             (under)
+                             DATIVE
+
+case:
+    nominative: subject | predicate nominative (completes a linking verb, renames the subject)
+    genitive: posession, origin | dependence, the source
+    dative: indirect object
+        (a) other than the subect | direct object
+        (b) instrumentality
+        (c) show place or time
+    accusative: object of a transitive vert, direct object of verts | motion towards, space, time
+    vocative: direct address (directly addressing someone by noun-id)
+        EX: Joe, what are you doing?
+        EX: Brother, I see
+

@@ -1,0 +1,66 @@
+conjugation:
+    tense:
+        time:
+              *  aorist
+            .....*  pluperfect
+                            .....*  perfect
+                                     ..........................>  present
+                                                            ...*  future perfect
+            past <-----(=========================)-----> future
+                        present (now time bubble)
+
+        tense:
+            present: present time and repeating or progressing into the future
+            future:
+                simple:
+                progressive:
+                repeated:
+            perfect: present time and completed, started and completed in the "now time bubble"
+            pluperfect: "more than completed", "past perfect tense".  past time and completed
+            future perfect: in the future but will complete
+                very rare
+            imperfect: in the past, but progressive, not complete
+            aorist: past time, simple, only once
+    voice:
+        active: subject does action
+            transitive
+            intransitive
+        passive: subject receives action
+        middle:
+    mood:
+        indicative: factual, reality
+        subjunctive: possible (might, should) of doing an action
+        imperative: command to do something
+        infinitive: "to take the keys"
+
+        optative: "permission"
+    person: 1st, 2nd, 3rd
+    number: singluar/plural
+
+sample, tense:present, voice:active, mood:indicative:
+    stem: λύ
+                si          pl
+                ----        ----
+        1st:    λύ-ω        λύ-ομεν
+        2nd:    λύ-εις      λὐ-ετε
+        3rd:    λύ-ει       λὐ-ουσι
+    stem: βλέπ
+            si          pl
+            ----        ----
+        1st:    βλέπ-ω      βλἐπ-ομεν
+        2nd:    βλἐπ-εις    βλἐπ-ετε
+        3rd:    βλἐπ-ει     βλἐπ-ουσι
+
+sample:
+    each verb has a "personal ending" (1, 2, 3) (singluar, plural)
+    a verb agrees with it's noun
+    ex:
+                    1st         2nd         3rd
+                    ----        ----        ----
+        singluar:   εἰμί        ει          ἐστί(ν)
+        plural:     ἐσμέν       ἐστέ        ἐισι(ν)
+            see the movable ν
+
+        singluar:   I am        you are     he/she/it is
+        plural:     we are      y'all are   they are
+

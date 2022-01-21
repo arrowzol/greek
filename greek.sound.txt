@@ -1,0 +1,24 @@
+vowels:
+    short sound: α[εο]ιυ
+    long sound : α[ηω]ιυ
+
+diphthongs (sound made by two letters):
+    7 of them:
+        αι  - AI aisle
+        ει  - AI wait
+        οι  - OI oil
+        αυ  - OW cow
+        ευ  - EU feud
+        ου  - OO boot
+        υι  - UEE queen
+    marks:
+        iota
+
+junk:
+    ηυ  - new
+
+    γγ  - N anger
+    γκ  - N banker
+    γξ  - X sphinx
+    γχ  - K lunkhead
+

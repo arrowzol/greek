@@ -1,0 +1,38 @@
+symantics:
+    accents:
+        on a diphthong, accent goes on the second letter
+    breathing mark:
+        a vowel or diphthong (on second letter) at the beginning of a word will have a breathing mark
+        breathing:
+            smooth: no h-sound (ex: ἐν -> "en")
+            rough: h-sound (ex: ἑν -> "hen")
+    iota subscript:
+        accents long vowels (αηω), the "other letter"
+
+syllable:
+    1st last syllable == ultima
+    2nd last syllable == penult
+    3rd last syllable == antepenult
+
+    accents:
+        (´)acute:
+            on 3rd:
+                only if 1st is short
+            on 2nd:
+            on 1st:
+                change to grave if followed by another word
+        (`)grave:
+            on 3rd:
+                only when
+                only when words follow without intevening punctuation
+        (῀)circumflex:
+            3rd:
+                ???
+            2nd:
+                only when 1st is short
+            1st:
+            only 1st or 2nd
+            only on a long syllable
+            only if the 2nd is short
+            when used in 1st only when anothe letter following
+

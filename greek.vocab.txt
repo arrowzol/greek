@@ -1,0 +1,89 @@
+verbs:
+    βλέπω - I see
+    γινώσκω - I know
+    γράφω - I write
+    διδάσκω - I teach
+    λαμ-βάνω - I take
+    λἐ-γω - I say
+    λύω - I loose, I destroy
+    ἔχω - I have
+
+noun (MFN) - definition:
+    ἀδελφός (M) - brother
+    ἄνθρωπος (M) - man, mankind, human kind
+    ἀπόστολος (M) - apostle
+    δοῦλος (M) - servant | slave
+    δῶρον (N) - gift
+    θάνατος (M) - death
+    ἱερόν (N) - temple
+        (ι) has a rough breathing mark, pronounce with "h" sound
+    λό-γος (M) - word
+    νόμος (M) - law
+    oὦκος (M) - house
+        (οω) diphthong has smooth breathing mark
+        (οω) diphthong has circumflex, emphasize first syllable
+    υἱός (M) - son
+
+conjection:
+    καί - and, NET: καὶ
+
+
+--- SENTENCES
+    1:
+        λἐ-γω
+            verb-
+            "I say"
+        λὀ-γον
+            noun-MSA
+            "word"
+        ἀ-ποσ-τό-λοις
+            noun-MPD
+            "apostle
+                note: dative is tricky
+    2:
+        ἀ-δελ-φέ,
+            noun-MSV
+            "Brother"
+                vocative
+        βλέ-πο-μεν
+            verb-???1P
+            "we see"
+--- JUNK
+
+ἄνθρωπος - man, mankind, human kind
+θέος - god
+κυριος (ου) - lord, master
+χριστός - Christ
+Ὶησοὺς (ον) - Jesus or Joshuah
+εὺαγγέλιον (ου) - ??
+πισρός - ??
+
+αμην - amen
+    NET: ἀμὴν
+δόξα - glory, majexty
+
+ὲγώ - I
+    NET: ἐγὼ
+συ - you
+    NET: σὺ
+
+δε - but/and
+    NET: δὲ
+αλλα - but
+    NET: ἄλλα
+
+εν - in
+    NET: ἐν
+ο - the
+    NET: ό
+ον, ονκ - not
+    NET: ὃν
+γαρ - for/then
+εις - in into amoung
+    NET: εἰς
+αιματι - blood
+αμνου - lamb
+
+
+
+

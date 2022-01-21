@@ -1,0 +1,82 @@
+url: https://en.wikipedia.org/wiki/Greek_alphabet
+mac: System Preferences -> Keyboard -> Input Sources -> + -> Greek - Polytonic
+
+1   Α   α   alpha       A       "al-pha"            A father
+2   Β   β   beta        B       "be-ta"             B
+3   Γ   γ   gamma       G       "gam-a"             G got
+4   Δ   δ   delta       D       "del-ta"            D
+5   Ε   ε   epsilon     E       "ep-si-lon"         E get
+7   Ζ   ζ   zeta        Z       "zea-ta"            DZ
+8   Η   η   eta         H       "ea-ta"             A late
+9   Θ   θ   theta       U       "thea-ta"           TH
+10  Ι   ι   iota        I       "yo-(td)a|i-o-ta"   I pit|EE feet
+20  Κ   κ   kappa       K       "kap-a"             K
+30  Λ   λ   lambda      L       "lam-da"            L
+40  Μ   μ   mu          M       "meu"               M
+50  Ν   ν   nu          N       "new"               N
+60  Ξ   ξ   xi          J       "(k)ze"             KS socks
+70  Ο   ο   omicron     O       "o-me-cron"         AW awe
+80  Π   π   pi          P       "pie"               P
+100 Ρ   ρ   rho         R       "(rh)ow"            (RH) beginning of word, R otherwise
+200 Σ   σς  sigma       SW      "sig-ma"            S
+300 Τ   τ   tao         T       "tao"               T
+400 Υ   υ   upsilon     Y       "oop-so-lawn"       between OO UU
+500 Φ   φ   phi         F       "phee"              F
+600 Χ   χ   chi         X       "kee"               CH ach
+700 Ψ   ψ   psi         C       "(ps)ee"            PS psychology
+800 Ω   ω   omega       V       "oh-mae-ga"          O note
+
+for numbers
+6   Ϛ   ϛ   digamma     opt-o
+90  Ϟ   ϟ   koppa       opt-z
+900 Ϡ   ϡ   sampi       opt-c
+
+    Ϲ   ϲ - lunate sigma    opt-S
+
+consonants: -βγδ-ζ-θ-κλμνξ-πρστ-φχψ-
+vowels: αεοιυηω
+    short sound: ᾰ[εο]ῐῠ
+    long sound : ᾱ[ηω]ῑῡ
+
+accents:
+    ;       άέίόύήώ     acute (/)
+    ]       ὰὲὶὸὺὴὼ     grave (\)
+    [       ᾶ-ῖ-ῦῆῶ     circumflex (~)
+smooth breathing marks:
+    '       ἀἐἰὀὐἠὠ     smooth (s)
+    /       ἄἔἴὄὔἤὤ     smooth + acute
+    =       ἂἒἲὂὒἢὢ     smooth + grave
+    -       ἆ-ἶ-ὖἦὦ     smooth + circumflex
+rough breathing marks:
+    "       ἁἑἱὁὑἡὡ     rough (r)
+    ?       ἅἕἵὅὕἥὥ     rough + acute
+    +       ἃἓἳὃὓἣὣ     rough + grave
+    _       ἇ-ἷ-ὗἧὧ     rough + circumflex
+iota subscripts:
+    {       ᾳ----ῃῳ     iota subscript (i)
+    {;      ᾴ----ῄῴ     iota + acute
+    {]      ᾲ----ῂῲ     iota + grave
+    {[      ᾷ----ῇῷ     iota + circumflex
+    {'      ᾀ----ᾐᾠ     iota + smooth
+    {"      ᾁ----ῇῷ     iota + rough
+vowel stuff:
+    :       --ϊ-ϋ--     "double dots"
+    W       --ΐ-ΰ--     "double dots" + acute
+    o-l     ᾰ-ῐ-ῠ--     short vowels (S), keyboard-l for "long"
+    s-o-l   ᾱ-ῑ-ῡ--     long vowels (L), keyboard-l for "long"
+
+punctuation (modern):
+    ,   break a clause
+    .   period drawn low, end a sentence
+    ·   dot drawn center, like english (:), "raised dot" types with opt-9
+    ;   like english (?)
+
+diphthongs:
+    αι  - AI aisle
+    ει  - AI wait
+    οι  - OI oil
+    αυ  - OW cow
+    ευ  - EU feud
+    ου  - OO boot
+    υι  - UEE queen
+
