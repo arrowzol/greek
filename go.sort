@@ -1,0 +1,11 @@
+#!/usr/local/bin/python3
+
+import sys
+
+payload = list((line.rstrip() for line in sys.stdin))
+
+payload.sort()
+
+for line in payload:
+    print(line)
+

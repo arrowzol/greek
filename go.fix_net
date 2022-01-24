@@ -1,0 +1,22 @@
+#!/usr/local/bin/python3
+
+import sys
+
+_net_chars = {
+    "ά": "ά",
+    "έ": "έ",
+    "ί": "ί",
+    "ό": "ό",
+    "ύ": "ύ",
+    "ή": "ή",
+    "ώ": "ώ",
+}
+
+def ch(a, b):
+    if a == "᾿":
+        return ""
+    return _net_chars.get(a, a)
+
+for line in sys.stdin:
+    print("".join((ch(line[i], line[i+1]) for i in range(len(line)-1))))
+

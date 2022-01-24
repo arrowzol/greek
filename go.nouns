@@ -1,0 +1,190 @@
+#!/usr/local/bin/python3
+
+import go_greek as g
+import sys
+
+def_art_base = (
+# singular --------------
+#   mas     fem     neu
+    "ο",    "η",    "το",       # nominative
+    "του",  "της",  "του",      # genative
+    "τω",   "τη",   "τω",       # dative
+    "τον",  "την",  "το",       # accusative
+# plural ----------------
+#   mas     fem     neu
+    "οι",   "αι",   "τα",       # nominative
+    "των",  "των",  "των",      # genative
+    "τοις", "ταις", "τοις",     # dative
+    "τους", "τας",  "τα")       # accusative
+
+def_art_to_indexes = {}
+for def_art, index in zip(def_art_base, range(2*3*4)):
+    if not def_art in def_art_to_indexes:
+        def_art_to_indexes[def_art] = []
+    def_art_to_indexes[def_art].append(index)
+
+
+def read_words(files, show_ch_vs=False):
+    """
+    Read greek words from a list of files
+    """
+    for fn in files:
+        fh = open(fn)
+
+        ch = '0'
+        for line in fh:
+            if line.startswith("CH "):
+                ch = line[3:].rstrip()
+                continue
+
+            tail = 0;
+            in_num = False
+            for head in range(len(line)):
+                let = line[head]
+                if let >= "0" and let <= "9":
+                    if not in_num:
+                        if head > tail:
+                            yield line[tail:head]
+                        tail = head
+                        in_num = True
+                    continue
+
+                if in_num:
+                    in_num = False
+                    if show_ch_vs:
+                        yield ch + ":" + line[tail:head]
+                    tail = head
+
+                if not let in g._all_greek_letter_set:
+                    if head > tail:
+                        yield line[tail:head]
+                    if let != " ":
+                        yield let
+                    tail = head+1
+            if tail > head:
+                yield line[tail:]
+            yield "EOL"
+        fh.close()
+
+class NounRoot:
+    """
+    Collect nouns with the same root
+    """
+
+    def __init__(self, root):
+        self.root = root
+        self.all_hits = 0
+        self.unique_words = set()
+        self.found = ["-"]*(2*3*4)
+        self.hits = [0]*(2*3*4)
+        self.error = False
+
+    def add_word(self, def_art, word):
+        self.all_hits += 1
+        self.unique_words.add(word)
+        for i in def_art_to_indexes[def_art]:
+            self.hits[i] += 1
+            if self.found[i] == "-":
+                self.found[i] = word
+            else:
+                if self.found[i] != word:
+                    self.error = True
+
+    def show_match(self, calc, found, _dbg):
+        if found == "-":
+            return "   " + calc
+        if calc == found:
+            return "(-)" + calc
+        if calc == "":
+            return "(?)" + found
+        self._dbg_show.append(_dbg)
+        return "(X)" + calc + "->" + found
+
+    def show_it(self):
+        word_f = None
+        word_m = None
+
+        # guess masculine and femenine forms of this noun
+        if self.found[1] == "ἄλλοι":
+            word_m = "ἄλλο"
+            word_f = "ἄλλη"
+        elif self.found[0] == "ἰησοῦς":
+            word_m = "ἰησοῦ"
+            word_f = ""
+        elif self.found[0] == "προφήτης":
+            word_m = ""
+            word_f = "προφήτης"
+        elif self.found[1] == "ἰωάννης": # John
+            word_m = "ἰωάννη"
+            word_f = ""
+
+        elif self.found[1] != "-":
+            word_f = self.found[1]
+            word_m = word_f[:-1] + g.cp_morph("ο", word_f[-1])
+            word_m = g.xlate_morph(word_m, len(word_m)-1, "\\", "/") or word_m
+        elif self.found[0] != "-":
+            word_m = self.found[0][:-1]
+            word_f = word_m[:-1] + g.cp_morph("α", word_m[-1])
+
+        if word_m:
+            data_m = g.noun_inflect_all(word_m, "M")
+            data_f = g.noun_inflect_all(word_f, "F")
+            data_n = g.noun_inflect_all(word_m, "N")
+
+            print("==================== %s %s"%(word_m, word_f))
+            self._dbg_show = []
+            for i in range(8):
+                print("     {0:20s} {1:20s} {2:20s}".format(
+                    self.show_match(data_m[i][1], self.found[i*3]  , data_m[i][2]),
+                    self.show_match(data_f[i][1], self.found[i*3+1], data_f[i][2]),
+                    self.show_match(data_n[i][1], self.found[i*3+2], data_n[i][2])))
+            if self._dbg_show:
+                print("\n".join((repr(x) for x in self._dbg_show)))
+            return True
+
+
+if __name__ == "__main__":
+
+    # create list of NounRoot objects from input files
+    art_found = None
+    noun_roots = {}
+    for word in read_words(sys.argv[1:]):
+        if g.base_word(word) in def_art_to_indexes:
+            art_found = word
+            continue
+        if art_found:
+            def_art = g.base_word(art_found)
+            art_found = None
+
+            root, last_syllable = g.split_last_syllable(word)
+
+            if root:
+                root = g.base_word(root)
+                if not root in noun_roots:
+                    noun_roots[root] = NounRoot(root)
+                noun_roots[root].add_word(def_art, word)
+
+    show = 0
+    skip = 0
+    errors = 0
+    not_show = 0
+
+    noun_roots_list = list(noun_roots.values())
+    noun_roots_list.sort(key=lambda r:"%03d%s"%(999-r.all_hits, r.root))
+
+    for noun_root in noun_roots_list:
+        if noun_root.error:
+            errors += 1
+        elif len(noun_root.unique_words) <= 1:
+            skip += 1
+        else:
+            if noun_root.show_it():
+                show += 1
+            else:
+                not_show += 1
+
+    print("show %d"%(show))
+    print("not show %d"%(not_show))
+    print("errors %d"%(errors))
+    print("single %d"%(skip))
+

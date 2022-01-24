@@ -64,6 +64,7 @@ vowel stuff:
     W       --ΐ-ΰ--     "double dots" + acute
     o-l     ᾰ-ῐ-ῠ--     short vowels (S), keyboard-l for "long"
     s-o-l   ᾱ-ῑ-ῡ--     long vowels (L), keyboard-l for "long"
+            ᾱ́
 
 punctuation (modern):
     ,   break a clause
