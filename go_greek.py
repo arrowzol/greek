@@ -2,11 +2,25 @@
 
 # Koine Greek evloved from Attic Greek
 
-# nominative: subject
-# genitive: posession
-# dative: indirect object
-# accusative: object of a transitive verb, direct object of verbs
+# Nominative: subject
+# Genitive: posession
+# Dative: indirect object
+# Accusative: object of a transitive verb, direct object of verbs
 
+# nouns, 1st and 2nd declensions
+# m  f  n
+# -- -- --  singular
+# ς     ν
+# υ  ς  υ
+# ι  ι  ι
+# ν  ν  ν
+# -- -- -- plural
+# ι  ι  α
+# ων ων ων
+# ις ις ις
+# υς  ς α
+
+# see _vowel_contract
 
 _debug = False
 _morph_do_long_alpha = False
@@ -163,7 +177,7 @@ def get_morph(letter):
 def cp_morph(letter, morphed_letter):
     return add_morph(letter, get_morph(morphed_letter))
 
-def xlate_morph(word, i, f, t):
+def translate_morph(word, i, f, t):
     let = word[i]
     morph = get_morph(let)
     j = f.find(morph[0])
@@ -220,6 +234,7 @@ _diphthongs = set((
     "ει",
     "οι",
     "υι",
+
     "αυ",
     "ευ",
     "ου",
@@ -238,13 +253,22 @@ _consonant_cluster = set((
 def split_last_syllable(word):
     """Feeble attempt to get the root of this noun"""
     b_word = base_word(word)
+
+    # find last vowel in last syllable
     i = len(word)-1
     while i >= 0 and not b_word[i] in _vowel_set:
         i -= 1
+
     if i >= 0:
-        while i >= 0 and b_word[i-1] in _vowel_set:
-            i -= 1
-        return (word[:i], word[i:])
+
+        # find first vowel in last syllable
+        j = i
+        while j >= 0 and b_word[j-1] in _vowel_set:
+            j -= 1
+
+#        if j-1+1 >= 3 and word[j:j+2] in _diphthongs:
+#            j += 2
+        return (word[:j], word[j:])
     return (None, None)
 
 def syllables(word):
@@ -354,7 +378,7 @@ _vowel_contract = {
     # Attic Greek Below
     'αα': 'ᾱ',
 #    'εα': 'η',
-    'οα': 'ω',
+    'οα': 'ὰ', # different that Attic
 
     'αε': 'ᾱ',
     'εε': 'ει',
@@ -379,7 +403,7 @@ _vowel_contract = {
     'αη': 'α',
     'εη': 'η',
     'ηη': 'η',
-    'οη': 'ω',
+#    'οη': 'ω',
 
     'αω': 'ω',
     'εω': 'ω',
@@ -387,13 +411,20 @@ _vowel_contract = {
 
     # Koine Greek ???
     'ουι': 'ου',
-#    'ηου': 'ηυ',
 }
 _fix_dative = {
     'ηι': 'η',
     'αι': 'α',
     'οι': 'ω',
 }
+# P-(N|A)-neu
+#   καλω->καλὰ
+#   ἴδιω->ἴδια
+#   ἔσχατω->ἔσχατα
+#   ἐρχόμενω->ἐρχόμενα
+#   τέκνω->τέκνα
+#
+#   'οα' -> α or ω
 def _noun_inflect(word, end, decl, gen, num, cas):
     global _dbg
     b_word = base_word(word)
@@ -401,20 +432,33 @@ def _noun_inflect(word, end, decl, gen, num, cas):
 
     # replace α with η if not preceeded by ειρ
     # only for first declension, (genative|dative)-singluar
-    if decl == '12' and num == 'S' and cas in ['G', 'D'] and b_word[-1] == 'α' and b_word[-2] not in ['ε', 'ι', 'ρ']:
-        word = word[:-1] + cp_morph('η', word[-1])
-        b_word = b_word[:-1] + 'η'
-        _dbg.append((word + "-" + end, "α->η"))
+#    if decl == '12' and num == 'S' and cas in ['G', 'D'] and b_word[-1] == 'α' and b_word[-2] not in ['ε', 'ι', 'ρ']:
+#        word = word[:-1] + cp_morph('η', word[-1])
+#        b_word = b_word[:-1] + 'η'
+#        _dbg.append((word + "-" + end, "α->η"))
 
     # TODO: my guess, see φωνή
     # replace η with α for plurals
-    elif num == 'P' and b_word[-1] == 'η':
+    if num == 'P' and b_word[-1] == 'η':
         word = word[:-1] + cp_morph('α', word[-1])
         b_word = b_word[:-1] + 'α'
         _dbg.append((word + "-" + end, "η->α"))
         
     word = word + end
     b_word = b_word + base_word(end)
+
+    # for dative: place iota subscript on vowel followed by iota
+    # only for dative-singular
+    # affects [ηαο]ι
+    if cas == 'D' and num == 'S':
+        b_replace = _fix_dative.get(b_word[-2:], None)
+        if b_replace:
+            replace = cp_morph(b_replace, word[-2])
+            replace = cp_morph(replace, word[-1])
+            replace = add_morph(replace, "i")
+            word = word[:-2] + replace
+            b_word = b_word[:-2] + b_replace
+            _dbg.append((word, "DS->iota"))
 
     i = len(word)-1
     # find last vowel
@@ -425,8 +469,10 @@ def _noun_inflect(word, end, decl, gen, num, cas):
         # affects 2 or 3 vowels together
         # done before moving morphs
         if i > 0 and b_word[i-1] in _vowel_set:
-            if i > 1 and b_word[i-2] in _vowel_set:
-                replace = _vowel_contract.get(b_word[i-2:i+1], None)
+            # (if i > 3) for θεοῦ
+            if i > 3 and b_word[i-2] in _vowel_set:
+                find = b_word[i-2:i+1]
+                replace = _vowel_contract.get(find, None)
                 if replace:
 
                     # if this would create a double-vowel, don't
@@ -439,9 +485,11 @@ def _noun_inflect(word, end, decl, gen, num, cas):
                     b_word = b_word[:i-2] + replace + b_word[i+1+ii:]
 
                     i -= 3 - len(replace) + ii
-                    _dbg.append((word, "contract-3"))
-            if i > 0 and b_word[i-1] in _vowel_set:
-                replace = _vowel_contract.get(b_word[i-1:i+1], None)
+                    _dbg.append((word, "contract-3", find, replace))
+            # (if i > 2) for θεὸς and λαῷ
+            if i > 2 and b_word[i-1] in _vowel_set:
+                find = b_word[i-1:i+1]
+                replace = _vowel_contract.get(find, None)
                 if not replace and b_word[i-1] == b_word[i]:
                     replace = cp_morph(word[i-1], word[i])
                 if replace:
@@ -453,7 +501,7 @@ def _noun_inflect(word, end, decl, gen, num, cas):
                     word = word[:i-1] + replace + word[i+1+ii:]
                     b_word = b_word[:i-1] + base_word(replace) + b_word[i+1+ii:]
                     i -= 2 - len(replace) + ii
-                    _dbg.append((word, "contract-2"))
+                    _dbg.append((word, "contract-2", find, replace))
 
         # moving morphs to the last vowel in diphthongs
         if i > 0 and b_word[i-1:i+1] in _diphthongs:
@@ -470,22 +518,22 @@ def _noun_inflect(word, end, decl, gen, num, cas):
 
         # accent translation
         if cas == 'G' and num == 'S':
-            word2 = xlate_morph(word, i, "\\", "~")
+            word2 = translate_morph(word, i, "\\", "~")
             if word2:
                 word = word2
                 _dbg.append((word, "\\ -> ~"))
         if cas == 'D' and num == 'P':
-            word2 = xlate_morph(word, i, "/", "~")
+            word2 = translate_morph(word, i, "/", "~")
             if word2:
                 word = word2
                 _dbg.append((word, "/ -> ~"))
         if cas in 'N' and num == 'P':
-            word2 = xlate_morph(word, i, "/", "\\")
+            word2 = translate_morph(word, i, "/", "\\")
             if word2:
                 word = word2
                 _dbg.append((word, "/ -> \\"))
         if cas in 'A' and num == 'P':
-            word2 = xlate_morph(word, i, "\\", "/")
+            word2 = translate_morph(word, i, "\\", "/")
             if word2:
                 word = word2
                 _dbg.append((word, "\\ -> /"))
@@ -495,22 +543,18 @@ def _noun_inflect(word, end, decl, gen, num, cas):
     # affects [ηαο]ι
     if cas == 'D' and num == 'S':
         if b_word[-1] == 'η':
-            if b_word[-2] in ['φ', 'θ']:
+            # ἐργάτῃ
+            # τρίτῇ->τρίτῃ (.F.)
+            # -----
+            # κριτῃ->κριτῇ (M.N)
+            if b_word[-2] in ['φ', 'θ'] or (b_word[-2] == 'τ' and gen != 'F'):
                 if word[-1] != 'ῇ':
                     word = word[:-1] + 'ῇ'
-                    _dbg.append((word, "DS(η)->iota"))
+                    _dbg.append((word, "DS(η)->iota.1"))
             else:
                 if word[-1] != 'ῃ':
                     word = word[:-1] + 'ῃ'
-                    _dbg.append((word, "DS(η)->iota"))
-        b_replace = _fix_dative.get(b_word[-2:], None)
-        if b_replace:
-            replace = cp_morph(b_replace, word[-2])
-            replace = cp_morph(replace, word[-1])
-            replace = add_morph(replace, "i")
-            word = word[:-2] + replace
-            b_word = b_word[:-2] + b_replace
-            _dbg.append((word, "DS->iota"))
+                    _dbg.append((word, "DS(η)->iota.2"))
 
     i = len(word)-1
     # find last vowel
@@ -522,6 +566,23 @@ def _noun_inflect(word, end, decl, gen, num, cas):
 #        if decl == '12' and cas == 'G' and num == 'P':
 #            word = word[:i] + add_morph(word[i], "~") + word[i+1:]
 #            _dbg.append((word, "1GP->~"))
+
+# bad:[('ἅγιο-ς', 'start'), ('ἅγῶν', 'end: ιος -> ων')]
+# bad:[('ἥλιο-ς', 'start'), ('ἥλῶν', 'end: ιος -> ων')]
+# bad:[('δεξιὸ-ς', 'start'), ('δεξῶν', 'end: ιος -> ων')]
+# bad:[('κύριο-ς', 'start'), ('κύρῶν', 'end: ιος -> ων')]
+# bad:[('νυμφίο-ς', 'start'), ('νυμφῶν', 'end: ιος -> ων')]
+# bad:[('Ναζωραῖο-ς', 'start'), ('Ναζωραῶν', 'end: ιος -> ων')]
+# 
+# good:[('αἰτίο-ς', 'start'), ('αἰτῶν', 'end: ιος -> ων')]
+# good:[('λαλιό-ς', 'start'), ('λαλῶν', 'end: ιος -> ων')]
+# good:[('μαρτυρίο-ς', 'start'), ('μαρτυρῶν', 'end: ιος -> ων')]
+# 
+#    if cas == 'N' and num == 'S':
+#        if b_word[-3:] == 'ιος':
+#            word = word[:-3] + 'ῶν'
+#            b_word = b_word[:-3] + 'ων'
+#            _dbg.append((word, "end: ιος -> ων"))
 
     # alphas at the end of the word have "long" mark
     # unless it is morphed already
@@ -643,40 +704,6 @@ def test_noun_inflect(name, actual, expected):
                 name, act[0], act[1], exp[1], repr(act[2])))
 
 if __name__ == '__main__':
-    if False:
-        # F, ending ρα
-        test_noun_inflect(
-            "χώρα",
-            noun_inflect_all("χώρα", 'F'), (
-            ('12NS', 'χώρᾱ'),  ('12GS', 'χώρᾱς'), ('12DS', 'χώρᾳ'),   ('12AS', 'χώρᾱν'),
-            ('12NP', 'χῶραι'), ('12GP', 'χωρῶν'), ('12DP', 'χώραις'), ('12AP', 'χώρᾱς')))
-
-        # F, ending εα
-        test_noun_inflect(
-            "θεά",
-            noun_inflect_all("θεά", 'F'), (
-            ('12NS', 'θεά'),  ('12GS', 'θεᾶς'), ('12DS', 'θεᾷ'),   ('12AS', 'θεάν'),
-            ('12NP', 'θεαί'), ('12GP', 'θεῶν'), ('12DP', 'θεαῖς'), ('12AP', 'θεάς')))
-
-        # F, ending ια
-        test_noun_inflect(
-            "οἰκία",
-            noun_inflect_all("οἰκία", 'F'), (
-            ('12NS', 'οἰκίᾱ'),  ('12GS', 'οἰκίᾱς'), ('12DS', 'οἰκίᾳ'),   ('12AS', 'οἰκίᾱν'),
-            ('12NP', 'οἰκίαι'), ('12GP', 'οἰκιῶν'), ('12DP', 'οἰκίαις'), ('12AP', 'οἰκίᾱς')))
-
-        # F, ending η
-        test_noun_inflect(
-            "φωνή",
-            noun_inflect_all("φωνή", 'F'), (
-            ('12NS', 'φωνή'),  ('12GS', 'φωνῆς'), ('12DS', 'φωνῇ'),   ('12AS', 'φωνήν'),
-            ('12NP', 'φωναί'), ('12GP', 'φωνῶν'), ('12DP', 'φωναῖς'), ('12AP', 'φωνάς')))
-
-        print_noun("χώρα", 'F')
-        print_noun("θεά", 'F')
-        print_noun("οἰκία", 'F')
-        print_noun("φωνή", 'F')
-
     while True:
         word = input("What's up? ")
         print_noun(word, 'M')
