@@ -22,5 +22,6 @@ if len(sys.argv) == 1:
 else:
     fh = open(sys.argv[1])
 for line in fh:
-    print("".join((ch(line[i], line[i+1]) for i in range(len(line)-1))))
+    if line.strip():
+        print("".join((ch(line[i], line[i+1]) for i in range(len(line)-1))))
 

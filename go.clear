@@ -1,0 +1,12 @@
+#!/usr/local/bin/python3
+
+import sys
+import go_greek as g
+
+if len(sys.argv) == 1:
+    fh = sys.stdin
+else:
+    fh = open(sys.argv[1])
+for line in fh:
+    print("".join((g.base_let(let) for let in line.rstrip())))
+
