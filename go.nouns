@@ -3,8 +3,9 @@
 import go_greek as g
 import sys
 
-DO_DECLS = "3"
+DO_DECLS = "123"
 DO_DECLS = "12"
+DO_DECLS = "3"
 
 _show_errr_dbg = "-GEW"
 
@@ -28,6 +29,16 @@ for def_art, index in zip(def_art_base, range(2*3*4)):
         def_art_to_indexes[def_art] = []
     def_art_to_indexes[def_art].append(index)
 
+
+def wgt(where):
+    if where == "SN":
+        return 10
+    return 1
+
+def str_rm(s, i):
+    if i == 0:
+        return s
+    return s[:-i]
 
 def read_words(files, show_ch_vs=False):
     """
@@ -124,7 +135,7 @@ class OneNoun:
         if type(sp) == str:
             sp = "SP".index(sp)
         if type(ngda) == str:
-            ngda = "NGADV".index(ngda)
+            ngda = "NGDAV".index(ngda)
         if type(mfn) == str:
             mfn = "MFN".index(mfn)
         return (sp*4 + ngda)*3 + mfn
@@ -159,55 +170,79 @@ class OneNoun:
         word_f = word_m = decl_m = gen_m = decl_f = gen_f = "-"
 
         if fem_count > 0 and fem_case_count >= 2:
-            # TODO: add P to the list below AND ...
-            # TODO: undo α η swap when looking for the root, when (gen == "F", cas in "GD", usually num == "P"), _idx
             count_and_word_list = [
-                (self.index_to_hits[0*3+1], self.index_to_word[0*3+1]),
-                (self.index_to_hits[1*3+1], self.index_to_word[1*3+1][:-1]),
-                (self.index_to_hits[3*3+1], self.index_to_word[3*3+1][:-1]),
-                ]
-            count_and_word_list.sort(reverse=True)
-            word_f = count_and_word_list[0][1]
+                (wgt(where)*hits, str_rm(word, len(stem)-1), where)
+                for hits, word, stem, where in (
+                    (self.index_to_hits[i], self.index_to_word[i], stem, where)
+                    for i, stem, where in (
+                        (OneNoun._idx(sp, ngda, "F"), g._noun_stems["1"]["F"][sp][ngda], sp+ngda)
+                        for sp in "SP"
+                        for ngda in "NGDA"))
+                if where != "SG" and word != "-" and stem[0] == "." and g.base_word(word).endswith(stem[1:])]
 
-            if len(word_f) > 2:
-                decl_f, gen_f = g.decl_gen(word_f, "F")
-                roots.append((word_f, "F"))
-                gen = "F"
-            else:
-                word_f = "-"
+            if count_and_word_list:
+                count_and_word_list.sort(reverse=True)
+                word_f = count_and_word_list[0][1]
+
+#                if count_and_word_list[0][2] in ["PG", "PD"]:
+#                    b_word = g.base_word(word_f)
+#                    if b_word[-1] == "α":
+#                        word_f = word_f[:-1] + "η"
+#                    elif b_word[-1] == "η":
+#                        word_f = word_f[:-1] + "α"
+
+                if len(word_f) > 2:
+                    decl_f, gen_f = g.decl_gen(word_f, "F")
+                    roots.append((word_f, "F"))
+                    gen = "F"
+                else:
+                    word_f = "-"
 
         if mas_count > 0 and mas_case_count >= 2:
-            # assume 1st or 2nd declension
-            # assume plurals don't change their last letter to α
+            if False:
+                print("CP1 " + repr([
+                    (wgt(where)*hits, word, stem, where)
+                    for hits, word, stem, where in (
+                        (self.index_to_hits[i], self.index_to_word[i], stem, where)
+                        for i, stem, where in (
+                            (OneNoun._idx(sp, ngda, "M"), g._noun_stems["2"]["M"][sp][ngda], sp+ngda)
+                            for sp in "SP"
+                            for ngda in "NGDA"))
+                    if word != "-" ]))
             count_and_word_list = [
-                (self.index_to_hits[0*3], self.index_to_word[0*3][:-1]),
-                (self.index_to_hits[2*3], self.index_to_word[2*3][:-1]),
-                (self.index_to_hits[3*3], self.index_to_word[3*3][:-1]),
+                (wgt(where)*hits, str_rm(word, len(stem)-1), where)
+                for hits, word, stem, where in (
+                    (self.index_to_hits[i], self.index_to_word[i], stem, where)
+                    for i, stem, where in (
+                        (OneNoun._idx(sp, ngda, "M"), g._noun_stems["2"]["M"][sp][ngda], sp+ngda)
+                        for sp in "SP"
+                        for ngda in "NGDA"))
+                if word != "-" and stem[0] == "." and g.base_word(word).endswith(stem[1:])]
 
-                # note: only works for 2nd declension, remove later if the word is suspitious
-                (self.index_to_hits[4*3], self.index_to_word[4*3][:-1]),
-                (self.index_to_hits[6*3], self.index_to_word[6*3][:-2]),
-                (self.index_to_hits[7*3], self.index_to_word[7*3][:-2]),
-                ]
-            count_and_word_list.sort(reverse=True)
-            word_m = count_and_word_list[0][1]
-
-            # fix: assume plurals don't change their last letter to α
-            if g.base_let(word_m[-1]) == 'α':
-                count_and_word_list = [
-                    (self.index_to_hits[0*3], self.index_to_word[0*3][:-1]),
-                    (self.index_to_hits[2*3], self.index_to_word[2*3][:-1]),
-                    (self.index_to_hits[3*3], self.index_to_word[3*3][:-1]),
-                    ]
+            if count_and_word_list:
                 count_and_word_list.sort(reverse=True)
                 word_m = count_and_word_list[0][1]
 
-            if len(word_m) > 2:
-                decl_m, gen_m = g.decl_gen(word_m, "M")
-                roots.append((word_m, "M"))
-                gen = "M"
-            else:
-                word_m = "-"
+                # fix: assume plurals don't change their last letter to α
+                if g.base_let(word_m[-1]) == 'α':
+                    count_and_word_list = [
+                        (wgt(where)*hits, str_rm(word, len(stem)-1), where)
+                        for hits, word, stem, where in (
+                            (self.index_to_hits[i], self.index_to_word[i], stem, where)
+                            for i, stem, where in (
+                                (OneNoun._idx("S", ngda, "M"), g._noun_stems["2"]["M"]["S"][ngda], "S"+ngda)
+                                for ngda in "NGDA"))
+                        if word != "-" and stem[0] == "." and g.base_word(word).endswith(stem[1:])]
+                    if count_and_word_list:
+                        count_and_word_list.sort(reverse=True)
+                        word_m = count_and_word_list[0][1]
+
+                if len(word_m) > 2:
+                    decl_m, gen_m = g.decl_gen(word_m, "M")
+                    roots.append((word_m, "M"))
+                    gen = "M"
+                else:
+                    word_m = "-"
 
         if False and (decl_m == "3" or decl_f == "3"):
             roots = []
@@ -269,56 +304,53 @@ class OneNoun:
         return "%3d"%hits + answer
 
     def show_it(self, word, gen1):
-            decl, gen2, data = g.noun_inflect_all(word, gen1)[0]
+        decl, gen2, data = g.noun_inflect_all(word, gen1)[0]
 
-            if not decl in DO_DECLS:
-                return
+        if not decl in DO_DECLS:
+            return False
 
-            print("==================== hits:%d %s:%s %s set-of:%d"%(
-                self.all_word_hits, gen1, gen2, word, len(words_and_gen)))
+        print("==================== hits:%d decl:%s %s:%s %s %s"%(
+            self.all_word_hits, decl, gen1, gen2, word, g.base_word(word)))
 
-            if self.cwp_to_morph_collision_count:
-                print("morph collisions: " + repr(self.cwp_to_morph_collision_count))
+        if self.cwp_to_morph_collision_count:
+            print("morph collisions: " + repr(self.cwp_to_morph_collision_count))
 
-            self._dbg_list = []
-            self._match = 0
-            self._soft_error = 0
-            self._hard_error = 0
+        self._dbg_list = []
+        self._match = 0
+        self._soft_error = 0
+        self._hard_error = 0
 
-            max_len = 30
-            print("-- %s %s ------------------ decl=%s gen=%s,%s "%(
-                word, g.base_word(word), decl, gen1, gen2))
-            print("           {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
+        max_len = 30
+        print("           {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
+            max_len+2,
+            "__nom__", "__gen__", "__dat__", "__acc__",
+            ))
+        num_i = 0
+        mfn = "MFN".index(gen1)
+        for num in ('S', 'P'):
+            print("{5}: {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
                 max_len+2,
-                "__nom__", "__gen__", "__dat__", "__acc__",
+                self.show_match(data[num]["N"], OneNoun._idx(num_i, 0, mfn)),
+                self.show_match(data[num]["G"], OneNoun._idx(num_i, 1, mfn)),
+                self.show_match(data[num]["D"], OneNoun._idx(num_i, 2, mfn)),
+                self.show_match(data[num]["A"], OneNoun._idx(num_i, 3, mfn)),
+
+                num,
                 ))
-            num_i = 0
-            mfn = "MFN".index(gen1)
-            for num in ('S', 'P'):
-                print("{5}: {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
-                    max_len+2,
-                    self.show_match(data[num]["N"], OneNoun._idx(num_i, 0, mfn)),
-                    self.show_match(data[num]["G"], OneNoun._idx(num_i, 1, mfn)),
-                    self.show_match(data[num]["D"], OneNoun._idx(num_i, 2, mfn)),
-                    self.show_match(data[num]["A"], OneNoun._idx(num_i, 3, mfn)),
+            num_i += 1
 
-                    num,
-                    ))
-                num_i += 1
+        print("----------\nALL REAL: " + ",".join((
+            g.base_word(word)
+            for word in (
+                self.index_to_word[OneNoun._idx(sp, ngad, gen1)]
+                for sp in range(2)
+                for ngad in range(4))
+            if word != "-")))
+        if self._dbg_list and _show_errr_dbg:
+            print("----------")
+            print("\n".join((x[0] + ": " + repr(x[1]) for x in self._dbg_list if x[0] in _show_errr_dbg)))
 
-            print("----------\nALL REAL: " + ",".join((
-                g.base_word(word)
-                for word in (
-                    self.index_to_word[OneNoun._idx(sp, ngad, gen1)]
-                    for sp in range(2)
-                    for ngad in range(4))
-                if word != "-")))
-            if self._dbg_list and _show_errr_dbg:
-                print("----------")
-                print("\n".join((x[0] + ": " + repr(x[1]) for x in self._dbg_list if x[0] in _show_errr_dbg)))
-
-            # TODO: this is in a loop, no good
-            return (self._match, self._soft_error)
+        return (self._match, self._soft_error)
 
 
 if __name__ == "__main__":
@@ -363,14 +395,17 @@ if __name__ == "__main__":
         else:
             # guess masculine and femenine forms of this noun
             words_and_gen = noun_root.derive_roots()
-            for word, gen1 in words_and_gen:
-                if noun_root.show_it(word, gen1):
-                    wd_match += noun_root._match
-                    wd_soft_error += noun_root._soft_error
-                    wd_hard_error += noun_root._hard_error
-                    show += 1
-                else:
-                    not_show += 1
+            if not words_and_gen:
+                not_show += 1
+            else:
+                for word, gen1 in words_and_gen:
+                    if noun_root.show_it(word, gen1):
+                        wd_match += noun_root._match
+                        wd_soft_error += noun_root._soft_error
+                        wd_hard_error += noun_root._hard_error
+                        show += 1
+                    else:
+                        not_show += 1
 
     print()
     print()

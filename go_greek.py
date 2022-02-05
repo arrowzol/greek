@@ -564,7 +564,7 @@ _vowel_contract = {
 
     # Koine Greek ???
     'ουι': 'ου',
-    'ονν': 'αν',
+#    'ονν': 'αν',
 
     # non-vowel contractions
     'σου': 'σαι',
