@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 import go_greek as g
+import go_greek_noun as gn
 import sys
 
 DO_DECLS = "123"
@@ -8,27 +9,6 @@ DO_DECLS = "3"
 DO_DECLS = "12"
 
 _show_errr_dbg = "-GEW"
-
-def_art_base = (
-# singular --------------
-#   mas     fem     neu
-    "ο",    "η",    "το",       # nominative
-    "του",  "της",  "του",      # genative
-    "τω",   "τη",   "τω",       # dative
-    "τον",  "την",  "το",       # accusative
-# plural ----------------
-#   mas     fem     neu
-    "οι",   "αι",   "τα",       # nominative
-    "των",  "των",  "των",      # genative
-    "τοις", "ταις", "τοις",     # dative
-    "τους", "τας",  "τα")       # accusative
-
-def_art_to_indexes = {}
-for def_art, index in zip(def_art_base, range(2*3*4)):
-    if not def_art in def_art_to_indexes:
-        def_art_to_indexes[def_art] = []
-    def_art_to_indexes[def_art].append(index)
-
 
 def wgt(where):
     if where == "SN":
@@ -82,7 +62,7 @@ def read_words(files, show_ch_vs=False):
             yield "EOL"
         fh.close()
 
-_3_mf = [g._noun_stems["3"]["-"][num][cas]
+_3_mf = [gn._noun_stems["3"]["-"][num][cas]
     for num in "SP"
     for cas in "NGDA"
     ]
@@ -114,7 +94,7 @@ class OneNoun:
         b_word = g.base_word(word)
         self.all_word_hits += count
         self.unique_words.add(b_word)
-        for i in def_art_to_indexes[def_art]:
+        for i in gn.def_art_to_indexes[def_art]:
             self.index_to_hits[i] += count
             if self.index_to_word[i] == "-":
                 self.index_to_word[i] = word
@@ -176,7 +156,7 @@ class OneNoun:
                 for hits, word, stem, where in (
                     (self.index_to_hits[i], self.index_to_word[i], stem, where)
                     for i, stem, where in (
-                        (OneNoun._idx(sp, ngda, "F"), g._noun_stems["1"]["F"][sp][ngda], sp+ngda)
+                        (OneNoun._idx(sp, ngda, "F"), gn._noun_stems["1"]["F"][sp][ngda], sp+ngda)
                         for sp in "SP"
                         for ngda in "NGDA"))
                 if where != "SG" and word != "-" and stem[0] == "." and g.base_word(word).endswith(stem[1:])]
@@ -193,7 +173,7 @@ class OneNoun:
 #                        word_f = word_f[:-1] + "α"
 
                 if len(word_f) > 2:
-                    decl_f, gen_f = g.decl_gen(word_f, "F")
+                    decl_f, gen_f = gn.decl_gen(word_f, "F")
                     roots.append((word_f, "F"))
                     gen = "F"
                 else:
@@ -206,7 +186,7 @@ class OneNoun:
                     for hits, word, stem, where in (
                         (self.index_to_hits[i], self.index_to_word[i], stem, where)
                         for i, stem, where in (
-                            (OneNoun._idx(sp, ngda, "M"), g._noun_stems["2"]["M"][sp][ngda], sp+ngda)
+                            (OneNoun._idx(sp, ngda, "M"), gn._noun_stems["2"]["M"][sp][ngda], sp+ngda)
                             for sp in "SP"
                             for ngda in "NGDA"))
                     if word != "-" ]))
@@ -215,7 +195,7 @@ class OneNoun:
                 for hits, word, stem, where in (
                     (self.index_to_hits[i], self.index_to_word[i], stem, where)
                     for i, stem, where in (
-                        (OneNoun._idx(sp, ngda, "M"), g._noun_stems["2"]["M"][sp][ngda], sp+ngda)
+                        (OneNoun._idx(sp, ngda, "M"), gn._noun_stems["2"]["M"][sp][ngda], sp+ngda)
                         for sp in "SP"
                         for ngda in "NGDA"))
                 if word != "-" and stem[0] == "." and g.base_word(word, True).endswith(stem[1:])]
@@ -231,7 +211,7 @@ class OneNoun:
                         for hits, word, stem, where in (
                             (self.index_to_hits[i], self.index_to_word[i], stem, where)
                             for i, stem, where in (
-                                (OneNoun._idx("S", ngda, "M"), g._noun_stems["2"]["M"]["S"][ngda], "S"+ngda)
+                                (OneNoun._idx("S", ngda, "M"), gn._noun_stems["2"]["M"]["S"][ngda], "S"+ngda)
                                 for ngda in "NGDA"))
                         if word != "-" and stem[0] == "." and g.base_word(word, True).endswith(stem[1:])]
                     if count_and_word_list:
@@ -239,7 +219,7 @@ class OneNoun:
                         word_m = count_and_word_list[0][1]
 
                 if len(word_m) > 2:
-                    decl_m, gen_m = g.decl_gen(word_m, "M")
+                    decl_m, gen_m = gn.decl_gen(word_m, "M")
                     roots.append((word_m, "M"))
                     gen = "M"
                 else:
@@ -272,7 +252,7 @@ class OneNoun:
                     count_and_word_list.sort(reverse=True)
                     word = count_and_word_list[0][1]
                     if len(word) > 2:
-                        decl, gen2 = g.decl_gen(word, gen)
+                        decl, gen2 = gn.decl_gen(word, gen)
                         if decl == "3":
                             roots.append((word, gen))
 
@@ -305,7 +285,7 @@ class OneNoun:
         return "%3d"%hits + answer
 
     def show_it(self, word, gen1):
-        decl, gen2, data = g.noun_inflect_all(word, gen1)[0]
+        decl, gen2, data = gn.noun_inflect_all(word, gen1)[0]
 
         if not decl in DO_DECLS:
             return False
@@ -356,119 +336,13 @@ class OneNoun:
 
         return (self._match, self._soft_error)
 
-root_ends = [
-    ("1", "M", "ης"),
-    ("1", "M", "ας"),
-    ("1", "F", "η"),
-    ("1", "F", "α"),
+def derive_root(def_art, word, existing_roots=None):
+    if True:
+        return gn.derive_noun_root(def_art, word, existing_roots)
 
-    ("2", ".", "ος"),
-#    ("2", ".", "αος"),
-#    ("2", ".", "εος"),
-#    ("2", ".", "ιος"),
-#    ("2", ".", "υος"),
-#    ("2", ".", "ηος"),
-#    ("2", ".", "ωος"),
-    ("2", "N", "ον"),
-#    ("2", "N", "αον"),
-#    ("2", "N", "εον"),
-#    ("2", "N", "ιον"),
-#    ("2", "N", "υον"),
-#    ("2", "N", "ηον"),
-#    ("2", "N", "ωον"),
-
-    ("3", ".", "ν"),
-    ("3", ".", "ρ"),
-    ("3", ".", "ς")]
-end_to_what = {}
-for decl, gen, end in root_ends:
-    gens = gen
-    if gens == ".":
-        if decl == "3":
-            gens = "-"
-        else:
-            # usualy M, but could be F
-            gens = "MF"
-    for gen in gens:
-        for num in "SP":
-            for cas in "NGDA":
-                word, _dbg = g._noun_inflect("βββ" + end, decl, gen, num, cas)
-
-                word_end = g.base_word(word[3:])
-
-                what_list = end_to_what.get(word_end, None)
-                if not what_list:
-                    what_list = []
-                    end_to_what[word_end] = what_list
-#                print("CP9 %s %s %s %s %s %s"%(word_end, end, decl, gen, num, cas))
-                what_list.append((end, decl, num + gen + cas))
-
-
-_guess_alpha_eta_omicron = True
-
-def derive_root_old(def_art, word, existing_roots=None):
+    # old style
     syllables = g.syllables(word)
     return word[:len(syllables[-1])]
-
-def derive_root(def_art, word, existing_roots=None):
-    word = g.base_word(word)
-    art_is = set((
-        "SP"[(i//12)] + "MFN"[i%3] + "NGDA"[(i//3)%4]
-        for i in def_art_to_indexes[def_art]))
-
-    for i in range(4,0,-1):
-        word_end = word[-i:]
-        what = end_to_what.get(word_end, None)
-        if what:
-            word_start = word[:-i]
-            fildered_what = [   
-                (w_end, w_decl)
-                for w_end, w_decl, w_ngc in what
-                if
-                    (
-                        w_ngc in art_is
-                        or (w_ngc[1] == "-" and (
-                            w_ngc[0] + "M" + w_ngc[2] in art_is
-                            or w_ngc[0] + "F" + w_ngc[2] in art_is
-                            ))
-                    ) and (
-                        not existing_roots
-                        or g.base_word(word_start) + w_end in existing_roots)]
-            all_ends = set([end for end, w_decl in fildered_what])
-            if len(all_ends) == 1:
-                root = word_start + fildered_what[0][0]
-                print("CP1 %s %s %s %s %s %s"%(def_art, word, root, repr(art_is), repr(what), repr(all_ends)))
-                return root
-
-            if existing_roots:
-                # TODO: this section "guesses" the right answer
-                # there may be better heuristics here, but is it worth the time?
-                if _guess_alpha_eta_omicron:
-                    fildered_what = [   
-                        (w_end, w_decl)
-                        for w_end, w_decl, w_ngc in what
-                        if (
-                            w_ngc in art_is
-                            or (w_ngc[1] == "-" and w_ngc[0] + "M" + w_ngc[2] in art_is))]
-                    first_letters = set((end[0] for end, decl in fildered_what))
-                    for first_letter in first_letters:
-                        if first_letter not in "αηο":
-                            break
-                    else:
-                        last_letters = set((end[1:] for end, decl in fildered_what))
-                        if len(last_letters) == 1:
-                            # prefere alpha
-                            choices = [end for end, decl in fildered_what]
-                            choices.sort()
-
-                            root = word_start + choices[0]
-                            print("CP1-b %s %s %s %s %s"%(word, root, repr(art_is), repr(what), repr(all_ends)))
-                            return root
-
-                    all_ends = set([end for end, w_decl in fildered_what])
-                print("CP2 %s %s %s : %s+%s %s | %s"%(def_art, word, g.base_word(word), word_start, word_end, repr(what), repr(art_is)))
-
-    return None
 
 if __name__ == "__main__":
 
@@ -477,7 +351,7 @@ if __name__ == "__main__":
     art_word_pairs_to_count = {}
     root_to_OneNoun = {}
     for word in read_words(sys.argv[1:]):
-        if g.base_word(word) in def_art_to_indexes:
+        if g.base_word(word) in gn.def_art_to_indexes:
             art_found = g.base_word(word)
             continue
         if art_found:
