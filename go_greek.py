@@ -48,6 +48,11 @@
 #   S:  ς   ος  ι   α/ν
 #   P:  ες  ων  σι  ας  ες
 
+
+# see _noun_stems
+# see _vowel_contract
+
+
 _morph_do_long_alpha = False
 
 
@@ -219,13 +224,16 @@ def translate_morph(word, i, f, t):
     if j != -1:
         return word[:i] + add_morph(let, t[j]) + word[i+1:]
 
-def base_let(let):
+def base_let(let, sigma=False):
     """remove any morphs"""
-    return _vowels_to_base.get(let, let)
+    let = _vowels_to_base.get(let, let)
+    if sigma and let == 'ς':
+        let = 'σ'
+    return let
 
-def base_word(word):
+def base_word(word, sigma=False):
     return "".join((
-        base_let(let)
+        base_let(let, sigma)
         for let in word))
 
 def all_greek_letters(word):
@@ -379,15 +387,15 @@ _noun_stems = {
                 'N': ".",
                 'V': ".",
                 'A': ".ν",
-                'G': ".ς",
+                'G': ".σ",
                 'D': "i",
             },
             'P': {
                 'N': "αι",
                 'V': "αι",
-                'A': "ᾱς",
+                'A': "ᾱσ",
                 'G': "ων",
-                'D': "αις",
+                'D': "αισ",
             },
             'D': {
                 'N': "ᾱ",
@@ -399,7 +407,7 @@ _noun_stems = {
         },
         'M': {
             'S': {
-                'N': ".ς",
+                'N': ".σ",
                 'V': ".",
                 'A': ".ν",
                 'G': "ου",
@@ -408,9 +416,9 @@ _noun_stems = {
             'P': {
                 'N': "αι",
                 'V': "αι",
-                'A': "ᾱς",
+                'A': "ᾱσ",
                 'G': "ων",
-                'D': "αις",
+                'D': "αισ",
             },
             'D': {
                 'N': "ᾱ",
@@ -428,7 +436,7 @@ _noun_stems = {
     '2': {
         'M': {
             'S': {
-                'N': ".ς",
+                'N': ".σ",
                 'G': ".υ",
                 'D': "ῳ",
                 'A': ".ν",
@@ -437,8 +445,8 @@ _noun_stems = {
             'P': {
                 'N': ".ι",
                 'G': "ων",
-                'D': ".ις",
-                'A': ".υς",
+                'D': ".ισ",
+                'A': ".υσ",
                 'V': ".ι",
             },
             'D': {
@@ -451,7 +459,7 @@ _noun_stems = {
         },
         'F': {
             'S': {
-                'N': ".ς", # no change
+                'N': ".σ", # no change
                 'G': ".υ",
                 'D': "ῳ",
                 'A': ".ν",
@@ -460,8 +468,8 @@ _noun_stems = {
             'P': {
                 'N': ".ι",
                 'G': "ων",
-                'D': ".ις",
-                'A': ".υς",
+                'D': ".ισ",
+                'A': ".υσ",
                 'V': ".ι",
             },
             'D': {
@@ -483,7 +491,7 @@ _noun_stems = {
             'P': {
                 'N': "α",
                 'G': "ων",
-                'D': ".ις",
+                'D': ".ισ",
                 'A': "α",
                 'V': "α",
             },
@@ -498,29 +506,42 @@ _noun_stems = {
     },
     # 3rd declension
     # consonants
-    # ending γ and σ merge into a ξ in the nominative singular and dative plural.
     '3': {
         '-': {
             'S': {
-                'N': "ς",               # ξς$ -> ξ
-                'G': "ος",              # ξv -> γv
-                'D': "ι",               # ξv -> γv
-                'A': "α",   # or ν      # ξv -> γv
-                'V': "",    # or ς
+                'N': "σ",
+                'G': "οσ",
+                'D': "ι",
+                'A': "α",   # or ν
+                'V': "",    # or σ
             },
             'D': {
-                'N': "ε",               # ξv -> γv
-                'G': "σιν",             # ξv -> γv
+                'N': "ε",
+                'G': "σιν",
                 'D': "σιν",
-                'A': "ε",               # ξv -> γv
-                'V': "ε",               # ξv -> γv
+                'A': "ε",
+                'V': "ε",
             },
             'P': {
-                'N': "ες",              # ξv -> γv
-                'G': "ων",              # ξv -> γv
-                'D': "σι",              # ξv -> γv
-                'A': "ας",              # ξv -> γv
-                'V': "ες",              # ξv -> γv
+                'N': "εσ",
+                'G': "ων",
+                'D': "σι",
+                'A': "ασ",
+                'V': "εσ",
+            },
+        },
+        'N': {
+            'S': {
+                'N': "",
+                'G': "οσ",
+                'D': "ι",
+                'A': "",   # or ν
+            },
+            'P': {
+                'N': "α",
+                'G': "ων",
+                'D': "σι",
+                'A': "α",
             },
         },
     },
@@ -571,21 +592,25 @@ _vowel_contract = {
 #    'ρου': 'ρος',
 }
 
-_labial = "πβφψ"
-_velar =  "κγχξ"
-_dental = "τδθ"
-_labial_velar = _labial + _velar 
+_labials = "πβφ"    # and ".σ" -> "ψ"
+_palatals = "κγχ"   # and ".σ" -> "ξ"
+_dentals = "τδθ"    # and ".σ" -> "σ"
+
+_stop_xform_consonants = dict(
+    list(zip(_labials, "ψψψ")) +
+    list(zip(_palatals, "ξξξ")) +
+    list(zip(_dentals, "...")))
+
+# preferred endings: ν, ρ, ς (sometimes ι or υ as semi-consonants)
+# note: πατηρ + ς = πατηρ (father; ρ + ς = ρ)
 
 def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
-    """
-    word - root word, no stem
-    """
     end = _noun_stems[decl][gen][num][cas]
 
     _dbg = None
     if do_dbg: _dbg = [(word + "-" + end, "start")]
 
-    b_word = base_word(word)
+    b_word = base_word(word, True)
     # replace α with η if not preceeded by ειρ
     # only for first declension, (genative|dative)-singluar
 #    if decl == '1' and num == 'S' and cas in ['G', 'D'] and b_word[-1] == 'α' and b_word[-2] not in ['ε', 'ι', 'ρ']:
@@ -594,28 +619,16 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
 #        if do_dbg: _dbg.append((word + "-" + end, "α->η"))
 
     if decl == '3':
-        last_let = b_word[-1]
-        if last_let in _labial:
-            category = "L"
-        elif last_let in _velar:
-            category = "V"
-        elif last_let in _dental:
-            category = "D"
-        else:
-            category = "?"
+        word = word + end
+        b_word = base_word(word)
 
-        if category == "L":
-            if (
-                    b_word[-1] == "ξ" and
-                    end[0] in "γς" and
-                    ((cas == "N" and gen == "S") or (cas == "D" and gen == "P"))):
-                word = word[:-1] + end
-            else:
-                word = word + end
-        else:
-            word = word + end
-        # TODO: show category
-        if do_dbg: _dbg.append((word, "combine-3"))
+        if b_word[-1] == 'σ':
+            replace = _stop_xform_consonants.get(b_word[-2], None)
+            if replace:
+                if replace == ".":
+                    replace = ""
+                word = word[:-2] + replace
+                if do_dbg: _dbg.append((word, "stop xform " + + replace))
     else:
         last_let = b_word[-1]
 
@@ -636,7 +649,7 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
                     if do_dbg: _dbg.append((word + "-" + end, "skip %s->%s"%(last_let, new_last_let)))
 
         # remove trailing sigma before applying the ending
-        if last_let == 'ς':
+        if last_let == 'σ':
             word = word[:-1]
 
         # apply the ending
@@ -657,10 +670,10 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
 
     b_word = base_word(word)
 
-    if b_word[-2:] == "νς":
+    if b_word[-2:] == "νσ":
         word = word[:-1]
         b_word = b_word[:-1]
-        if do_dbg: _dbg.append((word, "νς->ν"))
+        if do_dbg: _dbg.append((word, "νσ->ν"))
 
     i_last_v = len(word)-1
     # find last vowel
@@ -692,7 +705,7 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
                     if do_dbg: _dbg.append((word, "contract-3", find, replace))
 
             # try 2 letters ending at last vowel
-            # (if i_last_v > 2) for θεὸς and λαῷ
+            # (if i_last_v > 2) for θεὸσ and λαῷ
             if i_last_v > 2 and b_word[i_last_v-1] in _vowel_set:
                 find = b_word[i_last_v-1:i_last_v+1]
                 replace = _vowel_contract.get(find, None)
@@ -762,34 +775,6 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
                     word = word[:-1] + 'ῃ'
                     if do_dbg: _dbg.append((word, "DS(η)->iota.2"))
 
-    i = len(word)-1
-    # find last vowel
-    while i >= 0 and not b_word[i] in _vowel_set:
-        i -= 1
-    if i >= 0:
-        pass
-        # The first-declension genitive-plural always takes a circumflex on the last syllable
-#        if decl == '1' and cas == 'G' and num == 'P':
-#            word = word[:i] + add_morph(word[i], "~") + word[i+1:]
-#            if do_dbg: _dbg.append((word, "1GP->~"))
-
-# bad:[('ἅγιο-ς', 'start'), ('ἅγῶν', 'end: ιος -> ων')]
-# bad:[('ἥλιο-ς', 'start'), ('ἥλῶν', 'end: ιος -> ων')]
-# bad:[('δεξιὸ-ς', 'start'), ('δεξῶν', 'end: ιος -> ων')]
-# bad:[('κύριο-ς', 'start'), ('κύρῶν', 'end: ιος -> ων')]
-# bad:[('νυμφίο-ς', 'start'), ('νυμφῶν', 'end: ιος -> ων')]
-# bad:[('Ναζωραῖο-ς', 'start'), ('Ναζωραῶν', 'end: ιος -> ων')]
-# 
-# good:[('αἰτίο-ς', 'start'), ('αἰτῶν', 'end: ιος -> ων')]
-# good:[('λαλιό-ς', 'start'), ('λαλῶν', 'end: ιος -> ων')]
-# good:[('μαρτυρίο-ς', 'start'), ('μαρτυρῶν', 'end: ιος -> ων')]
-# 
-#    if cas == 'N' and num == 'S':
-#        if b_word[-3:] == 'ιος':
-#            word = word[:-3] + 'ῶν'
-#            b_word = b_word[:-3] + 'ων'
-#            if do_dbg: _dbg.append((word, "end: ιος -> ων"))
-
     # alphas at the end of the word have "long" mark
     # unless it is morphed already
     if _morph_do_long_alpha:
@@ -801,6 +786,10 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
                 word = word[:-2] + 'ᾱ' + word[-1]
                 if do_dbg: _dbg.append((word, "long-2"))
 
+    # set last sigma
+    if base_let(word[-1]) == 'σ':
+        word = word[:-1] + cp_morph('ς', word[-1])
+
     return (word, _dbg)
 
 # D1 M ends in ης ας
@@ -809,7 +798,7 @@ def _noun_inflect(word, decl, gen, num, cas, do_dbg=True):
 # D2 [MF]: ending is ος
 # D2 [N]: ending is ον
 #   2: [MFN]:[SPD]:[NAGDV] -> [.iα]α*
-# D3 consonants, note: ending γ and σ merge into a ξ in the nominative singular and dative plural.
+# D3 consonants
 #   3: [-]:[SPD]:[NAGDV] -> [.iα]α*
 def decl_gen(word, gen):
     """
@@ -872,7 +861,7 @@ def noun_inflect_all(word, gen):
     for gen in gens:
         words = {}
         answers.append((decl, gen, words))
-        for num in ('S', 'P', 'D'):
+        for num in ('S', 'P'): # TODO: 'D' removed, not for 3rd declension, not interesting
             num_words = words[num] = {}
             for cas in ('N', 'G', 'D', 'A'):
                 if word:

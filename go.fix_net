@@ -1,5 +1,7 @@
 #!/usr/local/bin/python3
 
+# Θ new weird cap theta
+
 import sys
 
 _net_chars = {
@@ -10,6 +12,7 @@ _net_chars = {
     "ύ": "ύ",
     "ή": "ή",
     "ώ": "ώ",
+    "θ": "Θ",
 }
 
 def ch(a, b):

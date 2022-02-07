@@ -2,7 +2,11 @@
 
 import sys
 
-payload = list((line.rstrip() for line in sys.stdin))
+if len(sys.argv) == 1:
+    fh = sys.stdin
+else:
+    fh = open(sys.argv[1])
+payload = list((line.rstrip() for line in fh))
 
 payload.sort()
 
