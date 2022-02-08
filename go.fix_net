@@ -3,23 +3,58 @@
 # Θ new weird cap theta
 
 import sys
+import go_greek as g
+
+ignore = set(['᾿', '῎', '῞', '῏', '῾'])
+is_ok = set(['·'])
 
 _net_chars = {
-    "ά": "ά",
-    "έ": "έ",
-    "ί": "ί",
-    "ό": "ό",
-    "ύ": "ύ",
-    "ή": "ή",
-    "ώ": "ώ",
-    "θ": "Θ",
+    # translate
+        ";": ";",
+
+        "ά": "ά",
+        "έ": "έ",
+        "ί": "ί",
+        "ό": "ό",
+        "ύ": "ύ",
+        "ή": "ή",
+        "ώ": "ώ",
+        "θ": "Θ",
+
+        "Ῥ": "Ρ",
+        "ΐ": "ΐ",
+        "ΰ": "ΰ",
+
+    # alter
+        # "\\:"
+        "ῢ": "ὺ",
+
+        # "/is"
+        "ᾔ": "ἤ",
+
+        # "/ir"
+        "ᾅ": "ἅ",
+
+        # "~is"
+        "ᾖ": "ἦ",
+
+        # "~ir"
+        "ᾗ": "ἧ",
+        "ᾧ": "ὦ",
 }
 
+weird = set()
 def ch(a, b):
-    if a == "᾿":
+    if a in ignore:
         return ""
-    return _net_chars.get(a, a)
+    c = _net_chars.get(a, a)
+    if c and c not in is_ok and c not in g._all_greek_letter_set:
+        if ord(c) > 128:
+            weird.add(c)
+    return c
 
+def convert_one(l):
+    return l
 if len(sys.argv) == 1:
     fh = sys.stdin
 else:
@@ -27,4 +62,8 @@ else:
 for line in fh:
     if line.strip():
         print("".join((ch(line[i], line[i+1]) for i in range(len(line)-1))))
+
+if weird:
+    print
+    print("weird: " + repr(weird))
 
