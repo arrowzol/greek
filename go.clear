@@ -1,12 +1,12 @@
 #!/usr/local/bin/python3
 
 import sys
-import go_greek as g
+import greek_letter as gl
 
 if len(sys.argv) == 1:
     fh = sys.stdin
 else:
     fh = open(sys.argv[1])
 for line in fh:
-    print("".join((g.base_let(let) for let in line.rstrip())))
+    print("".join((gl.base_let(let) for let in line.rstrip())))
 

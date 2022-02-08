@@ -60,6 +60,10 @@ _lower_morph_and_vowels = (
     ("~i",  "ᾷ    ῇῷ"),
     (" is", "ᾀ    ᾐᾠ"),
     (" ir", "ᾁ    ᾑᾡ"),
+    ("~is", "     ᾖ "),
+    ("~ir", "     ᾗᾧ"),
+    ("/is", "ᾄ    ᾔ "),
+    ("/ir", "ᾅ      "),
 
     (" :",  "  ϊ ϋ  "),
     ("/:",  "  ΐ ΰ  "),
@@ -68,11 +72,6 @@ _lower_morph_and_vowels = (
     (" S",  "ᾰ ῐ ῠ  "),
     (" L",  "ᾱ ῑ ῡ  "),
 #   ("L/",  "ᾱ́      "),
-#   ("~ir", "     ᾗᾧ"),
-#   ("~is", "     ᾖ "),
-#   ("/is", "     ᾔ "),
-#   ("/ir", "ᾅ      "),
-#   ("/ir", "ᾅ      "),
 #   ("\\:", "    ῢ  "),
 )
 
@@ -201,14 +200,14 @@ def base_word(word, sigma=False):
         base_let(let, sigma)
         for let in word))
 
-def all_greek_letters(word):
+def all_greek_letter(word):
     for let in word:
         if let in _all_greek_letter_set:
             continue
         return False
     return True
 
-def any_greek_letters(word):
+def any_greek_letter(word):
     for let in word:
         if not let in _all_greek_letter_set:
             continue

@@ -1,16 +1,16 @@
 #!/usr/local/bin/python3
 
-# Θ new weird cap theta
-
 import sys
-import go_greek as g
+import greek_letter as gl
+
 
 ignore = set(['᾿', '῎', '῞', '῏', '῾'])
 is_ok = set(['·'])
 
 _net_chars = {
-    # translate
+    # choose different char, same meaning
         ";": ";",
+        "’": "'",
 
         "ά": "ά",
         "έ": "έ",
@@ -19,28 +19,30 @@ _net_chars = {
         "ύ": "ύ",
         "ή": "ή",
         "ώ": "ώ",
-        "θ": "Θ",
 
-        "Ῥ": "Ρ",
         "ΐ": "ΐ",
         "ΰ": "ΰ",
 
-    # alter
+    # remove markings
+        # rough rho
+        "Ῥ": "Ρ",
+        "ῥ": "ρ",
+
         # "\\:"
         "ῢ": "ὺ",
 
         # "/is"
-        "ᾔ": "ἤ",
+#       "ᾔ": "ἤ",
 
         # "/ir"
-        "ᾅ": "ἅ",
+#       "ᾅ": "ἅ",
 
         # "~is"
-        "ᾖ": "ἦ",
+#       "ᾖ": "ἦ",
 
         # "~ir"
-        "ᾗ": "ἧ",
-        "ᾧ": "ὦ",
+#       "ᾗ": "ἧ",
+#       "ᾧ": "ὦ",
 }
 
 weird = set()
@@ -48,7 +50,7 @@ def ch(a, b):
     if a in ignore:
         return ""
     c = _net_chars.get(a, a)
-    if c and c not in is_ok and c not in g._all_greek_letter_set:
+    if c and c not in is_ok and c not in gl._all_greek_letter_set:
         if ord(c) > 128:
             weird.add(c)
     return c

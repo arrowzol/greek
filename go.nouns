@@ -1,7 +1,8 @@
 #!/usr/local/bin/python3
 
-import go_greek as g
-import go_greek_noun as gn
+import greek_letter as gl
+import greek_noun as gn
+import greek_dict as gd
 import sys
 
 DO_DECLS = "123"
@@ -51,7 +52,7 @@ def read_words(files, show_ch_vs=False):
                         yield ch + ":" + line[tail:head]
                     tail = head
 
-                if not let in g._all_greek_letter_set:
+                if not let in gl._all_greek_letter_set:
                     if head > tail:
                         yield line[tail:head]
                     if let != " ":
@@ -62,9 +63,9 @@ def read_words(files, show_ch_vs=False):
             yield "EOL"
         fh.close()
 
-_3_mf = [gn._noun_stems["3"]["-"][num][cas]
+_3_mf = [gn._noun_stems["3"]["-"][num][case]
     for num in "SP"
-    for cas in "NGDA"
+    for case in "NGDA"
     ]
 
 # look out for NS and DP, their endings start with a consonant and many changes
@@ -79,6 +80,7 @@ class OneNoun:
 
     def __init__(self, root_word, root_guess=False):
         self.root_word = root_word
+        self.dgnc = set()
         self.root_guess = root_guess
         self.unique_words = set()
         self.index_to_word = ["-"]*(2*3*4)
@@ -90,40 +92,45 @@ class OneNoun:
         self.cwp_to_base_collision_count = {}
         self.cwp_to_morph_collision_count = {}
 
-    def add_word(self, def_art, word, count):
-        b_word = g.base_word(word)
+    def add_word(self, word, dgnc, count):
+        i = OneNoun._idx2(dgnc)
+        b_word = gl.base_word(word)
         self.all_word_hits += count
         self.unique_words.add(b_word)
-        for i in gn.def_art_to_indexes[def_art]:
-            self.index_to_hits[i] += count
-            if self.index_to_word[i] == "-":
-                self.index_to_word[i] = word
-            else:
-                if self.index_to_word[i] != word:
-                    if self.index_to_word[i] > word:
-                        key = (self.index_to_word[i], word)
-                    else:
-                        key = (word, self.index_to_word[i])
-                    if b_word == g.base_word(self.index_to_word[i]):
-                        self.cwp_to_morph_collision_count[key] = \
-                            self.cwp_to_morph_collision_count.get(key, 0) + count
-                    else:
-                        self.cwp_to_base_collision_count[key] = \
-                            self.cwp_to_base_collision_count.get(key, 0) + count
+
+        self.index_to_hits[i] += count
+        if self.index_to_word[i] == "-":
+            self.index_to_word[i] = word
+        else:
+            if self.index_to_word[i] != word:
+                if self.index_to_word[i] > word:
+                    key = (i, self.index_to_word[i], word)
+                else:
+                    key = (i, word, self.index_to_word[i])
+                if b_word == gl.base_word(self.index_to_word[i]):
+                    self.cwp_to_morph_collision_count[key] = \
+                        self.cwp_to_morph_collision_count.get(key, 0) + count
+                else:
+                    self.cwp_to_base_collision_count[key] = \
+                        self.cwp_to_base_collision_count.get(key, 0) + count
 
     @staticmethod
     def _idx(sp, ngda, mfn):
         if type(sp) == str:
-            sp = "SP".index(sp)
+            sp = "SPN".index(sp)
         if type(ngda) == str:
             ngda = "NGDAV".index(ngda)
         if type(mfn) == str:
             mfn = "MFN".index(mfn)
         return (sp*4 + ngda)*3 + mfn
 
+    @staticmethod
+    def _idx2(dgnc):
+        return OneNoun._idx(dgnc[2], dgnc[3], dgnc[1])
+
     def derive_roots(self):
         mas_uniq_word_count = len(set((
-            g.base_word(word)
+            gl.base_word(word)
             for word in (self.index_to_word[OneNoun._idx(0, i, 0)] for i in range(8))
             if word != "-")))
         mas_case_count = sum((
@@ -135,7 +142,7 @@ class OneNoun:
             0 +4,                   3 +4]))
 
         fem_uniq_word_count = len(set((
-            g.base_word(word)
+            gl.base_word(word)
             for word in (self.index_to_word[OneNoun._idx(0, i, 1)] for i in range(8))
             if word != "-")))
         fem_case_count = sum((
@@ -159,14 +166,14 @@ class OneNoun:
                         (OneNoun._idx(sp, ngda, "F"), gn._noun_stems["1"]["F"][sp][ngda], sp+ngda)
                         for sp in "SP"
                         for ngda in "NGDA"))
-                if where != "SG" and word != "-" and stem[0] == "." and g.base_word(word).endswith(stem[1:])]
+                if where != "SG" and word != "-" and stem[0] == "." and gl.base_word(word).endswith(stem[1:])]
 
             if count_and_word_list:
                 count_and_word_list.sort(reverse=True)
                 word_f = count_and_word_list[0][1]
 
 #                if count_and_word_list[0][2] in ["PG", "PD"]:
-#                    b_word = g.base_word(word_f)
+#                    b_word = gl.base_word(word_f)
 #                    if b_word[-1] == "α":
 #                        word_f = word_f[:-1] + "η"
 #                    elif b_word[-1] == "η":
@@ -182,7 +189,7 @@ class OneNoun:
         if mas_count > 0 and mas_case_count >= 2:
             if True:
                 print("CHOICES:\n  " + "\n  ".join([
-                    repr((stem[0] == "." and g.base_word(word, True).endswith(stem[1:]), wgt(where)*hits, word, stem, where))
+                    repr((stem[0] == "." and gl.base_word(word, True).endswith(stem[1:]), wgt(where)*hits, word, stem, where))
                     for hits, word, stem, where in (
                         (self.index_to_hits[i], self.index_to_word[i], stem, where)
                         for i, stem, where in (
@@ -198,14 +205,14 @@ class OneNoun:
                         (OneNoun._idx(sp, ngda, "M"), gn._noun_stems["2"]["M"][sp][ngda], sp+ngda)
                         for sp in "SP"
                         for ngda in "NGDA"))
-                if word != "-" and stem[0] == "." and g.base_word(word, True).endswith(stem[1:])]
+                if word != "-" and stem[0] == "." and gl.base_word(word, True).endswith(stem[1:])]
 
             if count_and_word_list:
                 count_and_word_list.sort(reverse=True)
                 word_m = count_and_word_list[0][1]
 
                 # fix: assume plurals don't change their last letter to α
-                if g.base_let(word_m[-1]) == 'α':
+                if gl.base_let(word_m[-1]) == 'α':
                     count_and_word_list = [
                         (wgt(where)*hits, str_rm(word, len(stem)-1), where)
                         for hits, word, stem, where in (
@@ -213,7 +220,7 @@ class OneNoun:
                             for i, stem, where in (
                                 (OneNoun._idx("S", ngda, "M"), gn._noun_stems["2"]["M"]["S"][ngda], "S"+ngda)
                                 for ngda in "NGDA"))
-                        if word != "-" and stem[0] == "." and g.base_word(word, True).endswith(stem[1:])]
+                        if word != "-" and stem[0] == "." and gl.base_word(word, True).endswith(stem[1:])]
                     if count_and_word_list:
                         count_and_word_list.sort(reverse=True)
                         word_m = count_and_word_list[0][1]
@@ -241,13 +248,13 @@ class OneNoun:
                     gen_i = 1
 
                 x1 = list(zip(_3_mf, self.index_to_word[gen_i::3], range(8)))
-                x2 = [(w, e) for e, w, i in x1 if e != '-' and g.base_word(w).endswith(e)]
-                x3 = [g.base_word(w[:-len(e)]) for w, e in x2]
+                x2 = [(w, e) for e, w, i in x1 if e != '-' and gl.base_word(w).endswith(e)]
+                x3 = [gl.base_word(w[:-len(e)]) for w, e in x2]
                 count_and_word_list = [
                     (self.index_to_hits[i*3 + gen_i], w[:-len(e)])
                     for e, w, i
                     in zip(_3_mf, self.index_to_word[gen_i::3], range(8))
-                    if e != '-' and g.base_word(w).endswith(e)]
+                    if e != '-' and gl.base_word(w).endswith(e)]
                 if count_and_word_list:
                     count_and_word_list.sort(reverse=True)
                     word = count_and_word_list[0][1]
@@ -274,7 +281,7 @@ class OneNoun:
         elif calc == "":
             answer = "(?)" + found
         else:
-            if g.base_word(calc) == g.base_word(found):
+            if gl.base_word(calc) == gl.base_word(found):
                 self._soft_error += 1
                 answer = "(x)" + calc + "->" + found
                 self._dbg_list.append(("W", _dbg))
@@ -291,7 +298,7 @@ class OneNoun:
             return False
 
         print("==================== decl:%s %s:%s %s %s"%(
-            decl, gen1, gen2, word, g.base_word(word)))
+            decl, gen1, gen2, word, gl.base_word(word)))
         print("hits:%d"%(self.all_word_hits))
         if self.root_guess:
             print("ROOT GUESS")
@@ -324,7 +331,7 @@ class OneNoun:
             num_i += 1
 
         print("----------\nALL REAL: " + ",".join((
-            g.base_word(word)
+            gl.base_word(word)
             for word in (
                 self.index_to_word[OneNoun._idx(sp, ngad, gen1)]
                 for sp in range(2)
@@ -336,50 +343,58 @@ class OneNoun:
 
         return (self._match, self._soft_error)
 
-def derive_root(def_art, word, existing_roots=None):
+def derive_root(defart, word, existing_roots=None):
     if True:
-        return gn.derive_noun_root(def_art, word, existing_roots)
+        return gn.derive_noun_root(defart, word, existing_roots)
 
     # old style
-    syllables = g.syllables(word)
-    return word[:len(syllables[-1])]
+    syllables = gl.syllables(word)
+    return (word[:len(syllables[-1])], "????")
 
 if __name__ == "__main__":
 
     # create list of OneNoun objects from input files
-    art_found = None
-    art_word_pairs_to_count = {}
+    defart_found = None
+    defart_word_to_count = {}
     root_to_OneNoun = {}
     for word in read_words(sys.argv[1:]):
-        if g.base_word(word) in gn.def_art_to_indexes:
-            art_found = g.base_word(word)
+        if gl.base_word(word) in gn.defart_to_indexes:
+            defart_found = gl.base_word(word)
             continue
-        if art_found:
-            key = (art_found, word)
-            art_word_pairs_to_count[key] = art_word_pairs_to_count.get(key, 0)+1
-            art_found = None
+        if defart_found:
+            if gl.all_greek_letter(word):
+                key = (defart_found, word)
+                defart_word_to_count[key] = defart_word_to_count.get(key, 0)+1
+            defart_found = None
 
     second_pass = []
-    for def_art_word_pair, count in art_word_pairs_to_count.items():
-        def_art, word = def_art_word_pair
-        root_word = derive_root(def_art, word)
-
-        if root_word:
-            root_word = g.base_word(root_word)
-            if not root_word in root_to_OneNoun:
-                root_to_OneNoun[root_word] = OneNoun(root_word)
-            root_to_OneNoun[root_word].add_word(def_art, word, count)
+    for defart_word, count in defart_word_to_count.items():
+        defart, word = defart_word
+        dw = gd.lookup(word)
+        if dw:
+            print("CP5: found %s %s"%(word, gl.base_word(word)))
         else:
-            second_pass.append((def_art, word, count))
+            print("CP5: not found %s %s"%(word, gl.base_word(word)))
 
-    for def_art, word, count in second_pass:
-        root_word = derive_root(def_art, word, root_to_OneNoun)
+        root_word, dgnc = derive_root(defart, word)
 
         if root_word:
-            root_word = g.base_word(root_word)
+            print("%s %s"%(root_word, dgnc))
+            b_root_word = gl.base_word(root_word)
+            if b_root_word not in root_to_OneNoun:
+                root_to_OneNoun[b_root_word] = OneNoun(root_word)
+            root_to_OneNoun[b_root_word].add_word(word, dgnc, count)
+        else:
+            second_pass.append((defart, word, count))
+
+    for defart, word, count in second_pass:
+        root_word, dgnc = derive_root(defart, word, root_to_OneNoun)
+
+        if root_word:
+            root_word = gl.base_word(root_word)
             if not root_word in root_to_OneNoun:
                 root_to_OneNoun[root_word] = OneNoun(root_word, True)
-            root_to_OneNoun[root_word].add_word(def_art, word, count)
+            root_to_OneNoun[root_word].add_word(word, dgnc, count)
 
     show = 0
     not_show = 0
@@ -391,7 +406,7 @@ if __name__ == "__main__":
 
     noun_roots_list = list(root_to_OneNoun.values())
 #    noun_roots_list.sort(key=lambda r:"%03d%s"%(999-r.all_word_hits, r.root_word))
-    noun_roots_list.sort(key=lambda r:g.base_word(r.root_word))
+    noun_roots_list.sort(key=lambda r:gl.base_word(r.root_word))
 
     for noun_root in noun_roots_list:
         if noun_root.cwp_to_base_collision_count:
@@ -403,11 +418,11 @@ if __name__ == "__main__":
             single_word += 1
         else:
             # guess masculine and femenine forms of this noun
-            words_and_gen = noun_root.derive_roots()
-            if not words_and_gen:
+            listof_word_gen = noun_root.derive_roots()
+            if not listof_word_gen:
                 not_show += 1
             else:
-                for word, gen1 in words_and_gen:
+                for word, gen1 in listof_word_gen:
                     if noun_root.show_it(word, gen1):
                         wd_match += noun_root._match
                         wd_soft_error += noun_root._soft_error
