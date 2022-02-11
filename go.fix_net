@@ -8,10 +8,11 @@ ignore = set(['᾿', '῎', '῞', '῏', '῾'])
 is_ok = set(['·'])
 
 _net_chars = {
-    # choose different char, same meaning
+    # choose different char, same meaning, different "font"
         ";": ";",
         "’": "'",
 
+        # proper to types by keyboard
         "ά": "ά",
         "έ": "έ",
         "ί": "ί",
@@ -20,29 +21,24 @@ _net_chars = {
         "ή": "ή",
         "ώ": "ώ",
 
+        "Ά": "Ά",
+        "Έ": "Έ",
+        "Ί": "Ί",
+        "Ό": "Ό",
+        "Ύ": "Ύ",
+        "Ή": "Ή",
+        "Ώ": "Ώ",
+
         "ΐ": "ΐ",
         "ΰ": "ΰ",
 
     # remove markings
+        "ᾱ́": "ά",
+
         # rough rho
         "Ῥ": "Ρ",
         "ῥ": "ρ",
-
-        # "\\:"
-        "ῢ": "ὺ",
-
-        # "/is"
-#       "ᾔ": "ἤ",
-
-        # "/ir"
-#       "ᾅ": "ἅ",
-
-        # "~is"
-#       "ᾖ": "ἦ",
-
-        # "~ir"
-#       "ᾗ": "ἧ",
-#       "ᾧ": "ὦ",
+        "ῤ": "ρ",
 }
 
 weird = set()

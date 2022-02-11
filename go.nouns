@@ -343,9 +343,9 @@ class OneNoun:
 
         return (self._match, self._soft_error)
 
-def derive_root(defart, word, existing_roots=None):
+def derive_root(article, word, existing_roots=None):
     if True:
-        return gn.derive_noun_root(defart, word, existing_roots)
+        return gn.derive_noun_root(article, word, existing_roots)
 
     # old style
     syllables = gl.syllables(word)
@@ -354,29 +354,29 @@ def derive_root(defart, word, existing_roots=None):
 if __name__ == "__main__":
 
     # create list of OneNoun objects from input files
-    defart_found = None
-    defart_word_to_count = {}
+    article_found = None
+    article_word_to_count = {}
     root_to_OneNoun = {}
     for word in read_words(sys.argv[1:]):
-        if gl.base_word(word) in gn.defart_to_indexes:
-            defart_found = gl.base_word(word)
+        if gl.base_word(word) in gn.article_to_indexes:
+            article_found = gl.base_word(word)
             continue
-        if defart_found:
+        if article_found:
             if gl.all_greek_letter(word):
-                key = (defart_found, word)
-                defart_word_to_count[key] = defart_word_to_count.get(key, 0)+1
-            defart_found = None
+                key = (article_found, word)
+                article_word_to_count[key] = article_word_to_count.get(key, 0)+1
+            article_found = None
 
     second_pass = []
-    for defart_word, count in defart_word_to_count.items():
-        defart, word = defart_word
+    for article_word, count in article_word_to_count.items():
+        article, word = article_word
         dw = gd.lookup(word)
         if dw:
             print("CP5: found %s %s"%(word, gl.base_word(word)))
         else:
             print("CP5: not found %s %s"%(word, gl.base_word(word)))
 
-        root_word, dgnc = derive_root(defart, word)
+        root_word, dgnc = derive_root(article, word)
 
         if root_word:
             print("%s %s"%(root_word, dgnc))
@@ -385,10 +385,10 @@ if __name__ == "__main__":
                 root_to_OneNoun[b_root_word] = OneNoun(root_word)
             root_to_OneNoun[b_root_word].add_word(word, dgnc, count)
         else:
-            second_pass.append((defart, word, count))
+            second_pass.append((article, word, count))
 
-    for defart, word, count in second_pass:
-        root_word, dgnc = derive_root(defart, word, root_to_OneNoun)
+    for article, word, count in second_pass:
+        root_word, dgnc = derive_root(article, word, root_to_OneNoun)
 
         if root_word:
             root_word = gl.base_word(root_word)

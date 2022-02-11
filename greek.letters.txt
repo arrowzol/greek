@@ -34,37 +34,38 @@ for numbers
     Ϲ   ϲ - lunate sigma    opt-S
 
 consonants: -βγδ-ζ-θ-κλμνξ-πρστ-φχψ-
-vowels: αεοιυηω
-    short sound: ᾰ[εο]ῐῠ
-    long sound : ᾱ[ηω]ῑῡ
+vowels: α[εη]ι[οω]υ
+    short sound: ᾰεῐοῠ
+    long sound : ᾱηῑωῡ
 
-accents:
+accents (keyboard line of ";[]" imagined as "/~\" accents):
     ;       άέίόύήώ     acute (/)
     ]       ὰὲὶὸὺὴὼ     grave (\)
     [       ᾶ-ῖ-ῦῆῶ     circumflex (~)
-smooth breathing marks:
+smooth breathing marks (keyboard ' looks like smooth mark):
     '       ἀἐἰὀὐἠὠ     smooth (s)
     /       ἄἔἴὄὔἤὤ     smooth + acute
     =       ἂἒἲὂὒἢὢ     smooth + grave
     -       ἆ-ἶ-ὖἦὦ     smooth + circumflex
-rough breathing marks:
+rough breathing marks (keyboard shift-smooth):
     "       ἁἑἱὁὑἡὡ     rough (r)
     ?       ἅἕἵὅὕἥὥ     rough + acute
     +       ἃἓἳὃὓἣὣ     rough + grave
     _       ἇ-ἷ-ὗἧὧ     rough + circumflex
-iota subscripts:
-    {       ᾳ----ῃῳ     iota subscript (i)
-    {;      ᾴ----ῄῴ     iota + acute
-    {]      ᾲ----ῂῲ     iota + grave
-    {[      ᾷ----ῇῷ     iota + circumflex
-    {'      ᾀ----ᾐᾠ     iota + smooth
-    {"      ᾁ----ῇῷ     iota + rough
+iota subscripts (keyboard-i for "iota"):
+    o-i     ᾳ----ῃῳ     iota subscript
+    o-i;    ᾴ----ῄῴ     iota + acute
+    o-i]    ᾲ----ῂῲ     iota + grave
+    o-i[    ᾷ----ῇῷ     iota + circumflex
+    o-i'    ᾀ----ᾐᾠ     iota + smooth
+    o-i"    ᾁ----ῇῷ     iota + rough
+long and short vowels (keyboard-l for "long", no-shift/shift for short/long):
+    o-l     ᾰ-ῐ-ῠ--     short vowels (S)
+    s-o-l   ᾱ-ῑ-ῡ--     long vowels (L)
+            ᾱ́-?-?--
 vowel stuff:
     :       --ϊ-ϋ--     "double dots"
     W       --ΐ-ΰ--     "double dots" + acute
-    o-l     ᾰ-ῐ-ῠ--     short vowels (S), keyboard-l for "long"
-    s-o-l   ᾱ-ῑ-ῡ--     long vowels (L), keyboard-l for "long"
-            ᾱ́
 
 punctuation (modern):
     ,   break a clause
@@ -74,7 +75,9 @@ punctuation (modern):
 
 diphthongs:
     αι  - AI aisle
+    ᾱι  - ??? (written ᾳ)
     ει  - AI wait
+    ηι  - ??? (written ῃ)
     οι  - OI oil
     αυ  - OW cow
     ευ  - EU feud

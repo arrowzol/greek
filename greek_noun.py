@@ -58,7 +58,7 @@ _guess_alpha_eta_omicron = True
 # articles
 ####################
 
-defart_base = (
+article_base = (
 # singular --------------
 #   mas     fem     neu
     "ο",    "η",    "το",       # nominative
@@ -72,11 +72,11 @@ defart_base = (
     "τοις", "ταις", "τοις",     # dative
     "τους", "τας",  "τα")       # accusative
 
-defart_to_indexes = {}
-for defart, index in zip(defart_base, range(2*3*4)):
-    if not defart in defart_to_indexes:
-        defart_to_indexes[defart] = []
-    defart_to_indexes[defart].append(index)
+article_to_indexes = {}
+for article, index in zip(article_base, range(2*3*4)):
+    if not article in article_to_indexes:
+        article_to_indexes[article] = []
+    article_to_indexes[article].append(index)
 
 
 ####################
@@ -668,11 +668,11 @@ for decl, gens, end in _root_ends:
                     listof_end_dgnc.append((end, decl + gen + num + case))
 
 # DGNC - (declension, gender, number, case)
-def derive_noun_root(defart, word, existing_roots=None):
+def derive_noun_root(article, word, existing_roots=None):
     b_word = gl.base_word(word)
     art_is = set((
         "MFN"[i%3] + "SP"[(i//12)] + "NGDA"[(i//3)%4]
-        for i in defart_to_indexes[defart]))
+        for i in article_to_indexes[article]))
 
     for i in range(4,0,-1):
         word_end = b_word[-i:]
@@ -688,7 +688,7 @@ def derive_noun_root(defart, word, existing_roots=None):
             if len(all_ends) == 1:
                 root = word_start + filtered_end_dgnc[0][0]
                 dgnc = filtered_end_dgnc[0][1]
-                print("CP1 (%s, %s) (%s %s %s) %s %s %s"%(dgnc, root, defart, b_word, word, repr(art_is), repr(listof_end_dgnc), repr(all_ends)))
+                print("CP1 (%s, %s) (%s %s %s) %s %s %s"%(dgnc, root, article, b_word, word, repr(art_is), repr(listof_end_dgnc), repr(all_ends)))
                 return (root, dgnc)
 
             if existing_roots:
@@ -710,11 +710,11 @@ def derive_noun_root(defart, word, existing_roots=None):
 
                             root = word_start + filtered_end_dgnc[0][0]
                             dgnc = filtered_end_dgnc[0][1]
-                            print("CP2 (%s %s) (%s %s %s) %s %s %s"%(dgnc, root, defart, b_word, word, repr(art_is), repr(listof_end_dgnc), repr(all_ends)))
+                            print("CP2 (%s %s) (%s %s %s) %s %s %s"%(dgnc, root, article, b_word, word, repr(art_is), repr(listof_end_dgnc), repr(all_ends)))
                             return (root, dgnc)
 
                     all_ends = set([end for end, w_decl in filtered_end_dgnc])
-                print("CP3 (%s %s %s) %s+%s %s | %s"%(defart, gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(art_is)))
+                print("CP3 (%s %s %s) %s+%s %s | %s"%(article, gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(art_is)))
 
     return (None, None)
 

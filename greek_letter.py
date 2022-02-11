@@ -1,79 +1,170 @@
 #!/usr/local/bin/python3
 
 ####################
-# letters
+# letters, vowels
 ####################
+# vowels: α[εη]ι[οω]υ
+#     short sound: ᾰεῐοῠ
+#     long sound : ᾱηῑωῡ
 
 _upper_vowels = "ΑΕΙΟΥΗΩ"
+_lower_vowels = "αειουηω"
+
+_diphthongs = set((
+    "αι",   # "eye"
+    "ᾱι",   # "ahh", written ᾳ
+    "ει",   # "aah"
+    "ηι",   # "ay", written ῃ
+    "οι",   # "ay"
+    "ωι",   # "oh", written ῳ
+    "υι",   # "ay"
+
+    "αυ",   # "eye"
+    "ευ",   # "eye"
+    "ου",   # "eye"
+    ))
+
+####################
+# letters, consonants
+####################
+# consonants: -βγδ-ζ-θ-κλμνξ-πρστ-φχψ-
+
 _upper_consonants = "ΒΓΔΖΘΚΛΜΝΞΠΡΣΤΦΧΨ"
+_lower_consonants = "βγδζθκλμνξπρστφχψ"
+
+# vowels by sound type
+_labials =  "πβφ"   # and ".σ" -> "ψ" # which are formed with the lips
+_dentals =  "τδθ"   # and ".σ" -> "σ" # which are formed with the tongue and teeth
+_palatals = "κγχ"   # and ".σ" -> "ξ" # which are formed with the tongue and palate
+
+# consonants by sound type
+_voiced = "πτκ"     # STOP consonants: the airflow or breathing passage must be momentarily closed
+_unvoiced = "βδγ"   # VOICED STOPS: pronouncing "πτκ" while vibrating your vocal cords
+_aspirated = "φθχ"  # a breathing or “h” sound to the consonants
+_nasal = ["μ", "ν", "γγ"]
+_liquid = "λρ"
+_zeta = "ζ"
+
+
+####################
+# morphs: accents, breathing marks, sort/long vowels, ...
+####################
+
+# breathing marks:
+#   breathing marks are only placed on the first vowel or diphthong (on the second letter) in a word, or ρ if it is the first letter of a word.
+#       a smooth breathing mark means inticates there is no aspiration "h" sound to start the word.
+#       a rough breathing mark means inticates there is an aspiration "h" sound to start the word.
+#   if ρ is the first letter of a word it is always aspirated.
+#
+# accents are applied only to any of the last three syllables of a word.
+#   names of the last three syllables:
+#       ultima: last
+#       penult: 2nd last
+#       antepenult: 3rd last
+#
+# accents:
+#   long vowels mean to sing them for two beats
+#       ᾱ -> αα     ῑ -> ιι     ῡ -> υυ     η -> εε     ω -> οο
+#   accute (/) means pitch up when singing
+#       αά -> ά     ιί -> ί     υύ -> ύῦ    εέ -> ή     οό -> ώ
+#   grave (\) means no pitch up, and is only applied to ultima when another word follows the word being accented.
+#       because a pitch up was unpronounced if another word followed in the sentence.
+#   circumflex (~) means up then down, so that (/\) on "two letters", long vowels or diphthongs
+#       άὰ -> ᾶ     ίὶ -> ῖ     ύὺ -> ῦ     έὲ -> ῆ     όὸ -> ῶ
+#
 
 _upper_morph_and_vowels = (
-    ("/ ",  "ΆΈΊΌΎΉΏ"),
-    ("\\ ", "ᾺῈῚῸῪῊῺ"),
+    # accents (acute, grave, circumflex)
+    (r"/ ",  "ΆΈΊΌΎΉΏ"), # ΆΈΊΌΎΉΏ
+    (r"\ ",  "ᾺῈῚῸῪῊῺ"),
     (None, ""),
-    (" s",  "ἈἘἸὈ ἨὨ"),
-    ("/s",  "ἌἜἼὌ ἬὬ"),
-    ("\\s", "ἊἚἺὊ ἪὪ"),
-    ("~s",  "Ἆ Ἶ  ἮὮ"),
-    (" r",  "ἉἙἹὉὙἩὩ"),
-    ("/r",  "ἍἝἽὍὝἭὭ"),
-    ("\\r", "ἋἛἻὋὛἫὫ"),
-    ("~r",  "Ἇ Ἷ ὟἯὯ"),
-    (" i",  "ᾼ    ῌῼ"),
-    (None, ""),
-    (None, ""),
-    (None, ""),
-    (" is", "ᾈ    ᾘᾨ"),
-    (" ir", "ᾉ      "),
-    (" :",  "  Ϊ Ϋ  "),
-    (None, ""),
-    (" S",  "Ᾰ Ῐ Ῠ  "),
-    (" L",  "Ᾱ Ῑ Ῡ  "),
-)
 
-_lower_vowels = "αειουηω"
-_lower_vowel_set = set(_lower_vowels)
-_lower_consonants = "βγδζθκλμνξπρστφχψ"
+    # breathing mark, smooth
+    (r" s",  "ἈἘἸὈ ἨὨ"),
+    (r"/s",  "ἌἜἼὌ ἬὬ"),
+    (r"\s",  "ἊἚἺὊ ἪὪ"),
+    (r"~s",  "Ἆ Ἶ  ἮὮ"),
+
+    # breathing mark, rough
+    (r" r",  "ἉἙἹὉὙἩὩ"),
+    (r"/r",  "ἍἝἽὍὝἭὭ"),
+    (r"\r",  "ἋἛἻὋὛἫὫ"),
+    (r"~r",  "Ἇ Ἷ ὟἯὯ"),
+
+    # iota subscript
+    (r" i",  "ᾼ    ῌῼ"),
+    (None, ""),
+    (None, ""),
+    (None, ""),
+
+    # iota subscript with breathing marks
+    (r" is", "ᾈ    ᾘᾨ"),
+    (r" ir", "ᾉ    ᾙᾩ"),
+    (r"/is", "ᾌ    ᾜᾬ"),
+    (r"/ir", "ᾍ    ᾝᾭ"),
+    (r"\is", "ᾊ    ᾚᾪ"),
+    (r"\ir", "ᾋ    ᾛᾫ"),
+    (r"~is", "ᾎ    ᾞᾮ"),
+    (r"~ir", "ᾏ    ᾟᾯ"),
+
+    # short and long vowel
+    (r" S",  "Ᾰ Ῐ Ῠ  "),
+    (r" L",  "Ᾱ Ῑ Ῡ  "),
+
+    # ???
+    (r" :",  "  Ϊ Ϋ  "),
+    (None, ""),
+    (None, ""),
+    (None, ""),
+)
 
 _lower_morph_and_vowels = (
     # accents (acute, grave, circumflex)
-    ("/ ",  "άέίόύήώ"),
-    ("\\ ", "ὰὲὶὸὺὴὼ"),
-    ("~ ",  "ᾶ ῖ ῦῆῶ"),
+    (r"/ ",  "άέίόύήώ"), # άέίόύήώ
+    (r"\ ",  "ὰὲὶὸὺὴὼ"),
+    (r"~ ",  "ᾶ ῖ ῦῆῶ"),
 
     # breathing mark, smooth
-    (" s",  "ἀἐἰὀὐἠὠ"),
-    ("/s",  "ἄἔἴὄὔἤὤ"),
-    ("\\s", "ἂἒἲὂὒἢὢ"),
-    ("~s",  "ἆ ἶ ὖἦὦ"),
+    (r" s",  "ἀἐἰὀὐἠὠ"),
+    (r"/s",  "ἄἔἴὄὔἤὤ"),
+    (r"\s",  "ἂἒἲὂὒἢὢ"),
+    (r"~s",  "ἆ ἶ ὖἦὦ"),
 
     # breathing mark, rough
-    (" r",  "ἁἑἱὁὑἡὡ"),
-    ("/r",  "ἅἕἵὅὕἥὥ"),
-    ("\\r", "ἃἓἳὃὓἣὣ"),
-    ("~r",  "ἇ ἷ ὗἧὧ"),
+    (r" r",  "ἁἑἱὁὑἡὡ"),
+    (r"/r",  "ἅἕἵὅὕἥὥ"),
+    (r"\r",  "ἃἓἳὃὓἣὣ"),
+    (r"~r",  "ἇ ἷ ὗἧὧ"),
 
     # iota subscript
-    (" i",  "ᾳ    ῃῳ"),
-    ("/i",  "ᾴ    ῄῴ"),
-    ("\\i", "ᾲ    ῂῲ"),
-    ("~i",  "ᾷ    ῇῷ"),
-    (" is", "ᾀ    ᾐᾠ"),
-    (" ir", "ᾁ    ᾑᾡ"),
-    ("~is", "     ᾖ "),
-    ("~ir", "     ᾗᾧ"),
-    ("/is", "ᾄ    ᾔ "),
-    ("/ir", "ᾅ      "),
+    (r" i",  "ᾳ    ῃῳ"),
+    (r"/i",  "ᾴ    ῄῴ"),
+    (r"\i",  "ᾲ    ῂῲ"),
+    (r"~i",  "ᾷ    ῇῷ"),
 
-    (" :",  "  ϊ ϋ  "),
-    ("/:",  "  ΐ ΰ  "),
+    # iota subscript with breathing marks
+    (r" is", "ᾀ    ᾐᾠ"),
+    (r" ir", "ᾁ    ᾑᾡ"),
+    (r"/is", "ᾄ    ᾔᾤ"),
+    (r"/ir", "ᾅ    ᾕᾥ"),
+    (r"\is", "ᾂ    ᾒᾢ"),
+    (r"\ir", "ᾃ    ᾓᾣ"),
+    (r"~is", "ᾆ    ᾖᾦ"),
+    (r"~ir", "ᾇ    ᾗᾧ"),
 
     # short and long vowel
-    (" S",  "ᾰ ῐ ῠ  "),
-    (" L",  "ᾱ ῑ ῡ  "),
-#   ("L/",  "ᾱ́      "),
-#   ("\\:", "    ῢ  "),
+    (r" S",  "ᾰ ῐ ῠ  "),
+    (r" L",  "ᾱ ῑ ῡ  "),
+#   (r"/L",  "ᾱ́      "),
+
+    # ???
+    (r" :",  "  ϊ ϋ  "),
+    (r"/:",  "  ΐ ΰ  "), # ΐ ΰ
+    (r"\:",  "  ῒ ῢ  "),
+    (r"~:",  "  ῗ ῧ  "),
 )
+
+_lower_vowel_set = set(_lower_vowels)
 
 _upper_to_lower = dict(zip(_upper_vowels, _lower_vowels))
 _upper_to_lower.update(zip(_upper_consonants, _lower_consonants))
@@ -86,24 +177,13 @@ _upper_to_lower.update(
         for u2, l2 in z
         if u2 != " " and l2 != " "))
 
-_all_greek_letter_set = set(
-    _lower_vowels +
+
+_all_greek_letter_set = set(_lower_vowels +
     _lower_consonants + "ς" +
     "".join((
         vowels.replace(" ", "")
         for morph, vowels in _lower_morph_and_vowels)) +
     "".join(_upper_to_lower.keys()))
-
-
-_vowel_and_morphed_vowels = (
-    ("α", "άὰᾶἀἄἂἆἁἅἃἇᾳᾴᾲᾷᾀᾁᾰᾱ"),
-    ("ε", "έὲἐἔἒἑἕἓ"),
-    ("ι", "ίὶῖἰἴἲἶἱἵἳἷϊΐῐῑ"),
-    ("ο", "όὸὀὄὂὁὅὃ"),
-    ("υ", "ύὺῦὐὔὒὖὑὕὓὗϋΰῠῡ"),
-    ("η", "ήὴῆἠἤἢἦἡἥἣἧῃῄῂῇᾐ"),
-    ("ω", "ώὼῶὠὤὢὦὡὥὣὧῳῴῲῷᾠ"),
-)
 
 _vowels_to_base = dict(
     ((morphed_vowel, vowel)
@@ -233,21 +313,45 @@ def greek_strip(word):
 
 
 ####################
-# syllables
+# contractions
 ####################
 
-# note: accents go on the last character of the diphthong
-# [αεου][ιυ]
-_diphthongs = set((
-    "αι",
-    "ει",
-    "οι",
-    "υι",
+# contracting the vowels (α, ε, ο) and accents:
+#   resulting vowel or diphthong is long
+#   examples:
+#       ά + ὲ = ᾶ	έ + ὰ = ῆ	ό + ὰ = ῶ
+#       ά + ὸ = ῶ	έ + ὸ = οῦ	ό + ὲ = οῦ
+#       α + έ = ά	ε + ά = ή	ο + ά = ώ
+#       α + ό = ώ	ε + ό = ού	ο + έ = ού
 
-    "αυ",
-    "ευ",
-    "ου",
-    ))
+# url: https://ancientgreek.pressbooks.com/chapter/1/
+# TODO: remove from greek_noun.py, when this is correct
+_vowel_contract = {
+    'αα': 'ᾱ',
+    'εα': 'η', # changed
+    'οα': 'ω', # changed
+
+    'αε': 'ᾱ',
+    'εε': 'ει',
+    'οε': 'ον',
+
+    'αο': 'ω',
+    'εο': 'ον',
+    'οο': 'ον',
+}
+
+# elision:
+#   when a word ends in a vowel and the next word starts with a vowel
+#       then the vowel at the end of the word is removed
+# movable nu:
+#   if a word ends in σι and the next word starts with a vowel, σι -> σιν
+
+def contract(word, elision=False):
+    pass
+
+####################
+# syllables
+####################
 
 # TODO: incomplete, consonant clusters not understood
 _consonant_cluster = set((
@@ -307,4 +411,57 @@ def syllables(word):
         else:
             syls.append(word[index1:])
     return syls
+
+def dump_unicode_ranges():
+        fh=open("lets2", "bw")
+        # cc 80 : add \
+        # cc 81 : add /
+        # cc 82 : add ^
+        # cc 83 : add ~
+        # cc 84 : add long vowel
+        # cc 85 : add "big" long vowel
+        # cc 86 : add short vowel
+        # cc 87 : add one dot over
+        # cc 88 : add two dots over
+        # cc 89 : add smooth
+        # cc 8a : add circle
+        # cc 8b : add //
+        # cc 8c : add v over
+        # cc 8d : add | over
+        # cc 8e : add || over
+        # cc 8f : add \\ over
+        # ... lots of weird stuff
+        for j in range(0x80, 0xc0):
+            for i in range(0xb0, 0xbd):
+                fh.write(("e1 be %2x + cc %2x = "%(i, j)).encode())
+                fh.write(bytes([0xe1, 0xbe, i, 0x20, 0xe1, 0xbe, i, 0xcc, j, ord('\n')]))
+        fh.write("---\n".encode())
+        for i in range(0x86, 0xc0):
+            fh.write(("ce %2x = "%(i)).encode())
+            fh.write(bytes([0xce, i, ord('\n')]))
+        for i in range(0x80, 0x90):
+            fh.write(("cf %2x = "%(i)).encode())
+            fh.write(bytes([0xcf, i, ord('\n')]))
+        for i in range(0x80, 0xc0):
+            fh.write(("e1 bc %2x = "%(i)).encode())
+            fh.write(bytes([0xe1, 0xbc, i, ord('\n')]))
+        for i in range(0x80, 0xC0):
+            fh.write(("e1 bd %2x = "%(i)).encode())
+            fh.write(bytes([0xe1, 0xbd, i, ord('\n')]))
+        for i in range(0x80, 0xc0):
+            fh.write(("e1 be %2x = "%(i)).encode())
+            fh.write(bytes([0xe1, 0xbe, i, ord('\n')]))
+        for i in range(0x80, 0xc0):
+            fh.write(("e1 bf %2x = "%(i)).encode())
+            fh.write(bytes([0xe1, 0xbf, i, ord('\n')]))
+        fh.close()
+
+if __name__ == '__main__':
+    if False:
+        l = list(_all_greek_letter_set)
+        l.sort()
+        for i in l:
+            print(i)
+    else:
+        dump_unicode_ranges()
 
