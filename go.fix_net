@@ -5,12 +5,13 @@ import greek_letter as gl
 
 
 ignore = set(['᾿', '῎', '῞', '῏', '῾'])
-is_ok = set(['·'])
+is_ok = set(['·'])
 
 _net_chars = {
     # choose different char, same meaning, different "font"
         ";": ";",
         "’": "'",
+        "·": "·",
 
         # proper to types by keyboard
         "ά": "ά",

@@ -11,17 +11,17 @@ _upper_vowels = "ΑΕΙΟΥΗΩ"
 _lower_vowels = "αειουηω"
 
 _diphthongs = set((
-    "αι",   # "eye"
-    "ᾱι",   # "ahh", written ᾳ
-    "ει",   # "aah"
-    "ηι",   # "ay", written ῃ
-    "οι",   # "ay"
-    "ωι",   # "oh", written ῳ
-    "υι",   # "ay"
+    "αι",   # h[i]
+    "ᾱι",   # ?, written ᾳ
+    "ει",   # f[a]te, [η]
+    "ηι",   # ?, written ῃ
+    "οι",   # t[oy]
+    "ωι",   # ?, written ῳ
+    "υι",   # ?
 
-    "αυ",   # "eye"
-    "ευ",   # "eye"
-    "ου",   # "eye"
+    "αυ",   # ?
+    "ευ",   # n[ew]
+    "ου",   # n[ew]
     ))
 
 ####################
@@ -44,6 +44,8 @@ _aspirated = "φθχ"  # a breathing or “h” sound to the consonants
 _nasal = ["μ", "ν", "γγ"]
 _liquid = "λρ"
 _zeta = "ζ"
+
+_aspirated_to_unaspirated = dict(((a, b) for a, b in zip(_aspirated, _voiced)))
 
 
 ####################
@@ -165,6 +167,7 @@ _lower_morph_and_vowels = (
 )
 
 _lower_vowel_set = set(_lower_vowels)
+_lower_vowel_and_rho_set = set(_lower_vowels + "ρ")
 
 _upper_to_lower = dict(zip(_upper_vowels, _lower_vowels))
 _upper_to_lower.update(zip(_upper_consonants, _lower_consonants))
@@ -184,6 +187,16 @@ _all_greek_letter_set = set(_lower_vowels +
         vowels.replace(" ", "")
         for morph, vowels in _lower_morph_and_vowels)) +
     "".join(_upper_to_lower.keys()))
+
+_all_vowel_set = set(
+    _lower_vowels +
+    "".join((
+        vowels.replace(" ", "")
+        for morph, vowels in _lower_morph_and_vowels)) +
+    _upper_vowels +
+    "".join((
+        vowels.replace(" ", "")
+        for morph, vowels in _upper_morph_and_vowels)))
 
 _vowels_to_base = dict(
     ((morphed_vowel, vowel)
@@ -311,6 +324,11 @@ def greek_strip(word):
         _strip_let(let)
         for let in word[i1:i2+1]))
 
+def is_vowel(let):
+    return let in _all_vowel_set
+
+def lower(let):
+    return _upper_to_lower.get(let, let)
 
 ####################
 # contractions
@@ -375,7 +393,7 @@ def syllables(word):
     while index2 < word_len:
         pl = letter
         letter = b_word[index2]
-        if letter in _lower_vowel_set:
+        if letter in _lower_vowel_and_rho_set:
             consonant_count = index2 - index1
             # vowels and diphthongs end a syllable,
             #   because each syllable can have either one vowel or a diphthong, diphthong wins

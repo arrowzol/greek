@@ -68,10 +68,10 @@ vowel stuff:
     W       --ΐ-ΰ--     "double dots" + acute
 
 punctuation (modern):
-    ,   break a clause
-    .   period drawn low, end a sentence
-    ·   dot drawn center, like english (:), "raised dot" types with opt-9
-    ;   like english (?)
+    ,   ,   break a clause
+    .   .   period drawn low, end a sentence
+    o-9 ·   dot drawn center, like english (:), "raised dot" types with opt-9
+    ;   ;   like english (?)
 
 diphthongs:
     αι  - AI aisle

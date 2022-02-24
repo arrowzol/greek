@@ -1,13 +1,17 @@
+#!/usr/local/bin/python3
+
+import itertools as it
 import greek_letter as gl
 
+_dbg_on = False
 _morph_do_long_alpha = False
 _guess_alpha_eta_omicron = True
 
 # Koine Greek evloved from Attic Greek
 
-# Nominative: subject
-# Genitive: posession
-# Dative: indirect object
+# Nominative: subject (does the verb) or predicate nominative
+# Genitive: posession, noun of GEN
+# Dative: indirect object, (subject verb object) to DAT
 # Accusative: object of a transitive verb, direct object of verbs
 # Vocative: JOE, what are you doing?
 
@@ -246,39 +250,39 @@ _noun_stems = {
     '3': {
         '-': {
             'S': {
-                'N': "σ",
-                'G': "οσ",
-                'D': "ι",
-                'A': "α",   # or ν
-                'V': "",    # or σ
-            },
-            'D': {
-                'N': "ε",
-                'G': "σιν",
-                'D': "σιν",
-                'A': "ε",
-                'V': "ε",
+                'N': ".σ",
+                'G': ".οσ",
+                'D': ".ι",
+                'A': ".α",   # or ν
+                'V': ".",    # or σ
             },
             'P': {
-                'N': "εσ",
-                'G': "ων",
-                'D': "σι",
-                'A': "ασ",
-                'V': "εσ",
+                'N': ".εσ",
+                'G': ".ων",
+                'D': ".σι",
+                'A': ".ασ",
+                'V': ".εσ",
+            },
+            'D': {
+                'N': ".ε",
+                'G': ".σιν",
+                'D': ".σιν",
+                'A': ".ε",
+                'V': ".ε",
             },
         },
         'N': {
             'S': {
-                'N': "",
-                'G': "οσ",
-                'D': "ι",
-                'A': "",   # or ν
+                'N': ".",
+                'G': ".οσ",
+                'D': ".ι",
+                'A': ".",   # or ν
             },
             'P': {
-                'N': "α",
-                'G': "ων",
-                'D': "σι",
-                'A': "α",
+                'N': ".α",
+                'G': ".ων",
+                'D': ".σι",
+                'A': ".α",
             },
         },
     },
@@ -327,207 +331,206 @@ _vowel_contract = {
     # non-vowel contractions
     'σου': 'σαι',
 #    'ρου': 'ρος',
+    'ονς': 'ων',
 }
 
-_labials = "πβφ"    # and ".σ" -> "ψ"
-_palatals = "κγχ"   # and ".σ" -> "ξ"
-_dentals = "τδθ"    # and ".σ" -> "σ"
-
 _stop_xform_consonants = dict(
-    list(zip(_labials, "ψψψ")) +
-    list(zip(_palatals, "ξξξ")) +
-    list(zip(_dentals, "...")))
+    list(zip(gl._labials, it.repeat('ψ'))) +
+    list(zip(gl._palatals, it.repeat('ξ'))) +
+    list(zip((p + d for p in gl._palatals for d in gl._dentals), it.repeat('ξ'))) +
+    list(zip((l + d for l in gl._labials for d in gl._dentals), it.repeat('ψ'))) +
+    list(zip(gl._dentals, it.repeat(''))))
+_stop_xform_consonants["ν"] = "ν"
+_stop_xform_consonants["δ"] = "σ"
 
-# preferred endings: ν, ρ, ς (sometimes ι or υ as semi-consonants)
-# note: πατηρ + ς = πατηρ (father; ρ + ς = ρ)
-
-def _noun_inflect(word, decl, gen, num, case, do_dbg=True):
+def _noun_inflect(stem, decl, gen, num, case, do_dbg=True):
+    if decl == "3" and gen in "MF":
+        gen = "-"
     end = _noun_stems[decl][gen][num][case]
 
     _dbg = None
-    if do_dbg: _dbg = [(word + "-" + end, "start")]
+    if do_dbg: _dbg = [(stem + "-" + end, "start")]
 
-    b_word = gl.base_word(word, True)
-    # replace α with η if not preceeded by ειρ
-    # only for first declension, (genative|dative)-singluar
-#    if decl == '1' and num == 'S' and case in ['G', 'D'] and b_word[-1] == 'α' and b_word[-2] not in ['ε', 'ι', 'ρ']:
-#        word = word[:-1] + gl.cp_morph('η', word[-1])
-#        b_word = b_word[:-1] + 'η'
-#        if do_dbg: _dbg.append((word + "-" + end, "α->η"))
-
-    if decl == '3':
-        word = word + end
-        b_word = gl.base_word(word)
-
-        if b_word[-1] == 'σ':
-            replace = _stop_xform_consonants.get(b_word[-2], None)
-            if replace:
-                if replace == ".":
-                    replace = ""
-                word = word[:-2] + replace
-                if do_dbg: _dbg.append((word, "stop xform " + + replace))
-    else:
-        last_let = b_word[-1]
+    stem_ending = gl.base_let(stem[-1])
+    if decl != '3':
 
         # swap η with α for plural (genative|dative), sometimes singular
         if gen == "F" and case in "GD":
-            if last_let in 'αη':
-                if last_let == 'α':
+            if stem_ending in 'αη':
+                if stem_ending == 'α':
                     new_last_let = 'η'
                 else:
                     new_last_let = 'α'
-                if num == "P" or (num == "S" and word in ["θάλασσα", "δόξα", "γέεννα"]):
-                    word = word[:-1] + gl.cp_morph(new_last_let, word[-1])
-                    b_word = b_word[:-1] + new_last_let
-                    if do_dbg: _dbg.append((word + "-" + end, "%s->%s"%(last_let, new_last_let)))
+
+                if num == "P" or (num == "S" and stem in ["θάλασσα", "δόξα", "γέεννα"]):
+                    stem = stem[:-1] + gl.cp_morph(new_last_let, stem[-1])
+                    if do_dbg: _dbg.append((stem + "-" + end, "%s->%s"%(stem_ending, new_last_let)))
 
                 # this should only be done sometimes
                 if num == "S":
-                    if do_dbg: _dbg.append((word + "-" + end, "skip %s->%s"%(last_let, new_last_let)))
+                    if do_dbg: _dbg.append((stem + "-" + end, "skip %s->%s"%(stem_ending, new_last_let)))
 
-        # remove trailing sigma before applying the ending
-        if last_let == 'σ':
-            word = word[:-1]
-
-        # apply the ending
-        if end[0] == ".":
-            word = word + end[1:]
-            if do_dbg: _dbg.append((word, "combine_keep_last"))
-        elif end[0] == "i":
-            end_let = word[-1]
-            if gl.base_let(end_let) in "ηαο":
-                word = word[:-1] + gl.add_morph(word[-1], "i") + end[1:]
-                if do_dbg: _dbg.append((word, "combine_iota"))
-            else:
-                word = word + end[1:]
-                if do_dbg: _dbg.append((word, "combine_iota_oops"))
+    # apply the ending
+    if end[0] == ".":
+        end = end[1:]
+        stem = stem + end
+    elif end[0] == "i":
+        if gl.base_let(stem[-1]) in "ηαο":
+            end = gl.add_morph(stem[-1], "i") + end[1:]
+            stem = stem[:-1] + end
+            if do_dbg: _dbg.append((stem, "iota_subscript"))
         else:
-            word = word[:-1] + end
-            if do_dbg: _dbg.append((word, "combine_rm_last"))
+            end = end[1:]
+            stem = stem + end
+            if do_dbg: _dbg.append((stem, "iota_sub_oops"))
+    else:
+        stem = stem[:-1] + end
+        if do_dbg: _dbg.append((stem, "combine_rm_last"))
 
-    b_word = gl.base_word(word)
+    b_stem = gl.base_word(stem)
 
-    if b_word[-2:] == "νσ":
-        word = word[:-1]
-        b_word = b_word[:-1]
-        if do_dbg: _dbg.append((word, "νσ->ν"))
+    if end and end[0] == 'σ':
+        stem_ending = gl.base_word(stem[-len(end)-3:-len(end)])
+        if stem_ending == 'οντ' and end == 'σ':
+            replace = 'ων'
+        else:
+            stem_ending = stem_ending[-2:]
+            replace = _stop_xform_consonants.get(stem_ending, None)
+            if not replace:
+                if stem_ending == 'ον' and end == 'σ':
+                    replace = 'ων'
+                elif stem_ending == 'οδ' and end == 'σ':
+                    replace = 'ουσ'
+                elif stem_ending == 'ον' and end == 'σι':
+                    replace = 'οσ'
+                elif stem_ending == 'ντ' and end == 'σι':
+                    replace = 'υσ'
+                else:
+                    # κτσ -> ξ
+                    # already: κσ -> ξ
+                    # already: τσ -> ""
+                    stem_ending = stem_ending[-1]
+                    replace = _stop_xform_consonants.get(stem_ending, None)
+        if replace:
+            stem = stem[:-len(end)-len(stem_ending)] + replace + end[1:]
+            if do_dbg: _dbg.append((stem, stem_ending + "σ->" + replace))
 
-    i_last_v = len(word)-1
+    i_last_v = len(stem)-1
     # find last vowel
-    while i_last_v >= 0 and not b_word[i_last_v] in gl._lower_vowel_set:
+    while i_last_v >= 0 and not b_stem[i_last_v] in gl._lower_vowel_set:
         i_last_v -= 1
     if i_last_v >= 0:
         # vowel contraction
         # affects 2 or 3 vowels together
         # done before moving morphs
-        if i_last_v > 0 and b_word[i_last_v-1] in gl._lower_vowel_set:
+        if i_last_v > 0 and b_stem[i_last_v-1] in gl._lower_vowel_set:
 
             # try 3 letters ending at last vowel
             # (if i_last_v > 3) for θεοῦ
             if i_last_v > 3:
-                find = b_word[i_last_v-2:i_last_v+1]
+                find = b_stem[i_last_v-2:i_last_v+1]
                 replace = _vowel_contract.get(find, None)
                 if replace:
 
                     # if this would create a double-vowel, don't
                     ii = 0
-#                    if replace[-1] == word[i_last_v+1:i_last_v+2]:
+#                    if replace[-1] == stem[i_last_v+1:i_last_v+2]:
 #                        ii = 1
 
-                    replace = replace[:-1] + gl.cp_morph(gl.cp_morph(gl.cp_morph(replace[-1], word[i_last_v-2]), word[i_last_v-1]), word[i_last_v])
-                    word = word[:i_last_v-2] + replace + word[i_last_v+1+ii:]
-                    b_word = b_word[:i_last_v-2] + replace + b_word[i_last_v+1+ii:]
+                    replace = replace[:-1] + gl.cp_morph(gl.cp_morph(gl.cp_morph(replace[-1], stem[i_last_v-2]), stem[i_last_v-1]), stem[i_last_v])
+                    stem = stem[:i_last_v-2] + replace + stem[i_last_v+1+ii:]
+                    b_stem = b_stem[:i_last_v-2] + replace + b_stem[i_last_v+1+ii:]
 
                     i_last_v -= 3 - len(replace) + ii
-                    if do_dbg: _dbg.append((word, "contract-3", find, replace))
+                    if do_dbg: _dbg.append((stem, "contract-3", find, replace))
 
             # try 2 letters ending at last vowel
             # (if i_last_v > 2) for θεὸσ and λαῷ
-            if i_last_v > 2 and b_word[i_last_v-1] in gl._lower_vowel_set:
-                find = b_word[i_last_v-1:i_last_v+1]
+            if i_last_v > 2 and b_stem[i_last_v-1] in gl._lower_vowel_set:
+                find = b_stem[i_last_v-1:i_last_v+1]
                 replace = _vowel_contract.get(find, None)
-                if not replace and b_word[i_last_v-1] == b_word[i_last_v]:
-                    replace = gl.cp_morph(word[i_last_v-1], word[i_last_v])
+                if not replace and b_stem[i_last_v-1] == b_stem[i_last_v]:
+                    replace = gl.cp_morph(stem[i_last_v-1], stem[i_last_v])
                 if replace:
                     # if this would create a double-vowel, don't
                     ii = 0
-                    if replace[-1] == word[i_last_v+1:i_last_v+2]:
+                    if replace[-1] == stem[i_last_v+1:i_last_v+2]:
                         ii = 1
 
-                    word = word[:i_last_v-1] + replace + word[i_last_v+1+ii:]
-                    b_word = b_word[:i_last_v-1] + gl.base_word(replace) + b_word[i_last_v+1+ii:]
+                    stem = stem[:i_last_v-1] + replace + stem[i_last_v+1+ii:]
+                    b_stem = b_stem[:i_last_v-1] + gl.base_word(replace) + b_stem[i_last_v+1+ii:]
                     i_last_v -= 2 - len(replace) + ii
-                    if do_dbg: _dbg.append((word, "contract-2", find, replace))
+                    if do_dbg: _dbg.append((stem, "contract-2", find, replace))
 
         # moving morphs to the last vowel in diphthongs
-        if i_last_v > 0 and b_word[i_last_v-1:i_last_v+1] in gl._diphthongs:
+        if i_last_v > 0 and b_stem[i_last_v-1:i_last_v+1] in gl._diphthongs:
             # move accent from beginning to end of diphthong
             # affects [αεου][ιυ]
-            let1 = word[i_last_v-1]
+            let1 = stem[i_last_v-1]
             let1_morph = gl.get_morph(let1)
             let1 = gl.base_let(let1)
 
-            let2 = gl.add_morph(word[i_last_v], let1_morph)
-            if let2 != word[i_last_v]:
-                word = word[:i_last_v-1] + let1 + let2 + word[i_last_v+1:]
-                if do_dbg: _dbg.append((word, "mv"))
+            let2 = gl.add_morph(stem[i_last_v], let1_morph)
+            if let2 != stem[i_last_v]:
+                stem = stem[:i_last_v-1] + let1 + let2 + stem[i_last_v+1:]
+                if do_dbg: _dbg.append((stem, "mv"))
 
         # accent translation
         if case == 'G' and num == 'S':
-            word2 = gl.translate_morph(word, i_last_v, "\\", "~")
+            word2 = gl.translate_morph(stem, i_last_v, "\\", "~")
             if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "\\ -> ~"))
+                stem = word2
+                if do_dbg: _dbg.append((stem, "\\ -> ~"))
         if case == 'D' and num == 'P':
-            word2 = gl.translate_morph(word, i_last_v, "/", "~")
+            word2 = gl.translate_morph(stem, i_last_v, "/", "~")
             if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "/ -> ~"))
+                stem = word2
+                if do_dbg: _dbg.append((stem, "/ -> ~"))
         if case in 'N' and num == 'P':
-            word2 = gl.translate_morph(word, i_last_v, "/", "\\")
+            word2 = gl.translate_morph(stem, i_last_v, "/", "\\")
             if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "/ -> \\"))
+                stem = word2
+                if do_dbg: _dbg.append((stem, "/ -> \\"))
         if case in 'A' and num == 'P':
-            word2 = gl.translate_morph(word, i_last_v, "\\", "/")
+            word2 = gl.translate_morph(stem, i_last_v, "\\", "/")
             if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "\\ -> /"))
+                stem = word2
+                if do_dbg: _dbg.append((stem, "\\ -> /"))
 
     # for dative: place iota subscript on vowel followed by iota
     # only for dative-singular
     # affects [ηαο]ι
     if case == 'D' and num == 'S':
-        if b_word[-1] == 'η':
+        if b_stem[-1] == 'η':
             # ἐργάτῃ
             # τρίτῇ->τρίτῃ (.F.)
             # -----
             # κριτῃ->κριτῇ (M.N)
-            if b_word[-2] in ['φ', 'θ'] or (b_word[-2] == 'τ' and gen != 'F'):
-                if word[-1] != 'ῇ':
-                    word = word[:-1] + 'ῇ'
-                    if do_dbg: _dbg.append((word, "DS(η)->iota.1"))
+            if b_stem[-2] in ['φ', 'θ'] or (b_stem[-2] == 'τ' and gen != 'F'):
+                if stem[-1] != 'ῇ':
+                    stem = stem[:-1] + 'ῇ'
+                    if do_dbg: _dbg.append((stem, "DS(η)->iota.1"))
             else:
-                if word[-1] != 'ῃ':
-                    word = word[:-1] + 'ῃ'
-                    if do_dbg: _dbg.append((word, "DS(η)->iota.2"))
+                if stem[-1] != 'ῃ':
+                    stem = stem[:-1] + 'ῃ'
+                    if do_dbg: _dbg.append((stem, "DS(η)->iota.2"))
 
-    # alphas at the end of the word have "long" mark
+    # alphas at the end of the stem have "long" mark
     # unless it is morphed already
     if _morph_do_long_alpha:
         if num == 'S' or case == 'A':
-            if word[-1] == 'α':
-                word = word[:-1] + 'ᾱ'
-                if do_dbg: _dbg.append((word, "long-1"))
-            elif word[-2] == 'α':
-                word = word[:-2] + 'ᾱ' + word[-1]
-                if do_dbg: _dbg.append((word, "long-2"))
+            if stem[-1] == 'α':
+                stem = stem[:-1] + 'ᾱ'
+                if do_dbg: _dbg.append((stem, "long-1"))
+            elif stem[-2] == 'α':
+                stem = stem[:-2] + 'ᾱ' + stem[-1]
+                if do_dbg: _dbg.append((stem, "long-2"))
 
     # set last sigma
-    if gl.base_let(word[-1]) == 'σ':
-        word = word[:-1] + gl.cp_morph('ς', word[-1])
+    if gl.base_let(stem[-1]) == 'σ':
+        stem = stem[:-1] + gl.cp_morph('ς', stem[-1])
 
-    return (word, _dbg)
+    return (stem, _dbg)
 
 # D1 M ends in ης ας
 # D1 F ends in η α
@@ -537,13 +540,10 @@ def _noun_inflect(word, decl, gen, num, case, do_dbg=True):
 #   2: [MFN]:[SPD]:[NAGDV] -> [.iα]α*
 # D3 consonants
 #   3: [-]:[SPD]:[NAGDV] -> [.iα]α*
-def decl_gen(word, gen):
-    """
-    word - root word, no stem
-    """
-    b_word = gl.base_word(word)
-    last_let = b_word[-1]
-    last_2_let = b_word[-2:]
+def decl_gen(stem, gen):
+    b_stem = gl.base_word(stem)
+    last_let = b_stem[-1]
+    last_2_let = b_stem[-2:]
 
     if last_2_let in ["ης", "ας"]:
         decl = "1"
@@ -556,9 +556,10 @@ def decl_gen(word, gen):
         decl = "2"
         gen = "M"
     elif last_2_let == "ος":
-        decl = "2"
+        decl = "3"
+        gen = "-"
     elif last_2_let == "ον":
-        decl = "2"
+        decl = "3"
         gen = "N"
     else:
         decl = "3"
@@ -567,25 +568,21 @@ def decl_gen(word, gen):
     return (decl, gen)
 
 
-def noun_inflect(word, gen, num, case):
-    """
-    word - root word, no stem
-    """
-    decl, gen = decl_gen(word, gen)
-    return _noun_inflect(word, decl, gen, num, decl)
+def noun_inflect(stem, gen, num, case):
+    decl, gen = decl_gen(stem, gen)
+    return _noun_inflect(stem, decl, gen, num, decl)
 
-def noun_inflect_all(word, gen):
+def noun_inflect_all(stem, gen, decl=None):
     """
-    word - root word, no stem
     returns a list of 1 or 2 answers, each answer containing (decl, gen, words)
         decl in ["1", "2", "3"]
         gen in ["M", "F", "N"]
         words[num][case] contains (word, _dbg list)
     """
-    decl, gen2 = decl_gen(word, gen)
-
-    if gen == "-":
-        gen = gen2
+    if not decl:
+        decl, gen2 = decl_gen(stem, gen)
+        if gen == "-":
+            gen = gen2
 
     if decl == "2" and gen == "-":
         gens = ["M", "F"]
@@ -600,53 +597,62 @@ def noun_inflect_all(word, gen):
     for gen in gens:
         words = {}
         answers.append((decl, gen, words))
-        for num in ('S', 'P'): # TODO: 'D' removed, not for 3rd declension, not interesting
+        for num in ('S', 'P'):
             num_words = words[num] = {}
             for case in ('N', 'G', 'D', 'A'):
-                if word:
-                    num_words[case] = _noun_inflect(word, decl, gen3, num, case)
+                if stem:
+                    num_words[case] = _noun_inflect(stem, decl, gen3, num, case)
                 else:
                     num_words[case] = ("", [])
     return answers
 
-def print_noun_1(word, gen):
-    for decl, gen, data in noun_inflect_all(word, gen):
+def print_noun_1(stem, decl, gen):
+    for decl, gen, data in noun_inflect_all(stem, gen, decl):
         max_len = max((
             len(word_dbg[0])
             for case_to_word_dbg in data.values()
             for word_dbg in case_to_word_dbg.values()))
+
         print("-------------------- decl=%s gen=%s "%(decl, gen))
         print("{5:6s} {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
             max_len+2,
             "nom", "gen", "dat", "acc",
-            word,
+            stem,
             ))
-        for num in ('S', 'P', 'D'):
-            print("{5}:    {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
+        for num in ('S', 'P'):
+            print("{5:s}:    {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
                 max_len+2,
-                data[num]["N"][1],
-                data[num]["G"][1],
-                data[num]["D"][1],
-                data[num]["A"][1],
+                data[num]["N"][0],
+                data[num]["G"][0],
+                data[num]["D"][0],
+                data[num]["A"][0],
                 num,
                 ))
+        for num in "SP":
+            for case in "NGDA":
+                print(data[num][case][1])
+                
 
 ####################
 # transform
 ####################
 
 _root_ends = [
-    ("1", "M", "ης"),
-    ("1", "M", "ας"),
+#    ("1", "M", "ης"),
+#    ("1", "M", "ας"),
     ("1", "F", "η"),
     ("1", "F", "α"),
 
-    ("2", "MF", "ος"),
-    ("2", "N", "ον"),
+    ("2", "MF", "ο"),
 
-    ("3", "-", "ν"),
-    ("3", "-", "ρ"),
-    ("3", "-", "ς")]
+    ("3", "MF", "ος"),
+    ("3", "M", "οντ"),
+    ("3", "M", "ον"),
+    ("3", "M", "οδ"),
+]
+_root_ends.extend((("3", "-", let) for let in gl._lower_consonants))
+_root_ends.extend((("3", "M", p + d) for p in gl._palatals for d in gl._dentals))
+_root_ends.extend((("3", "M", l + d) for l in gl._labials for d in gl._dentals))
 
 _end_to_end_and_dgnc_list = {}
 for decl, gens, end in _root_ends:
@@ -664,39 +670,57 @@ for decl, gens, end in _root_ends:
                 if gen == "-":
                     listof_end_dgnc.append((end, decl + "M" + num + case))
                     listof_end_dgnc.append((end, decl + "F" + num + case))
+                    listof_end_dgnc.append((end, decl + "N" + num + case))
                 else:
                     listof_end_dgnc.append((end, decl + gen + num + case))
 
-# DGNC - (declension, gender, number, case)
-def derive_noun_root(article, word, existing_roots=None):
-    b_word = gl.base_word(word)
-    art_is = set((
+def gnc_set_from_article(article):
+    return set((
         "MFN"[i%3] + "SP"[(i//12)] + "NGDA"[(i//3)%4]
         for i in article_to_indexes[article]))
 
+# DGNC - (declension, gender, number, case)
+def derive_root_given_article(article, word, existing_roots=None):
+    GNC_set = gnc_set_from_article(article)
+    return derive_root_given_GNC(GNC_set, word, existing_roots)
+
+def derive_root_given_GNC(GNC_set, word, existing_roots=None):
+    # for display only
+    GNC_list = list(GNC_set)
+    GNC_list.sort()
+
+    b_word = gl.base_word(word)
     for i in range(4,0,-1):
         word_end = b_word[-i:]
         listof_end_dgnc = _end_to_end_and_dgnc_list.get(word_end, None)
         if listof_end_dgnc:
+            if _dbg_on:
+                print("CP0 %s %d -> ends:%s art:%s"%(word, i, repr(listof_end_dgnc), repr(GNC_list)))
             word_start = word[:-i]
             filtered_end_dgnc = list(filter(
-                lambda end_dgnc: end_dgnc[1][1:] in art_is and (
+                lambda end_dgnc: end_dgnc[1][1:] in GNC_set and (
                     not existing_roots
                     or gl.base_word(word_start) + end_dgnc[0] in existing_roots),
                 listof_end_dgnc))
-            all_ends = set(map(lambda end_dgnc: end_dgnc[0], filtered_end_dgnc))
-            if len(all_ends) == 1:
+            common_ends = set(map(lambda end_dgnc: end_dgnc[0], filtered_end_dgnc))
+            if len(common_ends) == 1:
                 root = word_start + filtered_end_dgnc[0][0]
                 dgnc = filtered_end_dgnc[0][1]
-                print("CP1 (%s, %s) (%s %s %s) %s %s %s"%(dgnc, root, article, b_word, word, repr(art_is), repr(listof_end_dgnc), repr(all_ends)))
+                if _dbg_on:
+                    print("CProot (%s, %s) (%s %s) common:%s"%(dgnc, root, b_word, word, repr(common_ends)))
                 return (root, dgnc)
+            if common_ends:
+                if _dbg_on:
+                    common_ends = list(common_ends)
+                    common_ends.sort()
+                    print("CP1 common:%s"%(repr(common_ends)))
 
             if existing_roots:
                 # TODO: this section "guesses" the right answer
                 # there may be better heuristics here, but is it worth the time?
                 if _guess_alpha_eta_omicron:
                     filtered_end_dgnc = list(filter(
-                        lambda end_dgnc: end_dgnc[1][1:] in art_is,
+                        lambda end_dgnc: end_dgnc[1][1:] in GNC_set,
                         listof_end_dgnc))
                     first_letters = set((end[0] for end, dgnc in filtered_end_dgnc))
                     for first_letter in first_letters:
@@ -710,32 +734,33 @@ def derive_noun_root(article, word, existing_roots=None):
 
                             root = word_start + filtered_end_dgnc[0][0]
                             dgnc = filtered_end_dgnc[0][1]
-                            print("CP2 (%s %s) (%s %s %s) %s %s %s"%(dgnc, root, article, b_word, word, repr(art_is), repr(listof_end_dgnc), repr(all_ends)))
+                            if _dbg_on:
+                                print("CP2 (%s %s) (%s %s) %s %s %s"%(dgnc, root, b_word, word, repr(GNC_list), repr(listof_end_dgnc), repr(common_ends)))
                             return (root, dgnc)
-
-                    all_ends = set([end for end, w_decl in filtered_end_dgnc])
-                print("CP3 (%s %s %s) %s+%s %s | %s"%(article, gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(art_is)))
+                if _dbg_on:
+                    print("CP3 (%s %s) %s+%s %s | %s"%(gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(GNC_list)))
 
     return (None, None)
 
-def split_last_syllable(word):
-    """Feeble attempt to get the root of this noun"""
-    b_word = gl.base_word(word)
 
-    # find last vowel in last syllable
-    i = len(word)-1
-    while i >= 0 and not b_word[i] in gl._lower_vowel_set:
-        i -= 1
+if __name__ == '__main__':
+    _dbg_on = True
+    while True:
+        word = input("noun: ")
+        if word:
+            root, dgnc = derive_root_given_GNC(set(["MSN", "FSN"]), word)
+            if root:
+                print("root: " + root)
+                print("DGNC: " + dgnc)
+                decl = dgnc[0]
+                gen = dgnc[1]
+            else:
+                print("root not derived")
+        else:
+            root = input("root: ")
+            decl = input("decl: ")
+            gen = input("gen: ")
+        if root:
+            print_noun_1(root, decl, gen)
 
-    if i >= 0:
-
-        # find first vowel in last syllable
-        j = i
-        while j >= 0 and b_word[j-1] in gl._lower_vowel_set:
-            j -= 1
-
-#        if j-1+1 >= 3 and word[j:j+2] in gl._diphthongs:
-#            j += 2
-        return (word[:j], word[j:])
-    return (None, None)
 
