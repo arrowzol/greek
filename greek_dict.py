@@ -92,9 +92,9 @@ def read_dict():
             if gen in "MFN":
                 sn_word = greek[0]
                 b_sn_word = gl.base_word(sn_word)
-                root, dgnc = gn.derive_root_given_GNC(set([gen + "SN"]), sn_word)
-                if root:
-                    x = gn.noun_inflect_all(root, gen)[0][2]
+                stem, dgnc = gn.derive_stem_given_GNC(set([gen + "SN"]), sn_word)
+                if stem:
+                    x = gn.noun_inflect_all(stem, gen)[0][2]
                     print("CPd1 %s %s %s"%(gen, b_sn_word, repr(x)))
                     for num, words2 in x.items():
                         for case, word_dbg in words2.items():

@@ -75,13 +75,13 @@ _3_mf[4+2] = "-"
 
 class OneNoun:
     """
-    Collect nouns with the same root
+    Collect nouns with the same stem
     """
 
-    def __init__(self, root_word, root_guess=False):
-        self.root_word = root_word
+    def __init__(self, stem, stem_guess=False):
+        self.stem = stem
         self.dgnc = set()
-        self.root_guess = root_guess
+        self.stem_guess = stem_guess
         self.unique_words = set()
         self.index_to_word = ["-"]*(2*3*4)
         self.index_to_hits = [0]*(2*3*4)
@@ -128,8 +128,8 @@ class OneNoun:
     def _idx2(dgnc):
         return OneNoun._idx(dgnc[2], dgnc[3], dgnc[1])
 
-    def derive_roots(self):
-        roots = []
+    def derive_stems(self):
+        stems = []
 
         mas_case_count = sum((
             1
@@ -139,7 +139,7 @@ class OneNoun:
             0,                      3,
             0 +4,                   3 +4]))
         if mas_count > 0 and mas_case_count >= 2:
-            roots.append((self.root_word, "M"))
+            stems.append((self.stem, "M"))
 
         fem_case_count = sum((
             1
@@ -149,7 +149,7 @@ class OneNoun:
             0,      1,      2,      3,
             0 +4,           2 +4,   3 +4]))
         if fem_count > 0 and fem_case_count >= 2:
-            roots.append((self.root_word, "F"))
+            stems.append((self.stem, "F"))
 
         neu_case_count = sum((
             1
@@ -159,9 +159,9 @@ class OneNoun:
             0,                      3,
             0 +4,                   3 +4]))
         if neu_count > 0 and neu_case_count >= 2:
-            roots.append((self.root_word, "N"))
+            stems.append((self.stem, "N"))
 
-        return roots
+        return stems
 
     def show_match(self, _data, idx):
         calc = _data[0]
@@ -198,7 +198,7 @@ class OneNoun:
         print("==================== decl:%s %s:%s %s %s"%(
             decl, gen1, gen2, word, gl.base_word(word)))
         print("hits:%d"%(self.all_word_hits))
-        if self.root_guess:
+        if self.stem_guess:
             print("ROOT GUESS")
 
         if self.cwp_to_morph_collision_count:
@@ -241,9 +241,9 @@ class OneNoun:
 
         return (self._match, self._soft_error)
 
-def derive_root(article, word, existing_roots=None):
+def derive_stem(article, word, existing_stems=None):
     GNC_set = gn.gnc_set_from_article(article)
-    return gn.derive_root_given_GNC(GNC_set, word, existing_roots)
+    return gn.derive_stem_given_GNC(GNC_set, word, existing_stems)
 
 if __name__ == "__main__":
 
@@ -251,7 +251,7 @@ if __name__ == "__main__":
     # create list of OneNoun objects from input files
     article_found = None
     article_word_to_count = {}
-    root_to_OneNoun = {}
+    stem_to_OneNoun = {}
     b_word_set = set()
     in_dict_count = 0
     not_in_dict_count = 0
@@ -280,14 +280,14 @@ if __name__ == "__main__":
             not_in_dict_count += 1
 
         GNC_set = gn.gnc_set_from_article(article)
-        root_word, dgnc = gn.derive_root_given_GNC(GNC_set, word)
+        stem, dgnc = gn.derive_stem_given_GNC(GNC_set, word)
 
-        if root_word:
-            print("CP5r1: %s %s"%(root_word, dgnc))
-            b_root_word = gl.base_word(root_word)
-            if b_root_word not in root_to_OneNoun:
-                root_to_OneNoun[b_root_word] = OneNoun(root_word)
-            root_to_OneNoun[b_root_word].add_word(word, dgnc, count)
+        if stem:
+            print("CP5r1: %s %s"%(stem, dgnc))
+            b_stem_word = gl.base_word(stem)
+            if b_stem_word not in stem_to_OneNoun:
+                stem_to_OneNoun[b_stem_word] = OneNoun(stem)
+            stem_to_OneNoun[b_stem_word].add_word(word, dgnc, count)
         else:
             # for display only
             GNC_list = list(GNC_set)
@@ -296,13 +296,13 @@ if __name__ == "__main__":
             second_pass.append((article, word, count))
 
     for article, word, count in second_pass:
-        root_word, dgnc = derive_root(article, word, root_to_OneNoun)
+        stem, dgnc = derive_stem(article, word, stem_to_OneNoun)
 
-        if root_word:
-            root_word = gl.base_word(root_word)
-            if not root_word in root_to_OneNoun:
-                root_to_OneNoun[root_word] = OneNoun(root_word, True)
-            root_to_OneNoun[root_word].add_word(word, dgnc, count)
+        if stem:
+            stem = gl.base_word(stem)
+            if not stem in stem_to_OneNoun:
+                stem_to_OneNoun[stem] = OneNoun(stem, True)
+            stem_to_OneNoun[stem].add_word(word, dgnc, count)
 
     show = 0
     not_show = 0
@@ -312,29 +312,29 @@ if __name__ == "__main__":
     wd_soft_error = 0
     wd_hard_error = 0
 
-    noun_roots_list = list(root_to_OneNoun.values())
-#    noun_roots_list.sort(key=lambda r:"%03d%s"%(999-r.all_word_hits, r.root_word))
-    noun_roots_list.sort(key=lambda r:gl.base_word(r.root_word))
+    noun_stems_list = list(stem_to_OneNoun.values())
+#    noun_stems_list.sort(key=lambda r:"%03d%s"%(999-r.all_word_hits, r.stem))
+    noun_stems_list.sort(key=lambda r:gl.base_word(r.stem))
 
-    for noun_root in noun_roots_list:
-        if noun_root.cwp_to_base_collision_count:
+    for noun_stem in noun_stems_list:
+        if noun_stem.cwp_to_base_collision_count:
             word_collision += 1
-            print("==================== hits:%d %s"%(noun_root.all_word_hits, repr(noun_root.unique_words)))
-            print("word collisions: " + repr(noun_root.cwp_to_base_collision_count))
-        elif len(noun_root.unique_words) <= 1:
-            print("==================== single:%s %s"%(noun_root.root_word, repr(noun_root.unique_words)))
+            print("==================== hits:%d %s"%(noun_stem.all_word_hits, repr(noun_stem.unique_words)))
+            print("word collisions: " + repr(noun_stem.cwp_to_base_collision_count))
+        elif len(noun_stem.unique_words) <= 1:
+            print("==================== single:%s %s"%(noun_stem.stem, repr(noun_stem.unique_words)))
             single_word += 1
         else:
             # guess masculine and femenine forms of this noun
-            listof_word_gen = noun_root.derive_roots()
+            listof_word_gen = noun_stem.derive_stems()
             if not listof_word_gen:
                 not_show += 1
             else:
                 for word, gen1 in listof_word_gen:
-                    if noun_root.show_it(word, gen1):
-                        wd_match += noun_root._match
-                        wd_soft_error += noun_root._soft_error
-                        wd_hard_error += noun_root._hard_error
+                    if noun_stem.show_it(word, gen1):
+                        wd_match += noun_stem._match
+                        wd_soft_error += noun_stem._soft_error
+                        wd_hard_error += noun_stem._hard_error
                         show += 1
                     else:
                         not_show += 1

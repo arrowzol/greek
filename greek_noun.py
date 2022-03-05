@@ -637,7 +637,7 @@ def print_noun_1(stem, decl, gen):
 # transform
 ####################
 
-_root_ends = [
+_stem_ends = [
 #    ("1", "M", "ης"),
 #    ("1", "M", "ας"),
     ("1", "F", "η"),
@@ -650,12 +650,12 @@ _root_ends = [
     ("3", "M", "ον"),
     ("3", "M", "οδ"),
 ]
-_root_ends.extend((("3", "-", let) for let in gl._lower_consonants))
-_root_ends.extend((("3", "M", p + d) for p in gl._palatals for d in gl._dentals))
-_root_ends.extend((("3", "M", l + d) for l in gl._labials for d in gl._dentals))
+_stem_ends.extend((("3", "-", let) for let in gl._lower_consonants))
+_stem_ends.extend((("3", "M", p + d) for p in gl._palatals for d in gl._dentals))
+_stem_ends.extend((("3", "M", l + d) for l in gl._labials for d in gl._dentals))
 
 _end_to_end_and_dgnc_list = {}
-for decl, gens, end in _root_ends:
+for decl, gens, end in _stem_ends:
     for gen in gens:
         for num in "SP":
             for case in "NGDA":
@@ -680,11 +680,17 @@ def gnc_set_from_article(article):
         for i in article_to_indexes[article]))
 
 # DGNC - (declension, gender, number, case)
-def derive_root_given_article(article, word, existing_roots=None):
+def derive_stem_given_article(article, word, existing_stems=None):
     GNC_set = gnc_set_from_article(article)
-    return derive_root_given_GNC(GNC_set, word, existing_roots)
+    return derive_stem_given_GNC(GNC_set, word, existing_stems)
 
-def derive_root_given_GNC(GNC_set, word, existing_roots=None):
+def derive_stem_given_GNC(GNC_set, word, existing_stems=None):
+    """
+    params:
+        GNC_set - a set of strings with the first char of (Gender, Number, Case) which this word may be
+        word - the word
+    return (stem word, DGNC)
+    """
     # for display only
     GNC_list = list(GNC_set)
     GNC_list.sort()
@@ -699,23 +705,23 @@ def derive_root_given_GNC(GNC_set, word, existing_roots=None):
             word_start = word[:-i]
             filtered_end_dgnc = list(filter(
                 lambda end_dgnc: end_dgnc[1][1:] in GNC_set and (
-                    not existing_roots
-                    or gl.base_word(word_start) + end_dgnc[0] in existing_roots),
+                    not existing_stems
+                    or gl.base_word(word_start) + end_dgnc[0] in existing_stems),
                 listof_end_dgnc))
             common_ends = set(map(lambda end_dgnc: end_dgnc[0], filtered_end_dgnc))
             if len(common_ends) == 1:
-                root = word_start + filtered_end_dgnc[0][0]
+                stem = word_start + filtered_end_dgnc[0][0]
                 dgnc = filtered_end_dgnc[0][1]
                 if _dbg_on:
-                    print("CProot (%s, %s) (%s %s) common:%s"%(dgnc, root, b_word, word, repr(common_ends)))
-                return (root, dgnc)
+                    print("CProot (%s, %s) (%s %s) common:%s"%(dgnc, stem, b_word, word, repr(common_ends)))
+                return (stem, dgnc)
             if common_ends:
                 if _dbg_on:
                     common_ends = list(common_ends)
                     common_ends.sort()
                     print("CP1 common:%s"%(repr(common_ends)))
 
-            if existing_roots:
+            if existing_stems:
                 # TODO: this section "guesses" the right answer
                 # there may be better heuristics here, but is it worth the time?
                 if _guess_alpha_eta_omicron:
@@ -732,11 +738,11 @@ def derive_root_given_GNC(GNC_set, word, existing_roots=None):
                             # prefere alpha
                             filtered_end_dgnc.sort()
 
-                            root = word_start + filtered_end_dgnc[0][0]
+                            stem = word_start + filtered_end_dgnc[0][0]
                             dgnc = filtered_end_dgnc[0][1]
                             if _dbg_on:
-                                print("CP2 (%s %s) (%s %s) %s %s %s"%(dgnc, root, b_word, word, repr(GNC_list), repr(listof_end_dgnc), repr(common_ends)))
-                            return (root, dgnc)
+                                print("CP2 (%s %s) (%s %s) %s %s %s"%(dgnc, stem, b_word, word, repr(GNC_list), repr(listof_end_dgnc), repr(common_ends)))
+                            return (stem, dgnc)
                 if _dbg_on:
                     print("CP3 (%s %s) %s+%s %s | %s"%(gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(GNC_list)))
 
@@ -748,19 +754,19 @@ if __name__ == '__main__':
     while True:
         word = input("noun: ")
         if word:
-            root, dgnc = derive_root_given_GNC(set(["MSN", "FSN"]), word)
-            if root:
-                print("root: " + root)
+            stem, dgnc = derive_stem_given_GNC(set(["MSN", "FSN"]), word)
+            if stem:
+                print("stem: " + stem)
                 print("DGNC: " + dgnc)
                 decl = dgnc[0]
                 gen = dgnc[1]
             else:
-                print("root not derived")
+                print("stem not derived")
         else:
-            root = input("root: ")
+            stem = input("stem: ")
             decl = input("decl: ")
             gen = input("gen: ")
-        if root:
-            print_noun_1(root, decl, gen)
+        if stem:
+            print_noun_1(stem, decl, gen)
 
 
