@@ -281,16 +281,18 @@ def translate_morph(word, i, f, t):
         return word[:i] + add_morph(let, t[j]) + word[i+1:]
 
 
-def base_let(let, sigma=False):
+def base_let(let, sigma=False, lower=False):
     """remove any morphs"""
     let = _vowels_to_base.get(let, let)
+    if lower:
+        let = lower_let(let)
     if sigma and let == 'ς':
         let = 'σ'
     return let
 
-def base_word(word, sigma=False):
+def base_word(word, sigma=False, lower=False):
     return "".join((
-        base_let(let, sigma)
+        base_let(let, sigma, lower)
         for let in word))
 
 def all_greek_letter(word):
@@ -327,7 +329,7 @@ def greek_strip(word):
 def is_vowel(let):
     return let in _all_vowel_set
 
-def lower(let):
+def lower_let(let):
     return _upper_to_lower.get(let, let)
 
 ####################

@@ -115,14 +115,14 @@ class OneNoun:
                         self.cwp_to_base_collision_count.get(key, 0) + count
 
     @staticmethod
-    def _idx(sp, ngda, mfn):
+    def _idx(sp, case, mfn):
         if type(sp) == str:
             sp = "SPN".index(sp)
-        if type(ngda) == str:
-            ngda = "NGDAV".index(ngda)
+        if type(case) == str:
+            case = "NGDAV".index(case)
         if type(mfn) == str:
             mfn = "MFN".index(mfn)
-        return (sp*4 + ngda)*3 + mfn
+        return (sp*4 + case)*3 + mfn
 
     @staticmethod
     def _idx2(dgnc):
@@ -164,28 +164,33 @@ class OneNoun:
         return stems
 
     def show_match(self, _data, idx):
-        calc = _data[0]
+        inflected_word = _data[0]
         _dbg = _data[1]
-        found = self.index_to_word[idx]
+        text_word = self.index_to_word[idx]
         hits = self.index_to_hits[idx]
+        dict_entry = gd.lookup(inflected_word)
+        if dict_entry:
+            de = "d"
+        else:
+            de = "-"
 
-        if found == "-":
+        if text_word == "-":
             self._dbg_list.append(("-", _dbg))
-            return "      " + calc
-        elif calc == found:
+            return "    %s  %s"%(de, inflected_word)
+        elif inflected_word == text_word:
             self._match += 1
             self._dbg_list.append(("G", _dbg))
-            answer = "(-)" + calc
-        elif calc == "":
-            answer = "(?)" + found
+            answer = "(%s-)%s"%(de, inflected_word)
+        elif inflected_word == "":
+            answer = "(?)" + text_word
         else:
-            if gl.base_word(calc) == gl.base_word(found):
+            if gl.base_word(inflected_word) == gl.base_word(text_word):
                 self._soft_error += 1
-                answer = "(x)" + calc + "->" + found
+                answer = "(%sx)%s->%s"%(de, inflected_word, text_word)
                 self._dbg_list.append(("W", _dbg))
             else:
                 self._hard_error += 1
-                answer = "(X)" + calc + "->" + found
+                answer = "(%sX)%s->%s"%(de, inflected_word, text_word)
                 self._dbg_list.append(("E", _dbg))
         return "%3d"%hits + answer
 
@@ -195,8 +200,25 @@ class OneNoun:
         if not decl in DO_DECLS:
             return False
 
-        print("==================== decl:%s %s:%s %s %s"%(
-            decl, gen1, gen2, word, gl.base_word(word)))
+        dict_cnt = len(list(ge for ge in (
+                gd.lookup(data[num][case][0])
+                for num in "SP"
+                for case in "NGDA")
+            if ge))
+        if dict_cnt >= 4:
+            dict_ident = set((
+                "%s-%s%s"%(de[1], de[0], de[2][0])
+                for num in "SP"
+                for case in "NGDA"
+                for de in gd.lookup_nc(data[num][case][0], num + case)))
+            dict_ident = list(dict_ident)
+            dict_ident.sort()
+        else:
+            dict_ident = "X"
+
+        print("==================== dict:%s decl:%s N%s %s %s"%(
+            dict_ident,
+            decl, gen1, word, gl.base_word(word)))
         print("hits:%d"%(self.all_word_hits))
         if self.stem_guess:
             print("ROOT GUESS")
@@ -216,7 +238,9 @@ class OneNoun:
             ))
         num_i = 0
         mfn = "MFN".index(gen1)
-        for num in ('S', 'P'):
+
+        # print the inflection block
+        for num in "SP":
             print("{5}: {1:{0}s} {2:{0}s} {3:{0}s} {4:{0}s}".format(
                 max_len+2,
                 self.show_match(data[num]["N"], OneNoun._idx(num_i, 0, mfn)),
@@ -228,6 +252,7 @@ class OneNoun:
                 ))
             num_i += 1
 
+        # print the words from the text, with accents removed, helps searching
         print("----------\nALL REAL: " + ",".join((
             gl.base_word(word)
             for word in (
@@ -235,9 +260,18 @@ class OneNoun:
                 for sp in range(2)
                 for ngad in range(4))
             if word != "-")))
+        print("ALL INFL: " + ",".join((
+            gl.base_word(data[num][case][0])
+            for num in "SP"
+            for case in "NGDA")))
+
+        # print the derivation logs
         if self._dbg_list and _show_errr_dbg:
             print("----------")
-            print("\n".join((x[0] + ": " + repr(x[1]) for x in self._dbg_list if x[0] in _show_errr_dbg)))
+            print("\n".join((
+                x[0] + ": " + repr(x[1])
+                for x in self._dbg_list
+                if x[0] in _show_errr_dbg)))
 
         return (self._match, self._soft_error)
 
@@ -273,10 +307,8 @@ if __name__ == "__main__":
         article, word = article_word
         dw = gd.lookup(word)
         if dw:
-            print("CP5d1: dict found %s %s"%(word, gl.base_word(word)))
             in_dict_count += 1
         else:
-            print("CP5d0: dict not found %s %s"%(word, gl.base_word(word)))
             not_in_dict_count += 1
 
         GNC_set = gn.gnc_set_from_article(article)
@@ -284,10 +316,10 @@ if __name__ == "__main__":
 
         if stem:
             print("CP5r1: %s %s"%(stem, dgnc))
-            b_stem_word = gl.base_word(stem)
-            if b_stem_word not in stem_to_OneNoun:
-                stem_to_OneNoun[b_stem_word] = OneNoun(stem)
-            stem_to_OneNoun[b_stem_word].add_word(word, dgnc, count)
+            b_stem = gl.base_word(stem)
+            if b_stem not in stem_to_OneNoun:
+                stem_to_OneNoun[b_stem] = OneNoun(stem)
+            stem_to_OneNoun[b_stem].add_word(word, dgnc, count)
         else:
             # for display only
             GNC_list = list(GNC_set)
