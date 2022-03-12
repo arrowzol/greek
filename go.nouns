@@ -172,7 +172,7 @@ class OneNoun:
         if dict_entry:
             de = "d"
         else:
-            de = "-"
+            de = "."
 
         if text_word == "-":
             self._dbg_list.append(("-", _dbg))
@@ -295,12 +295,17 @@ if __name__ == "__main__":
             article_found = b_word
             continue
         if article_found:
+            w_type = "."
             if gl.all_greek_letter(word):
                 if b_word not in b_word_set:
+                    de = gd.lookup(b_word)
+                    if de:
+                        w_type = de[0][0]
                     b_word_set.add(b_word)
                     key = (article_found, word)
                     article_word_to_count[key] = article_word_to_count.get(key, 0)+1
-            article_found = None
+            if w_type != "J":
+                article_found = None
 
     second_pass = []
     for article_word, count in article_word_to_count.items():

@@ -17,43 +17,6 @@ _guess_alpha_eta_omicron = True
 
 # DGNC - (declension, gender, number, case)
 
-# 1st
-#   M ends in ης ας
-#   F ends in η  α
-# 2nd
-#   M: ends in ος
-#   F: ends in ος
-#   N: ends in ον
-
-# 1st, fem:
-# _noun_stems['1']['F'] ... ['SP']['NGDAV']
-#       N   G   D   A   V
-#       --- --- --- --- ---
-#   S:  .   .υ  i   .ν  .
-#   P:  αι  ων  αις ᾱς  αι
-
-# 1st, mas:
-# _noun_stems['1']['M'] ... ['SP']['NGDAV']
-#       N   G   D   A   V
-#       --- --- --- --- ---
-#   S:  .ς  ου  i   .ν  .
-#   P:  αι  ων  αις ᾱς  αι
-
-# 2nd, mas/fem:
-# _noun_stems['2']['M','F'] ... ['SP']['NGDAV']
-#       N   G   D   A   V
-#       --- --- --- --- ---
-#   S:  .ς  .υ  ῳ   .ν  ε
-#   P:  .ι  ων  .ις .υς .ι
-
-# 3rd, mas/fem:
-# _noun_stems['-']['M','F'] ... ['SP']['NGDAV']
-#       N   G   D   A   V
-#       --- --- --- --- ---
-#   S:  ς   ος  ι   α/ν
-#   P:  ες  ων  σι  ας  ες
-
-
 # see _noun_stems
 # see _vowel_contract
 
@@ -62,25 +25,26 @@ _guess_alpha_eta_omicron = True
 # articles
 ####################
 
-article_base = (
+articles = (
 # singular --------------
 #   mas     fem     neu
-    "ο",    "η",    "το",       # nominative
-    "του",  "της",  "του",      # genative
-    "τω",   "τη",   "τω",       # dative
-    "τον",  "την",  "το",       # accusative
+    "ὁ",    "ἡ",    "τό",       # nominative
+    "τοῦ",  "τῆς",  "τοῦ",      # genative
+    "τῷ",   "τῆ",   "τῷ",       # dative
+    "τόν",  "τήν",  "τό",       # accusative
 # plural ----------------
 #   mas     fem     neu
-    "οι",   "αι",   "τα",       # nominative
-    "των",  "των",  "των",      # genative
-    "τοις", "ταις", "τοις",     # dative
-    "τους", "τας",  "τα")       # accusative
+    "οἱ",   "αἱ",   "τά",       # nominative
+    "τῶν",  "τῶν",  "τῶν",      # genative
+    "τοῖς", "ταῖς", "τοῖς",     # dative
+    "τούς", "τάς",  "τά")       # accusative
 
 article_to_indexes = {}
-for article, index in zip(article_base, range(2*3*4)):
-    if not article in article_to_indexes:
-        article_to_indexes[article] = []
-    article_to_indexes[article].append(index)
+for article, index in zip(articles, range(2*3*4)):
+    b_article = gl.base_word(article)
+    if not b_article in article_to_indexes:
+        article_to_indexes[b_article] = []
+    article_to_indexes[b_article].append(index)
 
 
 ####################
@@ -95,7 +59,7 @@ for article, index in zip(article_base, range(2*3*4)):
 # missing "." -> remove last letter
 # "i" -> perform iota subscript on the last letter
 _noun_stems = {
-    # 1st declension
+    # 1st declension (mostly F, mostly ending η)
     # D1 M ends in ης ας
     # D1 F ends in η α
     '1': {
@@ -651,20 +615,28 @@ def print_noun_1(stem, decl, gen):
 _stem_ends = [
     ("1", "F", "η"),
     ("1", "F", "α"),
+    ("1", "F", "ια"),
 
     ("2", "MF", "ο"),
+    ("2", "N", "γο"),
+    ("2", "NM", "πο"),
+    ("2", "NM", "ιο"),
 
-    ("3", "MF", "ος"),
+    ("3", "M", "ος"),
+    ("3", "M", "ης"),
     ("3", "M", "οντ"),
     ("3", "M", "ορ"),
     ("3", "M", "ιδ"),
     ("3", "M", "ων"),
     ("3", "N", "ατ"),
+    ("3", "F", "σι"),
 ]
+_stem_ends.extend((("1", "F", let + "α") for let in gl._lower_consonants))
+_stem_ends.extend((("1", "F", let + "η") for let in gl._lower_consonants))
 _stem_ends.extend((("3", "-", let) for let in gl._lower_consonants))
 _stem_ends.extend((("3", "-", let + "ιδ") for let in gl._lower_consonants))
 _stem_ends.extend((("3", "M", let + "οδ") for let in gl._lower_consonants))
-_stem_ends.extend((("3", "M", let + "ον") for let in gl._lower_consonants))
+_stem_ends.extend((("3", "-", let + "ον") for let in gl._lower_consonants))
 _stem_ends.extend((("3", "-", let + "ι") for let in gl._lower_consonants))
 _stem_ends.extend((("3", "N", p + d) for p in gl._palatals for d in gl._dentals))
 _stem_ends.extend((("3", "N", l + d) for l in gl._labials for d in gl._dentals))
@@ -699,22 +671,28 @@ def derive_stem_given_article(article, word, existing_stems=None):
     GNC_set = gnc_set_from_article(article)
     return derive_stem_given_GNC(GNC_set, word, existing_stems)
 
+_dbg_stem = None
 def derive_stem_given_GNC(GNC_set, word, existing_stems=None):
     """
     params:
         GNC_set - a set of strings with the first char of (Gender, Number, Case) which this word may be
         word - the word
-    return (stem word, DGNC)
+    return (stem, DGNC)
     """
+    global _dbg_stem
+
     # for display only
     GNC_list = list(GNC_set)
     GNC_list.sort()
+    _dbg_stem = [GNC_list]
 
     b_word = gl.base_word(word)
     for i in range(4,0,-1):
         word_end = b_word[-i:]
         listof_end_dgnc = _end_to_end_and_dgnc_list.get(word_end, None)
         if listof_end_dgnc:
+            _dbg_stem.append(i)
+            _dbg_stem.append(listof_end_dgnc)
             if _dbg_on:
                 print("CP0 %s %d -> ends:%s art:%s"%(word, i, repr(listof_end_dgnc), repr(GNC_list)))
             word_start = word[:-i]
@@ -761,6 +739,8 @@ def derive_stem_given_GNC(GNC_set, word, existing_stems=None):
                 if _dbg_on:
                     print("CP3 (%s %s) %s+%s %s | %s"%(gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(GNC_list)))
 
+    if _dbg_on:
+        print("CP4 %s"%(word))
     return (None, None)
 
 
