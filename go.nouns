@@ -350,8 +350,7 @@ if __name__ == "__main__":
     wd_hard_error = 0
 
     noun_stems_list = list(stem_to_OneNoun.values())
-#    noun_stems_list.sort(key=lambda r:"%03d%s"%(999-r.all_word_hits, r.stem))
-    noun_stems_list.sort(key=lambda r:gl.base_word(r.stem))
+    noun_stems_list.sort(key=lambda r:gl.base_word(r.stem, keep_rough=False))
 
     for noun_stem in noun_stems_list:
         if noun_stem.cwp_to_base_collision_count:

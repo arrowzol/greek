@@ -5,7 +5,7 @@ import greek_letter as gl
 
 _dbg_on = False
 _morph_do_long_alpha = False
-_guess_alpha_eta_omicron = True
+_guess_alpha_eta_omicron = False
 
 # Koine Greek evloved from Attic Greek
 
@@ -613,33 +613,34 @@ def print_noun_1(stem, decl, gen):
 ####################
 
 _stem_ends = [
-    ("1", "F", "η"),
-    ("1", "F", "α"),
-    ("1", "F", "ια"),
+    ("1", "MFN", "η"),
+    ("1", "MFN", "α"),
+    ("1", "MFN", "ια"),
 
-    ("2", "MF", "ο"),
-    ("2", "N", "γο"),
-    ("2", "NM", "πο"),
-    ("2", "NM", "ιο"),
+    ("2", "MFN", "ο"),
+    ("2", "MFN", "γο"),
+    ("2", "MFN", "πο"),
+    ("2", "MFN", "ιο"),
 
-    ("3", "M", "ος"),
-    ("3", "M", "ης"),
-    ("3", "M", "οντ"),
-    ("3", "M", "ορ"),
-    ("3", "M", "ιδ"),
-    ("3", "M", "ων"),
-    ("3", "N", "ατ"),
-    ("3", "F", "σι"),
+    ("3", "MFN", "ος"),
+    ("3", "MFN", "ης"),
+    ("3", "MFN", "οντ"),
+    ("3", "MFN", "ορ"),
+    ("3", "MFN", "ιδ"),
+    ("3", "MFN", "ων"),
+    ("3", "MFN", "ατ"),
+    ("3", "MFN", "σι"),
 ]
-_stem_ends.extend((("1", "F", let + "α") for let in gl._lower_consonants))
-_stem_ends.extend((("1", "F", let + "η") for let in gl._lower_consonants))
-_stem_ends.extend((("3", "-", let) for let in gl._lower_consonants))
-_stem_ends.extend((("3", "-", let + "ιδ") for let in gl._lower_consonants))
-_stem_ends.extend((("3", "M", let + "οδ") for let in gl._lower_consonants))
-_stem_ends.extend((("3", "-", let + "ον") for let in gl._lower_consonants))
-_stem_ends.extend((("3", "-", let + "ι") for let in gl._lower_consonants))
-_stem_ends.extend((("3", "N", p + d) for p in gl._palatals for d in gl._dentals))
-_stem_ends.extend((("3", "N", l + d) for l in gl._labials for d in gl._dentals))
+_stem_ends.extend((("1", "MFN", let + "α") for let in gl._lower_consonants))
+_stem_ends.extend((("1", "MFN", let + "η") for let in gl._lower_consonants))
+_stem_ends.extend((("1", "MFN", let + "ε") for let in gl._lower_consonants))
+_stem_ends.extend((("3", "MFN", let) for let in gl._lower_consonants))
+_stem_ends.extend((("3", "MFN", let + "ιδ") for let in gl._lower_consonants))
+_stem_ends.extend((("3", "MFN", let + "οδ") for let in gl._lower_consonants))
+_stem_ends.extend((("3", "MFN", let + "ον") for let in gl._lower_consonants))
+_stem_ends.extend((("3", "MFN", let + "ι") for let in gl._lower_consonants))
+_stem_ends.extend((("3", "MFN", p + d) for p in gl._palatals for d in gl._dentals))
+_stem_ends.extend((("3", "MFN", l + d) for l in gl._labials for d in gl._dentals))
 
 _end_to_end_and_dgnc_list = {}
 for decl, gens, end in _stem_ends:
@@ -677,7 +678,7 @@ def derive_stem_given_GNC(GNC_set, word, existing_stems=None):
     params:
         GNC_set - a set of strings with the first char of (Gender, Number, Case) which this word may be
         word - the word
-    return (stem, DGNC)
+    return (stem, [DGNC])
     """
     global _dbg_stem
 
@@ -692,27 +693,31 @@ def derive_stem_given_GNC(GNC_set, word, existing_stems=None):
         listof_end_dgnc = _end_to_end_and_dgnc_list.get(word_end, None)
         if listof_end_dgnc:
             _dbg_stem.append(i)
-            _dbg_stem.append(listof_end_dgnc)
-            if _dbg_on:
-                print("CP0 %s %d -> ends:%s art:%s"%(word, i, repr(listof_end_dgnc), repr(GNC_list)))
             word_start = word[:-i]
             filtered_end_dgnc = list(filter(
                 lambda end_dgnc: end_dgnc[1][1:] in GNC_set and (
                     not existing_stems
                     or gl.base_word(word_start) + end_dgnc[0] in existing_stems),
                 listof_end_dgnc))
+            filtered_end_dgnc.sort()
+            _dbg_stem.append(listof_end_dgnc)
+            if _dbg_on:
+                print("CP0 %s %d -> art:%s\n  ends:%s\n  ends:%s"%(b_word, i, repr(GNC_list), repr(listof_end_dgnc), repr(filtered_end_dgnc)))
             common_ends = set(map(lambda end_dgnc: end_dgnc[0], filtered_end_dgnc))
             if len(common_ends) == 1:
                 stem = word_start + filtered_end_dgnc[0][0]
                 dgnc = filtered_end_dgnc[0][1]
+                dgnc_set = set(map(lambda end_dgnc: end_dgnc[1], filtered_end_dgnc))
                 if _dbg_on:
-                    print("CProot (%s, %s) (%s %s) common:%s"%(dgnc, stem, b_word, word, repr(common_ends)))
+                    print("  root (%s, %s) (%s %s) common:%s"%(dgnc, stem, b_word, word, repr(common_ends)))
                 return (stem, dgnc)
+                # TODO
+                return (stem, dgnc_set)
             if common_ends:
                 if _dbg_on:
                     common_ends = list(common_ends)
                     common_ends.sort()
-                    print("CP1 common:%s"%(repr(common_ends)))
+                    print("  common:%s"%(repr(common_ends)))
 
             if existing_stems:
                 # TODO: this section "guesses" the right answer
@@ -734,10 +739,8 @@ def derive_stem_given_GNC(GNC_set, word, existing_stems=None):
                             stem = word_start + filtered_end_dgnc[0][0]
                             dgnc = filtered_end_dgnc[0][1]
                             if _dbg_on:
-                                print("CP2 (%s %s) (%s %s) %s %s %s"%(dgnc, stem, b_word, word, repr(GNC_list), repr(listof_end_dgnc), repr(common_ends)))
+                                print("  guess (%s %s) (%s %s) %s %s %s"%(dgnc, stem, b_word, word, repr(GNC_list), repr(listof_end_dgnc), repr(common_ends)))
                             return (stem, dgnc)
-                if _dbg_on:
-                    print("CP3 (%s %s) %s+%s %s | %s"%(gl.base_word(word), word, word_start, word_end, repr(listof_end_dgnc), repr(GNC_list)))
 
     if _dbg_on:
         print("CP4 %s"%(word))

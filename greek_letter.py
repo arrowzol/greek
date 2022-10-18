@@ -77,44 +77,44 @@ _aspirated_to_unaspirated = dict(((a, b) for a, b in zip(_aspirated, _voiced)))
 
 _upper_morph_and_vowels = (
     # accents (acute, grave, circumflex)
-    (r"/ ",  "ΆΈΊΌΎΉΏ"), # ΆΈΊΌΎΉΏ
-    (r"\ ",  "ᾺῈῚῸῪῊῺ"),
+    (r"/  ",  "ΆΈΊΌΎΉΏ"), # ΆΈΊΌΎΉΏ
+    (r"\  ",  "ᾺῈῚῸῪῊῺ"),
     (None, ""),
 
     # breathing mark, smooth
-    (r" s",  "ἈἘἸὈ ἨὨ"),
-    (r"/s",  "ἌἜἼὌ ἬὬ"),
-    (r"\s",  "ἊἚἺὊ ἪὪ"),
-    (r"~s",  "Ἆ Ἶ  ἮὮ"),
+    (r" s ",  "ἈἘἸὈ ἨὨ"),
+    (r"/s ",  "ἌἜἼὌ ἬὬ"),
+    (r"\s ",  "ἊἚἺὊ ἪὪ"),
+    (r"~s ",  "Ἆ Ἶ  ἮὮ"),
 
     # breathing mark, rough
-    (r" r",  "ἉἙἹὉὙἩὩ"),
-    (r"/r",  "ἍἝἽὍὝἭὭ"),
-    (r"\r",  "ἋἛἻὋὛἫὫ"),
-    (r"~r",  "Ἇ Ἷ ὟἯὯ"),
+    (r" r ",  "ἉἙἹὉὙἩὩ"),
+    (r"/r ",  "ἍἝἽὍὝἭὭ"),
+    (r"\r ",  "ἋἛἻὋὛἫὫ"),
+    (r"~r ",  "Ἇ Ἷ ὟἯὯ"),
 
     # iota subscript
-    (r" i",  "ᾼ    ῌῼ"),
+    (r"  i",  "ᾼ    ῌῼ"),
     (None, ""),
     (None, ""),
     (None, ""),
 
     # iota subscript with breathing marks
-    (r" is", "ᾈ    ᾘᾨ"),
-    (r" ir", "ᾉ    ᾙᾩ"),
-    (r"/is", "ᾌ    ᾜᾬ"),
-    (r"/ir", "ᾍ    ᾝᾭ"),
-    (r"\is", "ᾊ    ᾚᾪ"),
-    (r"\ir", "ᾋ    ᾛᾫ"),
-    (r"~is", "ᾎ    ᾞᾮ"),
-    (r"~ir", "ᾏ    ᾟᾯ"),
+    (r" si", "ᾈ    ᾘᾨ"),
+    (r" ri", "ᾉ    ᾙᾩ"),
+    (r"/si", "ᾌ    ᾜᾬ"),
+    (r"/ri", "ᾍ    ᾝᾭ"),
+    (r"\si", "ᾊ    ᾚᾪ"),
+    (r"\ri", "ᾋ    ᾛᾫ"),
+    (r"~si", "ᾎ    ᾞᾮ"),
+    (r"~ri", "ᾏ    ᾟᾯ"),
 
     # short and long vowel
-    (r" S",  "Ᾰ Ῐ Ῠ  "),
-    (r" L",  "Ᾱ Ῑ Ῡ  "),
+    (r"  S",  "Ᾰ Ῐ Ῠ  "),
+    (r"  L",  "Ᾱ Ῑ Ῡ  "),
 
     # ???
-    (r" :",  "  Ϊ Ϋ  "),
+    (r" : ",  "  Ϊ Ϋ  "),
     (None, ""),
     (None, ""),
     (None, ""),
@@ -122,48 +122,48 @@ _upper_morph_and_vowels = (
 
 _lower_morph_and_vowels = (
     # accents (acute, grave, circumflex)
-    (r"/ ",  "άέίόύήώ"), # άέίόύήώ
-    (r"\ ",  "ὰὲὶὸὺὴὼ"),
-    (r"~ ",  "ᾶ ῖ ῦῆῶ"),
+    (r"/  ",  "άέίόύήώ"), # άέίόύήώ
+    (r"\  ",  "ὰὲὶὸὺὴὼ"),
+    (r"~  ",  "ᾶ ῖ ῦῆῶ"),
 
     # breathing mark, smooth
-    (r" s",  "ἀἐἰὀὐἠὠ"),
-    (r"/s",  "ἄἔἴὄὔἤὤ"),
-    (r"\s",  "ἂἒἲὂὒἢὢ"),
-    (r"~s",  "ἆ ἶ ὖἦὦ"),
+    (r" s ",  "ἀἐἰὀὐἠὠ"),
+    (r"/s ",  "ἄἔἴὄὔἤὤ"),
+    (r"\s ",  "ἂἒἲὂὒἢὢ"),
+    (r"~s ",  "ἆ ἶ ὖἦὦ"),
 
     # breathing mark, rough
-    (r" r",  "ἁἑἱὁὑἡὡ"),
-    (r"/r",  "ἅἕἵὅὕἥὥ"),
-    (r"\r",  "ἃἓἳὃὓἣὣ"),
-    (r"~r",  "ἇ ἷ ὗἧὧ"),
+    (r" r ",  "ἁἑἱὁὑἡὡ"),
+    (r"/r ",  "ἅἕἵὅὕἥὥ"),
+    (r"\r ",  "ἃἓἳὃὓἣὣ"),
+    (r"~r ",  "ἇ ἷ ὗἧὧ"),
 
     # iota subscript
-    (r" i",  "ᾳ    ῃῳ"),
-    (r"/i",  "ᾴ    ῄῴ"),
-    (r"\i",  "ᾲ    ῂῲ"),
-    (r"~i",  "ᾷ    ῇῷ"),
+    (r"  i",  "ᾳ    ῃῳ"),
+    (r"/ i",  "ᾴ    ῄῴ"),
+    (r"\ i",  "ᾲ    ῂῲ"),
+    (r"~ i",  "ᾷ    ῇῷ"),
 
     # iota subscript with breathing marks
-    (r" is", "ᾀ    ᾐᾠ"),
-    (r" ir", "ᾁ    ᾑᾡ"),
-    (r"/is", "ᾄ    ᾔᾤ"),
-    (r"/ir", "ᾅ    ᾕᾥ"),
-    (r"\is", "ᾂ    ᾒᾢ"),
-    (r"\ir", "ᾃ    ᾓᾣ"),
-    (r"~is", "ᾆ    ᾖᾦ"),
-    (r"~ir", "ᾇ    ᾗᾧ"),
+    (r" si", "ᾀ    ᾐᾠ"),
+    (r" ri", "ᾁ    ᾑᾡ"),
+    (r"/si", "ᾄ    ᾔᾤ"),
+    (r"/ri", "ᾅ    ᾕᾥ"),
+    (r"\si", "ᾂ    ᾒᾢ"),
+    (r"\ri", "ᾃ    ᾓᾣ"),
+    (r"~si", "ᾆ    ᾖᾦ"),
+    (r"~ri", "ᾇ    ᾗᾧ"),
 
     # short and long vowel
-    (r" S",  "ᾰ ῐ ῠ  "),
-    (r" L",  "ᾱ ῑ ῡ  "),
-#   (r"/L",  "ᾱ́      "),
+    (r"  S",  "ᾰ ῐ ῠ  "),
+    (r"  L",  "ᾱ ῑ ῡ  "),
+#   (r"/ L",  "ᾱ́      "),
 
     # ???
-    (r" :",  "  ϊ ϋ  "),
-    (r"/:",  "  ΐ ΰ  "), # ΐ ΰ
-    (r"\:",  "  ῒ ῢ  "),
-    (r"~:",  "  ῗ ῧ  "),
+    (r" : ",  "  ϊ ϋ  "),
+    (r"/: ",  "  ΐ ΰ  "), # ΐ ΰ
+    (r"\: ",  "  ῒ ῢ  "),
+    (r"~: ",  "  ῗ ῧ  "),
 )
 
 _lower_vowel_set = set(_lower_vowels)
@@ -235,35 +235,37 @@ def add_morph(letter, morph):
     if not base_letter in _lower_vowel_set:
         return letter # not a vowel
 
-    morph2 = _vowel_to_morph.get(letter, "  ")
-    if len(morph) == 2:
+    orig_morph = _vowel_to_morph.get(letter, "   ")
+    if len(morph) == 3:
         morphed_vowel = None
         morph_to_vowel = _morph_to_base_to_vowel.get(morph, None)
         if morph_to_vowel:
             morphed_vowel = morph_to_vowel.get(base_letter, None)
         if not morphed_vowel:
-            morph_to_vowel = _morph_to_base_to_vowel.get(morph[0]+morph2[1], None)
+            morph_to_vowel = _morph_to_base_to_vowel.get(morph[:2]+orig_morph[2], None)
             if morph_to_vowel:
                 morphed_vowel = morph_to_vowel.get(base_letter, None)
         if not morphed_vowel:
-            morph_to_vowel = _morph_to_base_to_vowel.get(morph2[0]+morph[1], None)
+            morph_to_vowel = _morph_to_base_to_vowel.get(morph[0]+orig_morph[1:], None)
             if morph_to_vowel:
                 morphed_vowel = morph_to_vowel.get(base_letter, None)
         if morphed_vowel:
             return morphed_vowel
         morph = morph[0]
-    if len(morph2) == 3:
-        return letter # what to do in this case is unclear
     if morph in '/\\~':
-        morph3 = morph + morph2[1]
-        if not morph3 in _morph_to_base_to_vowel:
-            morph3 = morph + " "
+        new_morph = morph + orig_morph[1:]
+        if not new_morph in _morph_to_base_to_vowel:
+            new_morph = morph + "  "
+    elif morph in 'sr':
+        new_morph = orig_morph[0] + morph + orig_morph[2]
+        if not new_morph in _morph_to_base_to_vowel:
+            new_morph = " " + morph + " "
     else:
-        morph3 = morph2[0] + morph
-        if not morph3 in _morph_to_base_to_vowel:
-            morph3 = " " + morph
+        new_morph = orig_morph[:2] + morph
+        if not new_morph in _morph_to_base_to_vowel:
+            new_morph = "  " + morph
 
-    morph_to_vowel = _morph_to_base_to_vowel.get(morph3, None)
+    morph_to_vowel = _morph_to_base_to_vowel.get(new_morph, None)
     if morph_to_vowel:
         morphed_vowel = morph_to_vowel.get(base_letter, None)
         if morphed_vowel:
@@ -274,44 +276,50 @@ def cp_morph(letter, morphed_letter):
     return add_morph(letter, get_morph(morphed_letter))
 
 def translate_morph(word, i, f, t):
-    let = word[i]
-    morph = get_morph(let)
+    letter = word[i]
+    morph = get_morph(letter)
     j = f.find(morph[0])
     if j != -1:
-        return word[:i] + add_morph(let, t[j]) + word[i+1:]
+        return word[:i] + add_morph(letter, t[j]) + word[i+1:]
 
 
-def base_let(let, sigma=False, lower=False):
+def base_let(letter, sigma=False, lower=False, keep_rough=True):
     """remove any morphs"""
-    let = _vowels_to_base.get(let, let)
+    if keep_rough:
+        add_rough = _vowel_to_morph.get(letter, "  ")[1] == 'r'
+    else:
+        add_rough = False
+    letter = _vowels_to_base.get(letter, letter)
     if lower:
-        let = lower_let(let)
-    if sigma and let == 'ς':
-        let = 'σ'
-    return let
+        letter = lower_let(letter)
+    if sigma and letter == 'ς':
+        letter = 'σ'
+    if add_rough:
+        letter = add_morph(letter, "r")
+    return letter
 
-def base_word(word, sigma=False, lower=False):
+def base_word(word, sigma=False, lower=False, keep_rough=True):
     return "".join((
-        base_let(let, sigma, lower)
-        for let in word))
+        base_let(letter, sigma, lower, keep_rough)
+        for letter in word))
 
 def all_greek_letter(word):
-    for let in word:
-        if let in _all_greek_letter_set:
+    for letter in word:
+        if letter in _all_greek_letter_set:
             continue
         return False
     return True
 
 def any_greek_letter(word):
-    for let in word:
-        if not let in _all_greek_letter_set:
+    for letter in word:
+        if not letter in _all_greek_letter_set:
             continue
         return True
     return False
 
-def _strip_let(let):
-    let = _upper_to_lower.get(let, let)
-    return let
+def _strip_let(letter):
+    letter = _upper_to_lower.get(letter, letter)
+    return letter
 
 def greek_strip(word):
     i2 = len(word)-1
@@ -323,14 +331,14 @@ def greek_strip(word):
     while i1 < i2 and not word[i1] in _all_greek_letter_set:
         i1 += 1
     return "".join((
-        _strip_let(let)
-        for let in word[i1:i2+1]))
+        _strip_let(letter)
+        for letter in word[i1:i2+1]))
 
-def is_vowel(let):
-    return let in _all_vowel_set
+def is_vowel(letter):
+    return letter in _all_vowel_set
 
-def lower_let(let):
-    return _upper_to_lower.get(let, let)
+def lower_let(letter):
+    return _upper_to_lower.get(letter, letter)
 
 ####################
 # contractions
