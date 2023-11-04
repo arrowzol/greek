@@ -1,13 +1,44 @@
-conjugation:
+inflection [ch 4]:
+    inflection acts on a "stem" to produce all the forms
+    five parts:
+        person (1st, 2nd, 3rd)
+        number (singular, plural)
+        tense [https://daedalus.umkc.edu/FirstGreekBook/JWW_FGB5.html]
+            organized:
+                            secondary       primary
+                            ------------    --------------------------
+                            past            present     future
+                            ------------    -------     --------------
+                ongoing |   imperfect       present     future
+                complex |   pluperfect      perfect     future perfect
+                simple  |   aorist
+
+            time-line, from ???:
+                  *  aorist
+                .....*  pluperfect
+                                .....*  perfect
+                                         ..........................>  present
+                                                                ...*  future perfect
+                past <-----(=========================)-----> future
+                            present (now time bubble)
+        mood
+            finite:
+                real:
+                    indicative: true statements and questions
+                    imperative: command
+                hypothetical:
+                    subjunctive: hypothetical, unreal, wishes, conditions, possibilities
+                    infinitive: verbal-noun, no person, no number
+            optative:
+            participles: verbal-noun
+
+            (infinitive, optative): filter(conditions/prohibitions), purpose, suppositions:
+        voice
+            active: subject does the action
+            passive: subject receives the acted
+            middle: subject does and receives the action
+
     tense:
-        time:
-              *  aorist
-            .....*  pluperfect
-                            .....*  perfect
-                                     ..........................>  present
-                                                            ...*  future perfect
-            past <-----(=========================)-----> future
-                        present (now time bubble)
 
         tense:
             present: present time and repeating or progressing into the future

@@ -2,197 +2,202 @@
 
 import greek_letter as gl
 
-# person
-#   1 1st person (me)
-#   2 2nd person (you)
-#   3 3rd person (someone else)
-# number
-#   S singluar
-#   P plural
-# tense
-#   - present
-#   < past
-#   > future
-#   = present perfect
-#   [ past perfect (pluperfect)
-#   ] future perfect
-# mood
-#   D indicative - a fact
-#   P imperative - a command
-#   J subjective - hypothetical, wishes, conditions, possibilities
-#   F infinitive - action w/o a person
-# voice
-#   A active
-#   P passive
+# Morphology in NET:
+#   (N-noun)(case)(gender)(person)(number)
+#   (V-verb)(mood)(tense)(voice)(case)(gender)(person)(number)
 
-_verb_stems_1 = {
-    "1": {
-        "S": "μι",
-        "P": "μεν",
+# mood
+#   I (I) indicative - a fact
+#   M (M) imperative - a command
+#   S (S) subjective - hypothetical, wishes, conditions, possibilities
+#   N (N) infinitive - action w/o a person
+#   P (P) participle
+#
+# tense
+#   P (P) present (present, ongoing)
+#   I (I) imperfect (past, ongoing)
+#   F (F) future (future, simple or ongoing)
+#   A (A) aorist (past, simple)
+#   R (RX) perfect (present, completed)
+#   Y (Y) pluperfect (past, completed)
+#   U ( ) future perfect (future, completed)
+#
+# voice
+#   A (A) active
+#   P (P) passive
+#   M (M) middle
+#
+# case
+#   A (A) Accusative
+#   D (D) dative
+#   G (G) genitive
+#   N (N) nominative
+#
+
+# gender
+#   M (M) male
+#   F (F) female
+#   N (N) neuter
+#
+# person
+#   1 (1) 1st person (me)
+#   2 (2) 2nd person (you)
+#   3 (3) 3rd person (someone else)
+#
+# number
+#   S (S) singluar
+#   P (P) plural
+#   D ( ) dual
+#
+
+_endings = {
+    "IPA": {
+        "1S": "μι",
+        "1P": "μεν",
+        "2S": "σ",
+        "2P": "τε",
+        "3S": "σι", # ν
+        "3P": "ασι", # ν
     },
-    "2": {
-        "S": "σ",
-        "P": "τε",
-    },
-    "3": {
-        "S": "σι",
-        "P": "ασι",
-    },
+    "NPA" : "ναι",
 }
 
-_exceptions = {
-    # CH 4
-    "δεικ": {
-        # add "νυ" for present tense
-        "-DA": {
-            "1": {
-                "S": "δείκνυμι", # in the dictionary
-                "P": "δείκνυμεν", #
-            },
-            "2": {
-                "S": "δείκνυς", #
-                "P": "δείκνυτε", #
-            },
-            "3": {
-                "S": "δείκνυσι", #
-                "P": "δεικνύασι", #
-            },
-        },
-        "-FA": "δεικνύναι" ,
-    },
-    "μιγ": {
-        # add "νυ" for present tense set of μιγνυ
-        "-DA": {
-            "1": {
-                "S": "μίγνυμι", # in the dictionary
-                "P": "μίγνυμεν", #
-            },
-            "2": {
-                "S": "μίγνυς", #
-                "P": "μίγνυτε", #
-            },
-            "3": {
-                "S": "μίγνυσι", #
-                "P": "μιγνύασι", #
-            },
-        },
-        "-FA": "μιγνύναι" ,
-    },
-    "απόλ": {
-        # add "λυ" for present tense set of απόλλυ
-        "-DA": {
-            "1": {
-                "S": "απόλλυμι", # in the dictionary
-                "P": "απόλλυμεν", #
-            },
-            "2": {
-                "S": "απόλλυς", #
-                "P": "απόλλυτε", #
-            },
-            "3": {
-                "S": "απόλλυσι", #
-                "P": "απoλλύασι", #
-            },
-        },
-        "-FA": "απoλλύναι" ,
-    },
-
+_special_words = {
     # CH 5
     # meaning: to be
     # -old-> older than koine, εσ -> εε
     # -vc-> vowel contraction
     # -pro-> changes in pronunciation over time
     "ἐσ": {
-        "-DA": {
-            "1": {
-                "S": "εἰμί", # εσ -> ἐσμί -old-> εεμι -vc-> εἰμί, in the dictionary
-                "P": "ἐσμέν", # εσ -> εσμεν
-            },
-            "2": {
-                "S": "εἶ", # εσ -old-> εσσι -old(drop σ)-> εε -vc-> ει
-                "P": "ἐστέ", # εσ -> εστε
-            },
-            "3": {
-                "S": "ἐστί", # εσ -old-> εστι
-                "P": "εἰσί", # εσ -old-> εσντι -pro-> εισι
-            },
+        "IPA": {
+            "1S": "εἰμί", # εσ -> ἐσμί -old-> εεμι -vc-> εἰμί, in the dictionary
+            "1P": "ἐσμέν", # εσ -> εσμεν
+            "2S": "εἶ", # εσ -old-> εσσι -old(drop σ)-> εε -vc-> ει
+            "2P": "ἐστέ", # εσ -> εστε
+            "3S": "ἐστί", # εσ -old-> εστι
+            "3P": "εἰσί", # εσ -old-> εσντι -pro-> εισι
         },
-        "-FA": "εἶναι",
+        "NPA": "εἶναι",
     },
     "φα,φη": { # stem for singluar and plural
-        "-DA": {
-            "1": {
-                "S": "φημί", # φη -> φημι, in the dictionary
-                "P": "φαμέν", # φα -> φαμεν
-            },
-            "2": {
-                "S": "φῄς", # φη -> φησ
-                "P": "φατέ", # φα -> φατε
-            },
-            "3": {
-                "S": "φησί", # φη -> φησι
-                "P": "φασί", # φα -> φαασι -> φασι
-            },
+        "IPA": {
+            "1S": "φημί", # φη -> φημι, in the dictionary
+            "1P": "φαμέν", # φα -> φαμεν
+            "2S": "φῄς", # φη -> φησ
+            "2P": "φατέ", # φα -> φατε
+            "3S": "φησί", # φη -> φησι
+            "3P": "φασί", # φα -> φαασι -> φασι
         },
-        "-FA": "φάναι",
+        "NPA": "φάναι",
     },
-
-    # CH 6
-    # δίδωμι give
-    "δω": {
-        # present tense: δω -> διδω (REDUPLICATES the initial consonant)
-        "-DA": {
-            "1": {
-                "S": "δίδωμι", # in the dictionary
-                "P": "δίδομεν", # 
-            },
-            "2": {
-                "S": "δίδως", # 
-                "P": "δίδοτε", # 
-            },
-            "3": {
-                "S": "δίδωσι", # 
-                "P": "διδόασι", #
-            },
-        },
-        "-FA": "διδόναι",
-    },
-    # τίθημι put, make
-    "θη": {
-        # present tense: θη -> θιθη (REDUPLICATES the initial consonant) -> τιθη (replace aspirated with unaspirated)
-        "-DA": {
-            "1": {
-                "S": "τίθημι", # in the dictionary
-                "P": "τίθεμεν", # 
-            },
-            "2": {
-                "S": "τίθης", # 
-                "P": "τίθετε", # 
-            },
-            "3": {
-                "S": "τίθησι", # 
-                "P": "τιθέασι", #
-            },
-        },
-        "-FA": "διδόναι",
-    },
-
-    # ἵστημι stand
-    # ἵημι throw
 }
 
 # dictionary seems to be Present, Indicative, Active
-def build(tense, person, number, mood, voice, stem):
-    if tense = '-':
-        first_let = gl.lower(gl.base_let(stem[0]))
-        if first_let in gl._lower_vowel_set:
-            redup = _aspirated_to_unaspirated.get(first_let, first_let) + 'ι'
-            stem = redup + stem + 'ν' + _verb_stems_1[person][number]
-        else:
-            stem = stem + 'νυ' + _verb_stems_1[person][number]
-        # TODO: CH 6, long stem shortens in plural
-    else
-        return
-    # TODO: mood, voice
-    return stem
+def inflect(stem, tmv, pn):
+    """
+    tmv - str with (tense, mood, voice)
+        tense
+          - present
+          < past
+          > future
+          = present perfect
+          [ past perfect (pluperfect)
+          ] future perfect
+          A aorist
+        mood
+          D indicative - a fact
+          P imperative - a command
+          J subjective - hypothetical, wishes, conditions, possibilities
+          F infinitive - action w/o a person
+        voice
+          A active
+          P passive
+    pn - str with (person, number)
+    """
+
+    pn_to_ending = _endings.get(tmv, None)
+    if not pn_to_ending:
+        return None, None
+    if type(pn_to_ending) == str:
+        ending = pn_to_ending
+    else:
+        ending = pn_to_ending.get(pn, None)
+        if not ending:
+            return None, None
+
+    word, _dbg = gl.vocal_modifications(stem + ending)
+
+    return word, _dbg
+
+
+####################
+# stems
+####################
+
+_stem_ends = [
+    "",
+    "η",
+    "α",
+    "ια",
+
+    "ο",
+    "γο",
+    "πο",
+    "ιο",
+
+    "ος",
+    "ης",
+    "οντ",
+    "ορ",
+    "ιδ",
+    "ων",
+    "ατ",
+    "σι",
+]
+_stem_ends.extend((let + "α" for let in gl._lower_consonants))
+_stem_ends.extend((let + "η" for let in gl._lower_consonants))
+_stem_ends.extend((let + "ε" for let in gl._lower_consonants))
+_stem_ends.extend((let for let in gl._lower_consonants if let != 'σ'))
+_stem_ends.extend((let + "ιδ" for let in gl._lower_consonants))
+_stem_ends.extend((let + "οδ" for let in gl._lower_consonants))
+_stem_ends.extend((let + "ον" for let in gl._lower_consonants))
+_stem_ends.extend((let + "ι" for let in gl._lower_consonants))
+_stem_ends.extend((p + d for p in gl._palatals for d in gl._dentals))
+_stem_ends.extend((l + d for l in gl._labials for d in gl._dentals))
+
+_stem_ends = list(set(_stem_ends))
+
+_end_to_end_and_mtvpn_list = {}
+
+
+for stem_end in _stem_ends:
+    for mtv in ["IPA", "NPA"]:
+        for pn in ["1S", "2S", "3S", "1P", "2P", "3P"]:
+            if mtv == "NPA":
+                pn = ""
+            word, _dbg = inflect("βββ" + stem_end, mtv, pn)
+
+            word_end = gl.clean_word(word[3:])
+
+            listof_end_mtvpn = _end_to_end_and_mtvpn_list.get(word_end, None)
+            if not listof_end_mtvpn:
+                listof_end_mtvpn = []
+                _end_to_end_and_mtvpn_list[word_end] = listof_end_mtvpn
+            listof_end_mtvpn.append((stem_end, mtv + pn))
+            if not pn:
+                break
+
+def derive_stem(word):
+    for i in range(4,0,-1):
+        word_end = word[-i:]
+        listof_end_mtvpn = _end_to_end_and_mtvpn_list.get(word_end, None)
+        if listof_end_mtvpn:
+            if len(listof_end_mtvpn) == 1:
+                end_mtvpn = listof_end_mtvpn[0]
+                stem_end = end_mtvpn[0]
+                word = word[:-i] + stem_end
+                return word, end_mtvpn[1]
+            else:
+                return None, repr(listof_end_mtvpn)
+    return None, "nothing"
 

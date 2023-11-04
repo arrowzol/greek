@@ -1,0 +1,45 @@
+#!/usr/bin/python3
+
+import greek_file as gf
+import greek_letter as gl
+#import greek_noun as gn
+import greek_verb as gv
+import greek_dict as gd
+import sys
+
+
+def dict_scan():
+    for ident, greek_words, word_types, desc in gd.parse_dict_file():
+        if "V" in word_types:
+            word = gl.clean_word(greek_words[0])
+            print(word)
+
+def doc_scan():
+    for word in gf.read_document(sys.argv[1:]):
+        clean_word = gl.clean_word(word)
+        print(clean_word)
+
+def verb_unit_test():
+    "test words I already know about"
+    word_sets = gf.read_word_file("verbs.txt", "mood,tense,voice,person,number")
+
+    for word_set in word_sets:
+        word = word_set["IPA1S"]
+        c_word = gl.clean_word(word)
+        stem, mtvpn = gv.derive_stem(c_word)
+        if stem:
+            print(word + " stem:" + stem)
+            for k,v in word_set.items():
+                w2, _dbg = gv.inflect(stem, k[:3], k[3:])
+                if w2:
+                    if gl.clean_word(w2) != gl.clean_word(v):
+                        print("ERROR: %s@%s -> (%s %s)"%(stem, k, v, w2))
+                elif _dbg:
+                    print(word + " dbg:" + _dbg)
+        else:
+            print(word + " dbg:" + mtvpn)
+
+verb_unit_test()
+# doc_scan()
+# dict_scan()
+

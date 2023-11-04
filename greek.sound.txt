@@ -1,24 +1,165 @@
+Greek is spelled like it sounds
+
+Vowels, short, originally pronounced with one beat
+1   Α   ᾰ   alpha       A       "al-pha"            f[a]ther
+5   Ε   ε   epsilon     E       "ep-si-lon"         g[e]t
+10  Ι   ῐ   iota        I       "yo-(td)a|i-o-ta"   p[ee]
+70  Ο   ο   omicron     O       "o-me-cron"         [awe] (sometimes h[u]mble)
+400 Υ   ῠ   upsilon     Y       "oop-so-lawn"       .
+
+Vowels, long, originally pronounced with two beats
+1   Α   ᾱ   alpha       A       "al-pha"            .
+8   Η   η   eta         H       "ea-ta"             l[a]te
+10  Ι   ῑ   iota        I       "yo-(td)a|i-o-ta"   .
+800 Ω   ω   omega       V       "oh-mae-guh"        t[oe]
+400 Υ   ῡ   upsilon     Y       "oop-so-lawn"       .
+
+Consonants
+2   Β   β   beta        B       "be-ta"             [b]oy
+3   Γ   γ   gamma       G       "gam-a"             [g]oat
+4   Δ   δ   delta       D       "del-ta"            [d]og
+7   Ζ   ζ   zeta        Z       "zea-ta"            [z]oo
+9   Θ   θ   theta       U       "thea-ta"           [th]row
+20  Κ   κ   kappa       K       "kap-a"             [c]amp
+30  Λ   λ   lambda      L       "lam-da"            [l]amp
+40  Μ   μ   mu          M       "meu"               [m]ule
+50  Ν   ν   nu          N       "new"               .
+60  Ξ   ξ   xi          J       "(k)ze"             .
+80  Π   π   pi          P       "pie"               [p]it
+100 Ρ   ρ   rho         R       "(rh)ow"            [r]ing
+200 Σ   σς  sigma       SW      "sig-ma"            [s]mile
+300 Τ   τ   tao         T       "tao"               [t]ile
+500 Φ   φ   phi         F       "phee"              .
+600 Χ   χ   chi         X       "chee"              .
+700 Ψ   ψ   psi         C       "(ps)ee"            .
+
 vowels:
-    short sound: α[εο]ιυ
-    long sound : α[ηω]ιυ
+    diphthongs (meaning "double sound") [ch 1]:
+        DLB: vowel pairs that end in ι or υ and don't repeat
+        considered "long"
+        sound made by two vowels placed together
+        Greeks didn't want to make 2 sounds, just one
+        ending with ι:
+            ᾰι  - [ai]sle
+            ᾱι  - m[a]ll ??, written ᾳ
+            ει  - w[ai]t
+            ηι  - w[ai]t ??, written ῃ
+            οι  - [oi]l
+            ωι  - "oh" ??, written ῳ
+            υι  - q[uee]n [whee]l
 
-diphthongs (sound made by two letters):
-    7 of them:
-        αι  - AI aisle
-        ει  - AI wait
-        οι  - OI oil
-        αυ  - OW cow
-        ευ  - EU feud
-        ου  - OO boot
-        υι  - UEE queen
+        ending with υ:
+            ᾰυ  - c[ow]
+            ευ  - f[eu]d
+            ου  - b[oo]t
+
+                1st letter
+                ά   έ   ό   ύ
+                --  --  --  -- [ch 3.II.5]
+        2nd  ὶ| αῖ  εῖ  οῖ  υῖ
+             ὺ| αῦ  εῦ  οῦ  --
+
+                α   ε   ο   υ
+                --  --  --  -- [ch 3.II.5]
+        2nd  ί| αί  εί  οί  υί
+             ύ| αύ  εύ  ού  --
+
+    vowel <long> vowels and contractions:
+        DLB: all combinations of (α, ε, ο) and double vowels, yes they overlap
+        DLB: see {differs between ch}
+                1st letter
+                α   ε   ο
+                --  --  -- [ch 1,3.II.2]
+             α|<ᾱ> [η] [ω]          -- [issue with experiments]
+             ε| ᾱ  {ει} ου
+             ο|[ω]  ου {ου},<ω>
+
+                α   ε   ο
+                --  --  -- [ch 3.II.2,3.II.6]
+             ά|<ά>  ή   ώ
+             έ| ά  <ή>  ού
+             ό| ώ   ού <ώ>
+        ----
+            ιί = <ί>
+            υύ = <ύ>
+
+                ά   έ   ό
+                --  --  -- [ch 3.II.3,3.II.6]
+             ὰ|<ᾶ>  ῆ   ῶ
+             ὲ| ᾶ  <ῆ>  οῦ
+             ὸ| ῶ   οῦ <ῶ>
+        ----
+            ίὶ = <ῖ>
+            ύὺ = <ῦ>
+
+consonants:
+    categories:
+        Labials - formed with the lips
+        Dentals - formed with the tongue and teeth
+        Palatals - formed with the tongue and palate
+
+        Stops (unvoiced) - must momentarily stop the airflow
+        Voiced stops - stop and vibrate (voice) vocal cords
+        Aspirated - add a "breathing" sound, like wind
+        Nasal - air through the nasal cavity
+            γγ - fu[n]gus
+        liQuid - tongue parially blocks airflow
+
+    sigma:
+        σ - [s]igma
+
+        (π β φ) + σ = ψ
+        (τ δ θ) + σ = σ
+        (κ γ χ) + σ = ξ
+
+    zeta:
+        ζ originally represending σδ or δσ
+        z - [z]oo
+
+    sound table:
+            S   V   A
+            --  --  --
+        L  |π   β   φ
+        D  |τ   δ   θ
+        P  |κ   γ   χ
+        +σ |ψ   σ   ξ
+        N  |μ   ν   γγ
+        Q  |    λ   ρ
+        Z  |    ζ
+
+breathing marks [ch 3.I]:
     marks:
-        iota
+        rough: ἁ (looks like begin single quote) - add "h" sound to beginning of the word
+        smooth: ἀ (looks like begin end quote) - not rough
+    goes on vowels at the beginning of words
+        mark the second vowel of diphthongs
+    rules:
+        ρ always has a rough mark
 
-junk:
-    ηυ  - new
+accent marks:
+    syllables:
+        ultima: last
+        penult: 2nd last
+        antepenult: 3rd last
+    marks:
+        acute: ά (looks like /) - rise in pitch
+            goes on all short vowels [ch 3.II.1]
+            can go on long vowels, see conversion tables above
+        grave: ὰ (looks like \) - fall/absence of pitch
+            on the ultima if the word being accented is both:
+                (1) followed by another word
+                (2) has an accute accent on the ultima
+        circumflex: ᾶ (looks like ~) - rise and fall in pitch
+            άὰ = ᾶ
+            ίὶ = ῖ
+            ύὺ = ῦ
+            έὲ = ῆ
+            όὸ = ῶ
+    goes on the vowels of any of the last three syllables
+        short vowels get the acute mark
 
-    γγ  - N anger
-    γκ  - N banker
-    γξ  - X sphinx
-    γχ  - K lunkhead
+elision [3.Elision and Movable Nu.I]
+
+movable nu [3.Elision and Movable Nu.II]
+    a word inding in σι followed by a word beginning with a vowel or dipthong "often" does not elide, so a ν is added
 

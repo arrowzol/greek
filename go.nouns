@@ -1,6 +1,7 @@
-#!/usr/local/bin/python3
+#!/usr/bin/python3
 
 import greek_letter as gl
+import greek_file as gf
 import greek_noun as gn
 import greek_dict as gd
 import sys
@@ -20,48 +21,6 @@ def str_rm(s, i):
     if i == 0:
         return s
     return s[:-i]
-
-def read_words(files, show_ch_vs=False):
-    """
-    Read greek words from a list of files
-    """
-    for fn in files:
-        fh = open(fn)
-
-        ch = '0'
-        for line in fh:
-            if line.startswith("CH "):
-                ch = line[3:].rstrip()
-                continue
-
-            tail = 0;
-            in_num = False
-            for head in range(len(line)):
-                let = line[head]
-                if let >= "0" and let <= "9":
-                    if not in_num:
-                        if head > tail:
-                            yield line[tail:head]
-                        tail = head
-                        in_num = True
-                    continue
-
-                if in_num:
-                    in_num = False
-                    if show_ch_vs:
-                        yield ch + ":" + line[tail:head]
-                    tail = head
-
-                if not let in gl._all_greek_letter_set:
-                    if head > tail:
-                        yield line[tail:head]
-                    if let not in " \t\n\r":
-                        yield let
-                    tail = head+1
-            if tail+1 < len(line):
-                yield line[tail:]
-            yield "EOL"
-        fh.close()
 
 _3_mf = [gn._noun_stems["3"]["-"][num][case]
     for num in "SP"
@@ -89,14 +48,14 @@ class OneNoun:
         self.all_word_hits = 0
 
         # cwp = collision word pair
-        self.cwp_to_base_collision_count = {}
+        self.cwp_to_clean_collision_count = {}
         self.cwp_to_morph_collision_count = {}
 
     def add_word(self, word, dgnc, count):
         i = OneNoun._idx2(dgnc)
-        b_word = gl.base_word(word)
+        c_word = gl.clean_word(word)
         self.all_word_hits += count
-        self.unique_words.add(b_word)
+        self.unique_words.add(c_word)
 
         self.index_to_hits[i] += count
         if self.index_to_word[i] == "-":
@@ -107,12 +66,12 @@ class OneNoun:
                     key = (i, self.index_to_word[i], word)
                 else:
                     key = (i, word, self.index_to_word[i])
-                if b_word == gl.base_word(self.index_to_word[i]):
+                if c_word == gl.clean_word(self.index_to_word[i]):
                     self.cwp_to_morph_collision_count[key] = \
                         self.cwp_to_morph_collision_count.get(key, 0) + count
                 else:
-                    self.cwp_to_base_collision_count[key] = \
-                        self.cwp_to_base_collision_count.get(key, 0) + count
+                    self.cwp_to_clean_collision_count[key] = \
+                        self.cwp_to_clean_collision_count.get(key, 0) + count
 
     @staticmethod
     def _idx(sp, case, mfn):
@@ -184,7 +143,7 @@ class OneNoun:
         elif inflected_word == "":
             answer = "(?)" + text_word
         else:
-            if gl.base_word(inflected_word) == gl.base_word(text_word):
+            if gl.clean_word(inflected_word) == gl.clean_word(text_word):
                 self._soft_error += 1
                 answer = "(%sx)%s->%s"%(de, inflected_word, text_word)
                 self._dbg_list.append(("W", _dbg))
@@ -195,7 +154,7 @@ class OneNoun:
         return "%3d"%hits + answer
 
     def show_it(self, word, gen1):
-        decl, gen2, data = gn.noun_inflect_all(word, gen1)[0]
+        decl, gen2, data = gn.inflect_all(word, gen1)[0]
 
         if not decl in DO_DECLS:
             return False
@@ -218,7 +177,7 @@ class OneNoun:
 
         print("==================== dict:%s decl:%s N%s %s %s"%(
             dict_ident,
-            decl, gen1, word, gl.base_word(word)))
+            decl, gen1, word, gl.clean_word(word)))
         print("hits:%d"%(self.all_word_hits))
         if self.stem_guess:
             print("ROOT GUESS")
@@ -254,14 +213,14 @@ class OneNoun:
 
         # print the words from the text, with accents removed, helps searching
         print("----------\nALL REAL: " + ",".join((
-            gl.base_word(word)
+            gl.clean_word(word)
             for word in (
                 self.index_to_word[OneNoun._idx(sp, ngad, gen1)]
                 for sp in range(2)
                 for ngad in range(4))
             if word != "-")))
         print("ALL INFL: " + ",".join((
-            gl.base_word(data[num][case][0])
+            gl.clean_word(data[num][case][0])
             for num in "SP"
             for case in "NGDA")))
 
@@ -286,22 +245,25 @@ if __name__ == "__main__":
     article_found = None
     article_word_to_count = {}
     stem_to_OneNoun = {}
-    b_word_set = set()
+    c_word_set = set()
     in_dict_count = 0
     not_in_dict_count = 0
-    for word in read_words(sys.argv[1:]):
-        b_word = gl.base_word(word)
-        if b_word in gn.article_to_indexes:
-            article_found = b_word
+    for word in gf.read_document(sys.argv[1:], yield_punctuation=True):
+        if word.startswith("P"):
+            article_found = None
+            continue
+        c_word = gl.clean_word(word)
+        if c_word in gn.article_to_indexes:
+            article_found = c_word
             continue
         if article_found:
             w_type = "."
             if gl.all_greek_letter(word):
-                if b_word not in b_word_set:
-                    de = gd.lookup(b_word)
+                if c_word not in c_word_set:
+                    de = gd.lookup(c_word)
                     if de:
                         w_type = de[0][0]
-                    b_word_set.add(b_word)
+                    c_word_set.add(c_word)
                     key = (article_found, word)
                     article_word_to_count[key] = article_word_to_count.get(key, 0)+1
             if w_type != "J":
@@ -321,10 +283,10 @@ if __name__ == "__main__":
 
         if stem:
             print("CP5r1: %s %s"%(stem, dgnc))
-            b_stem = gl.base_word(stem)
-            if b_stem not in stem_to_OneNoun:
-                stem_to_OneNoun[b_stem] = OneNoun(stem)
-            stem_to_OneNoun[b_stem].add_word(word, dgnc, count)
+            c_stem = gl.clean_word(stem)
+            if c_stem not in stem_to_OneNoun:
+                stem_to_OneNoun[c_stem] = OneNoun(stem)
+            stem_to_OneNoun[c_stem].add_word(word, dgnc, count)
         else:
             # for display only
             GNC_list = list(GNC_set)
@@ -336,7 +298,7 @@ if __name__ == "__main__":
         stem, dgnc = derive_stem(article, word, stem_to_OneNoun)
 
         if stem:
-            stem = gl.base_word(stem)
+            stem = gl.clean_word(stem)
             if not stem in stem_to_OneNoun:
                 stem_to_OneNoun[stem] = OneNoun(stem, True)
             stem_to_OneNoun[stem].add_word(word, dgnc, count)
@@ -350,13 +312,13 @@ if __name__ == "__main__":
     wd_hard_error = 0
 
     noun_stems_list = list(stem_to_OneNoun.values())
-    noun_stems_list.sort(key=lambda r:gl.base_word(r.stem, keep_rough=False))
+    noun_stems_list.sort(key=lambda r:gl.clean_word(r.stem, keep_rough=False))
 
     for noun_stem in noun_stems_list:
-        if noun_stem.cwp_to_base_collision_count:
+        if noun_stem.cwp_to_clean_collision_count:
             word_collision += 1
             print("==================== hits:%d %s"%(noun_stem.all_word_hits, repr(noun_stem.unique_words)))
-            print("word collisions: " + repr(noun_stem.cwp_to_base_collision_count))
+            print("word collisions: " + repr(noun_stem.cwp_to_clean_collision_count))
         elif len(noun_stem.unique_words) <= 1:
             print("==================== single:%s %s"%(noun_stem.stem, repr(noun_stem.unique_words)))
             single_word += 1
