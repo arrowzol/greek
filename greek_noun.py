@@ -364,158 +364,163 @@ def _inflect(stem, decl, gen, num, case, do_dbg=True):
         word = stem[:-1] + end
         if do_dbg: _dbg.append((word, "combine_rm_last"))
 
-    if end and end[0] == 'σ':
-        stem_ending = gl.clean_word(word[-len(end)-3:-len(end)])
-        if stem_ending == 'οντ' and end == 'σ':
-            replace = 'ων'
-        else:
-            stem_ending = stem_ending[-2:]
-            replace = _stop_xform_consonants.get(stem_ending, None)
-            if not replace:
-                if stem_ending == 'ορ' and end == 'σ':
-                    replace = 'ωρ'
-                elif stem_ending == 'ον' and end == 'σ':
-                    replace = 'ων'
-                elif stem_ending == 'οδ' and end == 'σ':
-                    replace = 'ουσ'
-                elif stem_ending == 'ων' and end == 'σι':
-                    replace = 'ωσ'
-                elif stem_ending == 'ον' and end == 'σι':
-                    replace = 'οσ'
-                elif stem_ending == 'ντ' and end == 'σι':
-                    replace = 'υσ'
-                else:
-                    # κτσ -> ξ
-                    # already: κσ -> ξ
-                    # already: τσ -> ""
-                    stem_ending = stem_ending[-1]
-                    replace = _stop_xform_consonants.get(stem_ending, None)
-        if replace:
-            word = word[:-len(end)-len(stem_ending)] + replace + end[1:]
-            if do_dbg: _dbg.append((word, stem_ending + "σ->" + replace))
-
-    c_word = gl.clean_word(word)
-    i_last_v = len(word)-1
-    # find last vowel
-    while i_last_v >= 0 and not c_word[i_last_v] in gl._lower_vowel_set:
-        i_last_v -= 1
-    if i_last_v >= 0:
-        # vowel contraction
-        # affects 2 or 3 vowels together
-        # done before moving morphs
-        if i_last_v > 0 and c_word[i_last_v-1] in gl._lower_vowel_set:
-
-            # try 3 letters ending at last vowel
-            # (if i_last_v > 3) for θεοῦ
-            if i_last_v > 3:
-                find = c_word[i_last_v-2:i_last_v+1]
-                replace = _vowel_contract.get(find, None)
-                if replace:
-
-                    # if this would create a double-vowel, don't
-                    ii = 0
-#                    if replace[-1] == word[i_last_v+1:i_last_v+2]:
-#                        ii = 1
-
-                    replace = replace[:-1] + gl.cp_morph(gl.cp_morph(gl.cp_morph(replace[-1], word[i_last_v-2]), word[i_last_v-1]), word[i_last_v])
-                    word = word[:i_last_v-2] + replace + word[i_last_v+1+ii:]
-                    c_word = c_word[:i_last_v-2] + replace + c_word[i_last_v+1+ii:]
-
-                    i_last_v -= 3 - len(replace) + ii
-                    if do_dbg: _dbg.append((word, "contract-3", find, replace))
-
-            # try 2 letters ending at last vowel
-            # (if i_last_v > 2) for θεὸσ and λαῷ
-            if i_last_v > 2 and c_word[i_last_v-1] in gl._lower_vowel_set:
-                find = c_word[i_last_v-1:i_last_v+1]
-                replace = _vowel_contract.get(find, None)
-                if not replace and c_word[i_last_v-1] == c_word[i_last_v]:
-                    replace = gl.cp_morph(word[i_last_v-1], word[i_last_v])
-                if replace:
-                    # if this would create a double-vowel, don't
-                    ii = 0
-                    if replace[-1] == word[i_last_v+1:i_last_v+2]:
-                        ii = 1
-
-                    word = word[:i_last_v-1] + replace + word[i_last_v+1+ii:]
-                    c_word = c_word[:i_last_v-1] + gl.clean_word(replace) + c_word[i_last_v+1+ii:]
-                    i_last_v -= 2 - len(replace) + ii
-                    if do_dbg: _dbg.append((word, "contract-2", find, replace))
-
-        # moving morphs to the last vowel in diphthongs
-        if i_last_v > 0 and c_word[i_last_v-1:i_last_v+1] in gl._diphthongs:
-            # move accent from beginning to end of diphthong
-            # affects [αεου][ιυ]
-            let1 = word[i_last_v-1]
-            let1_morph = gl.get_morph(let1)
-            let1 = gl.clean_let(let1)
-
-            let2 = gl.add_morph(word[i_last_v], let1_morph)
-            if let2 != word[i_last_v]:
-                word = word[:i_last_v-1] + let1 + let2 + word[i_last_v+1:]
-                if do_dbg: _dbg.append((word, "mv"))
-
-        # accent translation
-        if case == 'G' and num == 'S':
-            word2 = gl.translate_morph(word, i_last_v, "\\", "~")
-            if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "\\ -> ~"))
-        if case == 'D' and num == 'P':
-            word2 = gl.translate_morph(word, i_last_v, "/", "~")
-            if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "/ -> ~"))
-        if case == 'N' and num == 'P':
-            word2 = gl.translate_morph(word, i_last_v, "/", "\\")
-            if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "/ -> \\"))
-        if case == 'A' and num == 'P':
-            word2 = gl.translate_morph(word, i_last_v, "\\", "/")
-            if word2:
-                word = word2
-                if do_dbg: _dbg.append((word, "\\ -> /"))
-
-    # for dative: place iota subscript on vowel followed by iota
-    # only for dative-singular
-    # affects [ηαο]ι
-    if case == 'D' and num == 'S':
-        if c_word[-1] == 'η':
-            # ἐργάτῃ
-            # τρίτῇ->τρίτῃ (.F.)
-            # -----
-            # κριτῃ->κριτῇ (M.N)
-            if c_word[-2] in ['φ', 'θ'] or (c_word[-2] == 'τ' and gen != 'F'):
-                if word[-1] != 'ῇ':
-                    word = word[:-1] + 'ῇ'
-                    if do_dbg: _dbg.append((word, "DS(η)->iota.1"))
+    # TODO
+    if False:
+        if end and end[0] == 'σ':
+            stem_ending = gl.clean_word(word[-len(end)-3:-len(end)])
+            if stem_ending == 'οντ' and end == 'σ':
+                replace = 'ων'
             else:
-                if word[-1] != 'ῃ':
-                    word = word[:-1] + 'ῃ'
-                    if do_dbg: _dbg.append((word, "DS(η)->iota.2"))
+                stem_ending = stem_ending[-2:]
+                replace = _stop_xform_consonants.get(stem_ending, None)
+                if not replace:
+                    if stem_ending == 'ορ' and end == 'σ':
+                        replace = 'ωρ'
+                    elif stem_ending == 'ον' and end == 'σ':
+                        replace = 'ων'
+                    elif stem_ending == 'οδ' and end == 'σ':
+                        replace = 'ουσ'
+                    elif stem_ending == 'ων' and end == 'σι':
+                        replace = 'ωσ'
+                    elif stem_ending == 'ον' and end == 'σι':
+                        replace = 'οσ'
+                    elif stem_ending == 'ντ' and end == 'σι':
+                        replace = 'υσ'
+                    else:
+                        # κτσ -> ξ
+                        # already: κσ -> ξ
+                        # already: τσ -> ""
+                        stem_ending = stem_ending[-1]
+                        replace = _stop_xform_consonants.get(stem_ending, None)
+            if replace:
+                word = word[:-len(end)-len(stem_ending)] + replace + end[1:]
+                if do_dbg: _dbg.append((word, stem_ending + "σ->" + replace))
 
-    # alphas at the end of the word have "long" mark
-    # unless it is morphed already
-    if _morph_do_long_alpha:
-        if num == 'S' or case == 'A':
-            if word[-1] == 'α':
-                word = word[:-1] + 'ᾱ'
-                if do_dbg: _dbg.append((word, "long-1"))
-            elif word[-2] == 'α':
-                word = word[:-2] + 'ᾱ' + word[-1]
-                if do_dbg: _dbg.append((word, "long-2"))
 
-    c_word = gl.clean_word(word)
-    last_let = c_word[-1]
-    if last_let == 'σ':
-        # set last sigma
-        word = word[:-1] + gl.cp_morph('ς', word[-1])
-    elif not (last_let in gl._lower_vowel_set or last_let in "ρνςξψ"):
-        # every work must in in a vowel or one of ρνςξψ
-        if not c_word.endswith('εκ') and not c_word.endswith('ουκ'):
-            word = word[:-1]
-            if do_dbg: _dbg.append((word, "wrong end"))
+        c_word = gl.clean_word(word)
+        i_last_v = len(word)-1
+        # find last vowel
+        while i_last_v >= 0 and not c_word[i_last_v] in gl._lower_vowel_set:
+            i_last_v -= 1
+        if i_last_v >= 0:
+            # vowel contraction
+            # affects 2 or 3 vowels together
+            # done before moving morphs
+            if i_last_v > 0 and c_word[i_last_v-1] in gl._lower_vowel_set:
+
+                # try 3 letters ending at last vowel
+                # (if i_last_v > 3) for θεοῦ
+                if i_last_v > 3:
+                    find = c_word[i_last_v-2:i_last_v+1]
+                    replace = _vowel_contract.get(find, None)
+                    if replace:
+
+                        # if this would create a double-vowel, don't
+                        ii = 0
+    #                    if replace[-1] == word[i_last_v+1:i_last_v+2]:
+    #                        ii = 1
+
+                        replace = replace[:-1] + gl.cp_morph(gl.cp_morph(gl.cp_morph(replace[-1], word[i_last_v-2]), word[i_last_v-1]), word[i_last_v])
+                        word = word[:i_last_v-2] + replace + word[i_last_v+1+ii:]
+                        c_word = c_word[:i_last_v-2] + replace + c_word[i_last_v+1+ii:]
+
+                        i_last_v -= 3 - len(replace) + ii
+                        if do_dbg: _dbg.append((word, "contract-3", find, replace))
+
+                # try 2 letters ending at last vowel
+                # (if i_last_v > 2) for θεὸσ and λαῷ
+                if i_last_v > 2 and c_word[i_last_v-1] in gl._lower_vowel_set:
+                    find = c_word[i_last_v-1:i_last_v+1]
+                    replace = _vowel_contract.get(find, None)
+                    if not replace and c_word[i_last_v-1] == c_word[i_last_v]:
+                        replace = gl.cp_morph(word[i_last_v-1], word[i_last_v])
+                    if replace:
+                        # if this would create a double-vowel, don't
+                        ii = 0
+                        if replace[-1] == word[i_last_v+1:i_last_v+2]:
+                            ii = 1
+
+                        word = word[:i_last_v-1] + replace + word[i_last_v+1+ii:]
+                        c_word = c_word[:i_last_v-1] + gl.clean_word(replace) + c_word[i_last_v+1+ii:]
+                        i_last_v -= 2 - len(replace) + ii
+                        if do_dbg: _dbg.append((word, "contract-2", find, replace))
+
+            # moving morphs to the last vowel in diphthongs
+            if i_last_v > 0 and c_word[i_last_v-1:i_last_v+1] in gl._diphthongs:
+                # move accent from beginning to end of diphthong
+                # affects [αεου][ιυ]
+                let1 = word[i_last_v-1]
+                let1_morph = gl.get_morph(let1)
+                let1 = gl.clean_let(let1)
+
+                let2 = gl.add_morph(word[i_last_v], let1_morph)
+                if let2 != word[i_last_v]:
+                    word = word[:i_last_v-1] + let1 + let2 + word[i_last_v+1:]
+                    if do_dbg: _dbg.append((word, "mv"))
+
+            # accent translation
+            if case == 'G' and num == 'S':
+                word2 = gl.translate_morph(word, i_last_v, "\\", "~")
+                if word2:
+                    word = word2
+                    if do_dbg: _dbg.append((word, "\\ -> ~"))
+            if case == 'D' and num == 'P':
+                word2 = gl.translate_morph(word, i_last_v, "/", "~")
+                if word2:
+                    word = word2
+                    if do_dbg: _dbg.append((word, "/ -> ~"))
+            if case == 'N' and num == 'P':
+                word2 = gl.translate_morph(word, i_last_v, "/", "\\")
+                if word2:
+                    word = word2
+                    if do_dbg: _dbg.append((word, "/ -> \\"))
+            if case == 'A' and num == 'P':
+                word2 = gl.translate_morph(word, i_last_v, "\\", "/")
+                if word2:
+                    word = word2
+                    if do_dbg: _dbg.append((word, "\\ -> /"))
+
+        # for dative: place iota subscript on vowel followed by iota
+        # only for dative-singular
+        # affects [ηαο]ι
+        if case == 'D' and num == 'S':
+            if c_word[-1] == 'η':
+                # ἐργάτῃ
+                # τρίτῇ->τρίτῃ (.F.)
+                # -----
+                # κριτῃ->κριτῇ (M.N)
+                if c_word[-2] in ['φ', 'θ'] or (c_word[-2] == 'τ' and gen != 'F'):
+                    if word[-1] != 'ῇ':
+                        word = word[:-1] + 'ῇ'
+                        if do_dbg: _dbg.append((word, "DS(η)->iota.1"))
+                else:
+                    if word[-1] != 'ῃ':
+                        word = word[:-1] + 'ῃ'
+                        if do_dbg: _dbg.append((word, "DS(η)->iota.2"))
+
+        # alphas at the end of the word have "long" mark
+        # unless it is morphed already
+        if _morph_do_long_alpha:
+            if num == 'S' or case == 'A':
+                if word[-1] == 'α':
+                    word = word[:-1] + 'ᾱ'
+                    if do_dbg: _dbg.append((word, "long-1"))
+                elif word[-2] == 'α':
+                    word = word[:-2] + 'ᾱ' + word[-1]
+                    if do_dbg: _dbg.append((word, "long-2"))
+
+        c_word = gl.clean_word(word)
+        last_let = c_word[-1]
+        if last_let == 'σ':
+            # set last sigma
+            word = word[:-1] + gl.cp_morph('ς', word[-1])
+        elif not (last_let in gl._lower_vowel_set or last_let in "ρνςξψ"):
+            # every work must in in a vowel or one of ρνςξψ
+            if not c_word.endswith('εκ') and not c_word.endswith('ουκ'):
+                word = word[:-1]
+                if do_dbg: _dbg.append((word, "wrong end"))
+    else:
+        word = gl.vocal_modifications(word, _dbg)
 
     return (word, _dbg)
 

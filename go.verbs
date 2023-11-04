@@ -30,11 +30,12 @@ def verb_unit_test():
         if stem:
             print(word + " stem:" + stem)
             for k,v in word_set.items():
-                w2, _dbg = gv.inflect(stem, k[:3], k[3:])
+                _dbg = []
+                w2 = gv.inflect(stem, k[:3], k[3:], _dbg)
                 if w2:
                     if gl.clean_word(w2) != gl.clean_word(v):
                         print("ERROR: %s@%s -> (%s %s)"%(stem, k, v, w2))
-                elif _dbg:
+                else:
                     print(word + " dbg:" + _dbg)
         else:
             print(word + " dbg:" + mtvpn)

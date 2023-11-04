@@ -93,7 +93,7 @@ _special_words = {
 }
 
 # dictionary seems to be Present, Indicative, Active
-def inflect(stem, tmv, pn):
+def inflect(stem, tmv, pn, dbg=None):
     """
     tmv - str with (tense, mood, voice)
         tense
@@ -125,9 +125,9 @@ def inflect(stem, tmv, pn):
         if not ending:
             return None, None
 
-    word, _dbg = gl.vocal_modifications(stem + ending)
+    word = gl.vocal_modifications(stem + ending, dbg)
 
-    return word, _dbg
+    return word
 
 
 ####################
@@ -175,7 +175,7 @@ for stem_end in _stem_ends:
         for pn in ["1S", "2S", "3S", "1P", "2P", "3P"]:
             if mtv == "NPA":
                 pn = ""
-            word, _dbg = inflect("βββ" + stem_end, mtv, pn)
+            word = inflect("βββ" + stem_end, mtv, pn)
 
             word_end = gl.clean_word(word[3:])
 

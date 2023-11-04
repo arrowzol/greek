@@ -439,45 +439,52 @@ _sigma_contract_2["τ"] = "σ"                                               # �
 # movable nu:
 #   if a word ends in σι and the next word starts with a vowel, σι -> σιν
 
-def vocal_modifications(word):
+def vocal_modifications(word, dbg=None):
     """
     Modify a word as the Greeks did, so that it is spelled like it sounds.
 
     This includes verb contractions, and dealing with sigma.
     """
 
-    _dbg = []
+    if word.endswith('ς'):
+        word = word[:-1] + 'σ'
 
-    # contractions
-    for find_len in [3,2]:
-        for i in range(len(word) - find_len + 1):
-            find = word[i  :  i + find_len]
-            replace = _vowel_contract.get(find, None)
-            if replace:
-                delta = word[i:i + find_len] + " -> " + replace
-                word = word[:i] + replace + word[i + find_len  :  ]
-                _dbg.append(("cont", word, delta))
+    for j in range(3):
+        # contractions
+        for find_len in [3,2]:
+            for i in range(len(word) - find_len + 1):
+                find = word[i  :  i + find_len]
+                replace = _vowel_contract.get(find, None)
+                if replace:
+                    # TODO delta = word[i:i + find_len] + " -> " + replace
+                    delta = [ word[i:i + find_len], replace]
+                    word = word[:i] + replace + word[i + find_len  :  ]
+                    # TODO if dbg != None: dbg.append((word, "cont", delta))
+                    if dbg != None: dbg.append((word, "contract-3", delta[0], delta[1]))
 
-    # sigma
-    for find_len in [3,4]:
-        replace = _sigma_contract_ends.get(word[-find_len:], None)
-        if replace:
-            delta = word[find_len:] + " -> " + replace
-            word = word[:-find_len] + replace
-            _dbg.append(("sigma1", word, delta))
-    sigma_indexes = [m.start() for m in re.finditer("[σς]", word)]
-    sigma_indexes.reverse()
-    for i in sigma_indexes:
-        for find_len in [1,2]:
-            replace = _sigma_contract_2.get(word[i-find_len:i], None)
+        # sigma
+        for find_len in [3,4]:
+            replace = _sigma_contract_ends.get(word[-find_len:], None)
             if replace:
-                delta = word[i-find_len:i+1] + " -> " + replace
-                word = word[:i-find_len] + replace + word[i+1:]
-                _dbg.append(("sigma2", word, delta))
+                delta = word[find_len:] + " -> " + replace
+                word = word[:-find_len] + replace
+                # TODO if dbg != None: dbg.append((word, "sigma1", delta))
+                if dbg != None: dbg.append((word, delta))
+        sigma_indexes = [m.start() for m in re.finditer("[σς]", word)]
+        sigma_indexes.reverse()
+        for i in sigma_indexes:
+            for find_len in [1,2]:
+                replace = _sigma_contract_2.get(word[i-find_len:i], None)
+                if replace:
+                    # TODO delta = word[i-find_len:i+1] + " -> " + replace
+                    delta = word[i-find_len:i+1] + "->" + replace
+                    word = word[:i-find_len] + replace + word[i+1:]
+                    # TODO if dbg != None: dbg.append((word, "sigma2", delta))
+                    if dbg != None: dbg.append((word, delta))
         
     if word[-1] == 'σ':
         word = word[:-1] + 'ς'
-    return word, _dbg
+    return word
 
 def accent_word(word, next_word):
     c_word = clean_word(word)
