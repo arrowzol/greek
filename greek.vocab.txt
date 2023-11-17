@@ -1,89 +1,100 @@
-verbs:
-    βλέπω - I see
-    γινώσκω - I know
-    γράφω - I write
-    διδάσκω - I teach
-    λαμ-βάνω - I take
-    λἐ-γω - I say
-    λύω - I loose, I destroy
-    ἔχω - I have
+Αβρααμ - Abraham
+Ιακωβ - Jacob
+Ισραηλ - Israel
+Ιωσηφ - Joseph
+Δαυιδ - David
 
-noun (MFN) - definition:
-    ἀδελφός (M) - brother
-    ἄνθρωπος (M) - man, mankind, human kind
-    ἀπόστολος (M) - apostle
-    δοῦλος (M) - servant | slave
-    δῶρον (N) - gift
-    θάνατος (M) - death
-    ἱερόν (N) - temple
-        (ι) has a rough breathing mark, pronounce with "h" sound
-    λό-γος (M) - word
-    νόμος (M) - law
-    oὦκος (M) - house
-        (οω) diphthong has smooth breathing mark
-        (οω) diphthong has circumflex, emphasize first syllable
-    υἱός (M) - son
+ῥαββi - rabbi
+1321 διδασκω v. I teach
 
-conjection:
-    καί - and, NET: καὶ
+71 αγω v. I lead
+    ἀγω ἀγαγ
 
+191 ακουω v. I hear, listen
+906 βαλλω v. I cast, throw, rush, put, place, drop
+    βαλλω βαλ
 
---- SENTENCES
-    1:
-        λἐ-γω
-            verb-
-            "I say"
-        λὀ-γον
-            noun-MSA
-            "word"
-        ἀ-ποσ-τό-λοις
-            noun-MPD
-            "apostle
-                note: dative is tricky
-    2:
-        ἀ-δελ-φέ,
-            noun-MSV
-            "Brother"
-                vocative
-        βλέ-πο-μεν
-            verb-???1P
-            "we see"
---- JUNK
+991 βλεπω v. I look, see
+2192 εχω v. I have, hold, possess
+    ἐχω σχ
+2983 λαμβανω v. I receive, take
+    λαμβανω λαβ
+    353 αναλαμβανω v. I take up, raise
+    482 αντιλαμβανομαι v. I take hold of, help, share in
+    618 απολαμβανω v. I get back, receive back
+    1949 επιλαμβανομαι v. I seize, take hold of
+    2638 καταλαμβανω v. I seize tight hold of, overtake, comprehend
+    4301 προλαμβανω v. I take before, anticipate, am overtaken
+    4355 προσλαμβανω v. I take to myself, welcome
+    4815 συλλαμβανω v. I seize, apprehend, become pregnant
+    4838 συμπαραλαμβανω v. I take along as a companion
+    4843 συμπεριλαμβανω v. I embrace completely
+    4878 συναντιλαμβανομαι v. I assist, help
+    5274 ὑπολαμβανω v. I take up, receive, answer, suppose, welcome
+3004 λεγω v. I say, speak
+    λεγω εἰπ
+3089 λυω v. I loose, untie, release, destroy
+2212 ζητεω v. I seek, search for, desire
 
-ἄνθρωπος - man, mankind, human kind
-θέος - god
-κυριος (ου) - lord, master
-χριστός - Christ
-Ὶησοὺς (ον) - Jesus or Joshuah
-εὺαγγέλιον (ου) - ??
-πισρός - ??
+71 αγω v. I lead
+    ἀγω ἀγαγ
+    ηγαγετε Act 19:37   VIAA--2P (you[2nd] have brought these men here)
+        verb indicative aorist active 2P, ε+αγαγ+σατε [σα -> ε]
+    ηγαγεν  Act 11:26   VIAA--3S (when he found him, he[3rd,S] brought[aorist] him to Antioch)
+        verb indicative aorist active 3S, ε+αγαγ+σεν [σε -> ε]
+    αγω     Jn 19:4     VIPA--1S (I[1st,S] am bringing[present] him out to you, so that you may know ...)
+        ** verb indicative present active 1S, αγ+ω
+    αγει    Lk 24:21    VIPA--3S (three days since these things happened)?
+        ** verb indicative present active 3S, αγ+ει
 
-αμην - amen
-    NET: ἀμὴν
-δόξα - glory, majexty
+    αγαγειν Act 23:18   VNAA        (took him and brought him to the commanding officer)
+        verb infinitive aorist active
+    ηγαγον  Act 23:31   VNAA--3P    (took Paul and brought him to Antipatris)
+    αγειν   Act 23:10   VNPA        (he ordered the detachment ... and bring him into ...)
+    αγεσθαι Act 21:34   VNPP        (came along ... and brought us[passive?] to the house)
 
-ὲγώ - I
-    NET: ἐγὼ
-συ - you
-    NET: σὺ
+    αγαγῃ   Act 9:2     VSAA--3S    (he could bring them)
+        verb subjunctive aorist active 3P, 
+    αγαγετε Lk 19:27    VMAA--2P    (enemies of mine ... bring them here and slaughter them)
 
-δε - but/and
-    NET: δὲ
-αλλα - but
-    NET: ἄλλα
+                        VILA--3P
+                        VIIA--3S
+                        VIRP--3S
+                        VIAO--3P
+                        VIFD--3S
+                        VPPPAM-S
+                        VPPANM-S
+                        VPRAAM-S
+                        VPRANM-S
+                        VPAANM-P
 
-εν - in
-    NET: ἐν
-ο - the
-    NET: ό
-ον, ονκ - not
-    NET: ὃν
-γαρ - for/then
-εις - in into amoung
-    NET: εἰς
-αιματι - blood
-αμνου - lamb
+    not 71:
+        αγελη
+        αγελην
 
-
-
-
+    V[ISMNP][APFLRI][APMOD][AN][NM][123][SP]
+        [ISMNP] - mood
+            N - infinitive (no person, no number)
+            I - indicative - true statement/question
+            M - imperative - command
+            S - subjunctive - hypothetical, wishes, possibilities
+            P - participles?
+            ? - optative
+        [APFLRI] - tense
+            A! - aorist - past, only once
+            P - present
+            R - perfect?
+            F - future
+            L - pluperfect?
+            I - imperfect
+            ? - future-perfect
+        [APMOD] - voice?
+            A - active
+            P - passive
+            M - middle
+            O - ?
+            D - ?
+        .
+        .
+        [123] - person
+        [SP] - number: singluar/plural

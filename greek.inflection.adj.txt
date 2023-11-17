@@ -1,0 +1,70 @@
+inflections:
+    see greek.inflection.noun.txt
+
+net:
+    A
+    [P]
+    [O]
+    [AG]
+    [MN]
+    .
+    [SP]
+
+position:
+    Attributive Adj:
+        <article><n><article><adj>
+            = the elephant the big
+            restrictive use of <article>
+            Rather than merely ascribing a quality to the noun,
+                this form gives a little more emphasis
+                    to that quality represented by the adjective
+                and helps to set this noun apart
+                    from other ones without this quality
+        <article><adj><n>
+            = the big elephant
+        <adj><n>
+            = big elephant
+        <n><adj>
+            = elephant big
+
+    Predicative Adj:
+        -- The adjective itself is actually making the statement about the noun
+        <article><n><to be><adj>.
+            = The elephant is big.
+        <adj><to be><article><n>.
+            = Big is the elephant.
+    Predicative Adj with omission of <to be>:
+        <adj><article><n>.
+            = Big the elephant.
+        <article><n><adj>.
+            = The elephant big.
+
+    Substantive Adj (takes the place of a noun):
+        <article><adj>
+            = the big
+
+irregulars:
+    4183 πολυς, πολλη, πολυ Adj much, many, often
+        singlular:
+           !πολυς   πολλη  !πολυ 
+           !πολυν   πολλην !πολυ 
+            πολλου  πολλης  πολλου
+            πολλῳ   πολλῃ   πολλῳ
+        plural:
+            πολλοι  πολλαι  πολλα
+            πολλους πολλας  πολλα
+            πολλων  πολλων  πολλων
+            πολλοις πολλαις πολλοις
+
+    3173 μεγας, μεγαλη, μεγα Adj. & Comp.adv. large, great
+        singular:
+           !μεγας       μεγαλη     !μεγα
+           !μεγαν       μεγαλην    !μεγα
+            μεγαλου     μεγαλης     μεγαλου
+            μεγαλῳ      μεγαλῃ      μεγαλῳ
+        plural:
+            μεγαλοι     μεγαλαι     μεγαλα
+            μεγαλους    μεγαλας     μεγαλα
+            μεγαλων     μεγαλων     μεγαλων
+            μεγαλοις    μεγαλαις    μεγαλοις
+

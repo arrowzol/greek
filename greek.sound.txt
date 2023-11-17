@@ -1,85 +1,193 @@
-Greek is spelled like it sounds
+Consonants:
+    2   Β   β   [b]oy
+    3   Γ   γ   [g]oat
+    4   Δ   δ   [d]og
+    7   Ζ   ζ   [z]oo
+    9   Θ   θ   [th]ree
+    20  Κ   κ   [k]ing
+    30  Λ   λ   [l]ion
+    40  Μ   μ   [m]ule
+    50  Ν   ν   [n]ew
+    60  Ξ   ξ   e[x]it
+    80  Π   π   [p]it
+    100 Ρ   ρ   [r]ing (but aspirated and rolled)
+    200 Σ   σς  [s]it
+    300 Τ   τ   [t]ile
+    500 Φ   φ   [ph]one
+    600 Χ   χ   lo[ch]
+    700 Ψ   ψ   li[ps]
 
-Vowels, short, originally pronounced with one beat
-1   Α   ᾰ   alpha       A       "al-pha"            f[a]ther
-5   Ε   ε   epsilon     E       "ep-si-lon"         g[e]t
-10  Ι   ῐ   iota        I       "yo-(td)a|i-o-ta"   p[ee]
-70  Ο   ο   omicron     O       "o-me-cron"         [awe] (sometimes h[u]mble)
-400 Υ   ῠ   upsilon     Y       "oop-so-lawn"       .
-
-Vowels, long, originally pronounced with two beats
-1   Α   ᾱ   alpha       A       "al-pha"            .
-8   Η   η   eta         H       "ea-ta"             l[a]te
-10  Ι   ῑ   iota        I       "yo-(td)a|i-o-ta"   .
-800 Ω   ω   omega       V       "oh-mae-guh"        t[oe]
-400 Υ   ῡ   upsilon     Y       "oop-so-lawn"       .
-
-Consonants
-2   Β   β   beta        B       "be-ta"             [b]oy
-3   Γ   γ   gamma       G       "gam-a"             [g]oat
-4   Δ   δ   delta       D       "del-ta"            [d]og
-7   Ζ   ζ   zeta        Z       "zea-ta"            [z]oo
-9   Θ   θ   theta       U       "thea-ta"           [th]row
-20  Κ   κ   kappa       K       "kap-a"             [c]amp
-30  Λ   λ   lambda      L       "lam-da"            [l]amp
-40  Μ   μ   mu          M       "meu"               [m]ule
-50  Ν   ν   nu          N       "new"               .
-60  Ξ   ξ   xi          J       "(k)ze"             .
-80  Π   π   pi          P       "pie"               [p]it
-100 Ρ   ρ   rho         R       "(rh)ow"            [r]ing
-200 Σ   σς  sigma       SW      "sig-ma"            [s]mile
-300 Τ   τ   tao         T       "tao"               [t]ile
-500 Φ   φ   phi         F       "phee"              .
-600 Χ   χ   chi         X       "chee"              .
-700 Ψ   ψ   psi         C       "(ps)ee"            .
+doubles:
+    γγ - sounds like fu[ng]us, splits sylables
 
 vowels:
-    diphthongs (meaning "double sound") [ch 1]:
-        DLB: vowel pairs that end in ι or υ and don't repeat
-        considered "long"
-        sound made by two vowels placed together
-        Greeks didn't want to make 2 sounds, just one
-        ending with ι:
-            ᾰι  - [ai]sle
-            ᾱι  - m[a]ll ??, written ᾳ
-            ει  - w[ai]t
-            ηι  - w[ai]t ??, written ῃ
-            οι  - [oi]l
-            ωι  - "oh" ??, written ῳ
-            υι  - q[uee]n [whee]l
+    short vowels, originally pronounced with one beat
+        1   Α   ᾰ   [awe]
+        5   Ε   ε   g[e]t
+        10  Ι   ῐ   h[i]t
+        70  Ο   ο   [awe]
+        400 Υ   ῠ   b[u]t
 
-        ending with υ:
-            ᾰυ  - c[ow]
-            ευ  - f[eu]d
-            ου  - b[oo]t
+    long vowels, originally pronounced with two beats
+        1   Α   ᾱ   [a]t
+        8   Η   η   h[ey]
+        10  Ι   ῑ   [ee]l
+        800 Ω   ω   n[o]
+        400 Υ   ῡ   s[ou]p
 
-                1st letter
-                ά   έ   ό   ύ
-                --  --  --  -- [ch 3.II.5]
-        2nd  ὶ| αῖ  εῖ  οῖ  υῖ
-             ὺ| αῦ  εῦ  οῦ  --
+    deciding if α, ι, and υ are pronounced short or long:
+        Generally, if the vowel is followed by two consonates or a consonate cluster, they are long
+            long example:
+                ᾱ(λφ)ᾰ
+                ᾱ(νθ)ρωπος
+                ᾱ(γγ)ελος
+                πῑ(στ)ω
+                ψῡχή
+        circumflex can only apply to long vowels
+            so any vowels marked with the circumflex are long
+        https://www.reddit.com/r/AncientGreek/comments/hexs37/how_do_you_tell_the_length_of_the_vowels_%CE%B1_%CE%B9_and_%CF%85/?rdt=44752
+            x
 
-                α   ε   ο   υ
-                --  --  --  -- [ch 3.II.5]
-        2nd  ί| αί  εί  οί  υί
-             ύ| αύ  εύ  ού  --
+    diphthongs:
+        proper:
+            ending with ι:
+                αι/ᾰι   - [eye]                 freq:(10440,575)
+                ει      - [ei]ght               freq:(8459,389)
+                οι      - [oi]l                 freq:(4165,199)
 
+                υι      - [wee]k                freq:(77,7)
+
+            ending with υ:
+                ου      - s[ou]p                freq:(12597,1137)
+                ευ      - f[eu]d                freq:(1618,107)
+                αυ/ᾰυ   - c[ow]                 freq:(5402,288)
+                ηυ      - f[eu]d                freq:(27,0)
+
+        improper:
+            iota subscripts, a ι is present but not pronounced
+                ᾱι written ᾳ
+                ηι written ῃ
+                ωι written ῳ
+
+    sound ει combined with other stuff:
+        ζει - [zee]
+        εις - [eas]t
+
+    elision:
+        If a word beginning with a vowel
+            follows a word ending in a vowel
+            elision will sometimes take place
+        The final vowel of the first word is dropped,
+            and this fact is marked by an apostrophe
+
+syllables:
+    rules:
+        each syl has one vowel or diphthong
+            diphthongs are enver split
+        a single consonant between two vowels goes with the right vowel
+        two consonants between vowels:
+            if they can be pronounced togeter they stay together, otherwise they split
+            but all double consonants (of the same letter) split
+
+resources:
+    basic
+        https://www.youtube.com/watch?v=FjGP_fBAVeI&list=PL0FYfq22S1GixUW-J3h_EvlcdibZlTe3Z&ab_channel=zondervan
+        billmounce.com
+        https://www.youtube.com/watch?v=1fcyBNJfGSI
+            Bill Mounce
+            καὶ         - [ki]te
+                αι          - [eye]
+            έστιν       - [es]pire-[tin]
+                έσ          - [es]pire
+                τιν         - [tin]
+            αὑτη        - [how]-[ta]ke
+                αὑ          - [how]
+                τη          - [ta]ke
+            ἡ           - [hey]
+                ἡ           - [hey]
+            αγγελία     - thr[ong]-[ge]t-[le]ap-f[u]n
+            ἣν          - [hey]+[n]ew
+            ακηκόαμεν   - [awe]-[Ka]te-[cu]t-c[u]t-m[oo]l ????
+                α           - [awe]
+                κη          - [Ka]te
+                κό          - [cu]t
+                α           - f[u]n
+            απ          - [awe]+[p]ut
+                α           - [awe]
+            αυτοῦ       - c[ow]-[two]
+                αυ          - c[ow]
+                τοῦ         - [two]
+            αναγγέλλομεν- [on]-f[u]n-[en]d-an[gel]-[owe]-[men]
+                αν          - [on]
+                a           - f[u]n
+                γελ         - an[gel]
+                ο           - [owe]
+                μεν         - [men]
+            ὑμῖν        - [who]-[mean]
+                ὑ           - [who]
+                μῖν         - [mean]
+            ὅτι         - [ho]t-[te]a
+                ὅ           - [ho]t
+                τι          - [te]a
+            θεὸς        - [the]ta-m[oss]
+            φῶς         - [foe]+[s]ee
+            εστιν       - 
+
+            γγ - fu[n]gus
+
+    https://www.youtube.com/watch?v=5lb2HPeO00I
+        sounds good, but is different
+        εν - [en]tail
+            ε - g[e]t
+        αρχῃ - [ark]+[s]-h[ey]
+            α - [awe]
+            η - h[ey]
+        ην - [an]al
+        ὁ - [ho]ld
+            ὁ - [ha]rd -> [ho]ld
+        λόγος - [low]-[gaw]k+[s]o
+            λο - [law] -> [low]
+            oς - [awe]+[s]it
+        καὶ - [ki]te
+            αι - [eye]
+        πρὸς - [pro]+[s]it
+            oς - [awe]+[s]it -> [owe]+[s]it
+        τὸν - [tone]
+            ον - [on] -> [own]
+        θεόν - [th]ree+h[ey]-[on]
+            ε - g[e]t
+            o - [awe]
+        θεὸς - [th]ree+h[ey]-[awe]+[s]it
+            ε - g[e]t
+            o - [awe]
+        οὗτος - [who]-[toss]
+            ου - s[ou]p
+            o - [awe]
+        πάντα - [pawn]-[ta]lk
+            α - [awe]
+        δι - [dee]d
+            ι - h[i]t/f[ee] -> f[ee]
+        αυτοῦ - c[ow]-[two]
+            αυ - c[ow]
+            ου - s[ou]p
+        εγένετο - h[e]y-[ge]t-[ne]t-[toe]
+            first ε - g[e]t -> h[e]y
+            ο - [awe] -> [owe]
+        χωρὶς - [co]ld-[rec]ent
+            ι - f[ee]
+        γέγονεν - [gay]-[go]-[n]o+m[en]
+            ε - g[e]t -> h[ey]
+            ο - [awe] -> [owe]
+        ουδὲ - s[ou]p-[day]
+            ου - s[ou]p
+            ε - g[e]t -> h[ey]
+        αυτῳ - c[ow]-[toe]
+    modern greek:
+        https://www.youtube.com/watch?v=67EuuW9Dyt8
+        https://www.youtube.com/watch?v=MiARlwIST-o
+
+vowels:
     vowel <long> vowels and contractions:
-        DLB: all combinations of (α, ε, ο) and double vowels, yes they overlap
-        DLB: see {differs between ch}
-                1st letter
-                α   ε   ο
-                --  --  -- [ch 1,3.II.2]
-             α|<ᾱ> [η] [ω]          -- [issue with experiments]
-             ε| ᾱ  {ει} ου
-             ο|[ω]  ου {ου},<ω>
-
-                α   ε   ο
-                --  --  -- [ch 3.II.2,3.II.6]
-             ά|<ά>  ή   ώ
-             έ| ά  <ή>  ού
-             ό| ώ   ού <ώ>
-        ----
             ιί = <ί>
             υύ = <ύ>
 
@@ -103,7 +211,7 @@ consonants:
         Aspirated - add a "breathing" sound, like wind
         Nasal - air through the nasal cavity
             γγ - fu[n]gus
-        liQuid - tongue parially blocks airflow
+        liquid - tongue parially blocks airflow
 
     sigma:
         σ - [s]igma
@@ -117,24 +225,15 @@ consonants:
         z - [z]oo
 
     sound table:
-            S   V   A
+            St  Vo  As
             --  --  --
-        L  |π   β   φ
-        D  |τ   δ   θ
-        P  |κ   γ   χ
+        La |π   β   φ
+        De |τ   δ   θ
+        Pa |κ   γ   χ
         +σ |ψ   σ   ξ
         N  |μ   ν   γγ
         Q  |    λ   ρ
         Z  |    ζ
-
-breathing marks [ch 3.I]:
-    marks:
-        rough: ἁ (looks like begin single quote) - add "h" sound to beginning of the word
-        smooth: ἀ (looks like begin end quote) - not rough
-    goes on vowels at the beginning of words
-        mark the second vowel of diphthongs
-    rules:
-        ρ always has a rough mark
 
 accent marks:
     syllables:
@@ -158,8 +257,5 @@ accent marks:
     goes on the vowels of any of the last three syllables
         short vowels get the acute mark
 
-elision [3.Elision and Movable Nu.I]
-
 movable nu [3.Elision and Movable Nu.II]
-    a word inding in σι followed by a word beginning with a vowel or dipthong "often" does not elide, so a ν is added
-
+    a word inding in σι followed by a word beginning with a vowel or diphthong "often" does not elide, so a ν is added

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for X in *.copy.raw; do
+    ../go.fix_net $X > ${X%.raw}
+done
+
+for X in *.copy; do
+    ../go.clean $X > ${X%.copy}.clean
+done
+

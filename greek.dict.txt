@@ -1,0 +1,156 @@
+https://en.wikibooks.org/wiki/Koine_Greek
+https://lsj.gr/wiki/%CE%BB%CF%8D%CF%89
+
+word types:
+    Article = Article (there's only one)
+    Adj = Adjective
+    n.m. = Noun, Masculine
+    n.f. = Noun, Feminine
+    n.n. = Noun, Neuter
+    Pers.pr. = Personal Pronoun
+    Prop.n. = Proper Noun (name of person, place, things)
+
+egrep samples patterns:
+    egrep "^[0-9]+ ([^, ]+, )*[^, ]+ PT1[.]PT2[.] " dict/dict.copy | wc -l
+    sed -r -n '/^[0-9]+ ([^, ]+, )+[^, ]+ PT1[.]PT2[.] /{s/^[0-9]+ ([^, ]+, )+([^, ]+) PT1[.]PT2[.] .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+
+Jesus:
+    cat text/*.NET.copy | grep -o "Ἰησο[ῦνς]*" | sort | uniq -c
+         137 Ἰησοῦ
+         102 Ἰησοῦν
+         429 Ἰησοῦς
+
+Adj
+    egrep "^[0-9]+ ([^, ]+, )*[^, ]+ Adj " dict/dict.copy | wc -l
+        763
+
+    // 649
+    sed -r -n '/^[0-9]+ ([^, ]+, )+[^, ]+ Adj /{s/^[0-9]+ ([^, ]+, )+([^, ]+) Adj .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+         411 ον
+         171 όν
+          48 ές
+          19 ὁ
+
+    // 343
+    sed -r -n '/^[0-9]+ ([^, ]+, ){2}[^, ]+ Adj /{s/^[0-9]+ ([^, ]+, )+([^, ]+, [^, ]+) Adj .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sed '/^ *1 /d' | sort -rn
+         129 ή, όν
+          55 η, ον
+          49 α, ον
+          40 ά, όν
+          14 ου, ὁ
+          12 ία, ιον
+          12 αι, α
+          10 εῖα, ύ
+           8 αία, αῖον
+           5 ῆ, οῦν
+           3 οῦ, ὁ
+           2 εια, υ
+           2 ία, ον
+           2 ᾶ, οῦν
+    // 8
+    sed -r -n '/^[0-9]+ ([^, ]+, ){3}[^, ]+ Adj /{s/^[0-9]+ ([^, ]+, )+([^, ]+, [^, ]+) Adj .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+           7 ὁ, ἡ
+           1 ἡ, τό
+
+
+Prop.n.
+    egrep "^[0-9]+ ([^, ]+, )*[^, ]+ Prop[.]n[.] " dict/dict.copy | wc -l
+        175
+
+    // 170 all, 5 missing
+    sed -r -n '/^[0-9]+ ([^, ]+, )+[^, ]+ Prop[.]n[.] /{s/^[0-9]+ ([^, ]+, )+([^, ]+) Prop[.]n[.] .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+         132 ὁ
+          37 ἡ
+           1 τό
+
+Pers.pr.
+    egrep "^[0-9]+ ([^, ]+, )*[^, ]+ Pers[.]pr[.] " dict/dict.copy | wc -l
+        4
+
+n.m.
+    // 752 total
+    egrep "^[0-9]+ [^, ]+, [^, ]+, [^, ]+, [^, ]+, [^, ]+ n[.]m[.] " dict/dict.copy | wc -l
+        1
+    egrep "^[0-9]+ [^, ]+, [^, ]+, [^, ]+, [^, ]+ n[.]m[.] " dict/dict.copy | wc -l
+        11
+    egrep "^[0-9]+ [^, ]+, [^, ]+, [^, ]+ n[.]m[.] " dict/dict.copy | wc -l
+        734
+    egrep "^[0-9]+ [^, ]+, [^, ]+ n[.]m[.] " dict/dict.copy | wc -l
+        5
+    egrep "^[0-9]+ [^, ]+ n[.]m[.] " dict/dict.copy | wc -l
+        1
+
+    sed -r -n '/^[0-9]+ ([^, ]+, )+[^, ]+ n[.]m[.] /{s/^[0-9]+ ([^, ]+, )+([^, ]+) n[.]m[.] .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+         723 ὁ
+          14 ἡ
+           5 τό
+           4 οἱ
+           2 ον
+           1 αῖον
+           1 οῦς
+           1 όν
+
+    egrep "^[0-9]+ ([^, ]+, )*ὁ n[.]m[.] " dict/dict.copy | wc -l
+        723
+    egrep "^[0-9]+ [^, ]+, [^, ]+, τό n[.]m[.] " dict/dict.copy | wc -l
+        5
+    egrep "^[0-9]+ [^, ]+, [^, ]+, οἱ n[.]m[.] " dict/dict.copy | wc -l
+        4
+    egrep "^[0-9]+ ([^, ]+, )*ὁ, ἡ n[.]m[.] " dict/dict.copy | wc -l
+        10
+    egrep "^[0-9]+ ([^, ]+, )*ἡ n[.]m[.] " dict/dict.copy | sed '/ὁ, ἡ n/d' | wc -l
+        4
+    egrep "^[0-9]+ ([^, ]+, )*[^, ]+ n[.]m[.] " dict/dict.copy | sed -r '/ (ὁ|οἱ|τό|ἡ) /d' | wc -l
+        6
+
+n.f.
+    // 1005 total
+    egrep "^[0-9]+ [^, ]+, [^, ]+, [^, ]+, [^, ]+, [^, ]+ n[.]f[.] " dict/dict.copy | wc -l
+        1
+    egrep "^[0-9]+ [^, ]+, [^, ]+, [^, ]+, [^, ]+ n[.]f[.] " dict/dict.copy | wc -l
+        14
+    egrep "^[0-9]+ [^, ]+, [^, ]+, [^, ]+ n[.]f[.] " dict/dict.copy | wc -l
+        988
+    egrep "^[0-9]+ [^, ]+, [^, ]+ n[.]f[.] " dict/dict.copy | wc -l
+        1
+    egrep "^[0-9]+ [^, ]+ n[.]f[.] " dict/dict.copy | wc -l
+        1
+
+    sed -r -n '/^[0-9]+ ([^, ]+, )+[^, ]+ n[.]f[.] /{s/^[0-9]+ ([^, ]+, )+([^, ]+) n[.]f[.] .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+         993 ἡ
+           4 αἱ
+           3 ὁ
+           2 τά
+           2 ον
+
+n.n.
+    // 432 total
+    egrep "^[0-9]+ [^, ]+, [^, ]+, τό n[.]n[.] " dict/dict.copy | wc -l
+        420
+    egrep "^[0-9]+ [^, ]+, [^, ]*ων, τά n[.]n[.] " dict/dict.copy | wc -l
+        8
+    egrep "^[0-9]+ [^, ]+ος, ον n[.]n[.] " dict/dict.copy | wc -l
+        2
+    egrep "^[0-9]+ [^, ]+, [^, ]+, ἡ n[.]n[.] " dict/dict.copy | wc -l
+        1
+    egrep "^[0-9]+ [^, ]+ n[.]n[.] " dict/dict.copy | wc -l
+        1
+
+    sed -r -n '/^[0-9]+ ([^, ]+, )+[^, ]+ n[.]n[.] /{s/^[0-9]+ ([^, ]+, )+([^, ]+) n[.]n[.] .*/\2/;p;}' dict/dict.copy | sort | uniq -c | sort -rn
+         420 τό
+           8 τά
+           2 ον
+           1 ἡ
+
+rules:
+    verbs:
+        εω verbs (verbs that have an ε on the end of the stem) don't contract (have the ε removed) in the dictionary 
+
+1234 <Nominative-Singular-Masuline>, <Nominative-Singular-Feminine>, <Nominative-Singular-Neuter> Adj <def>
+1234 <Nominative-Singular-Masuline>, <Nominative-Singular-Feminine>, <Nominative-Singular-Neuter> Article <def>
+1234 ?,?,?,? Pers.pr. <def>
+1234 <Nominative-Singular-Masuline>, <Nominative-Singular-Feminine>, <Nominative-Singular-Neuter> Pers.pr. <def>
+1234 ? Pers.pr. <def>
+1234 <name>, <alt-name>, <article> Prop.n. <def>
+1234 <name>, <article> Prop.n. <def>
+1234 <name> Prop.n. <def>

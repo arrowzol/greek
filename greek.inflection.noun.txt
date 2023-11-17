@@ -1,4 +1,4 @@
-parsing noun endings [noun-(MFN)(SP)(NGDAV)]:
+parts:
     gender:
         masculine:
             usually ends with (ος, ας, ησ)
@@ -13,83 +13,139 @@ parsing noun endings [noun-(MFN)(SP)(NGDAV)]:
         plural
     case:
         nominative: subject
-        genitive: posession
-        dative: indirect object
         accusative: object of a transitive verb, direct object of verbs
+        genitive: posession
+            always put the article on the noun that is posessed (a specific thing is posessed)
+        dative: indirect object
         vocative: direct address (directly addressing someone by noun-id)
 
-inflections:
-    first (stem ending in α/η, feminine) and second (stem ending in ο, masculine):
-                                         2       1       2
-                            SQUISH      mas     fem     neu
-                            ----        ----    ----    ----
-        singluar:
-            nominative      ς|ν         ς       -       ν
-            genitive        ς|υ         υ       ς       υ
-            dative          ...         ι>ῳ     ι>(ῇᾷ)  ι>ῳ
-            accusative      ν           ν       ν       ν
-        plural:
-            nominative      ι|α         ι       ι       α
-            genitive        ων          ων      ων      ων
-            dative          ις          ις      ις      ις
-            accusative      ...         υς      ς       α
-        rules:
-            samness:
-                (nominative|accusative, neu):
-                    all singluar same
-                    all plural same
-                (genitive|dative, mas|neu):
-                    all mas same
-                    all neu same
-            (first, singular, genitive|dative):
-                α -> η
-                    except after (ε|ι|ρ)
-            (singular, dative):
-                ηι -> ῃ (iota subscript)
-                αι -> ᾳ (iota subscript)
-                οι -> ῳ (iota subscript) (stem vowel "lengthens", called ablaut)
-            long vowels eat short vowles before them:
-                (nominative|accusative, neu):
-                    οα -> α
-                (plural, genative):
-                    οων -> ων
-                    αων -> ων
-                    ηων -> ων
-            (plural, nominative|accusative, neu):
-                αα -> α
-    third (ending in consonant):
-        singluar:
-            nominative      ς
-            genitive        ος
-            dative          ι
-            accusative      α
-        plural:
-            nominative      εσ
-            genitive        ων
-            dative          σιν
-            accusative      ας
-    exceptions:
-        Ἰησοῦς - Jesus
-            nominative: ὁ   Ἰησοῦς
-            genitive:   τοῦ Ἰησοῦ
-            ** dative:  τῷ  Ἰησοῦ (missing ι ending)
-            accusative: τὸν Ἰησοῦν
+inflections(decline):
+    definite article:
+                singular                    plural
+                M       F       N           M       F       N
+              +----------------------+    +----------------------+
+        Nom   |!ὁ      !ἡ      !τὸ   |    |!οἱ     !αἱ      τὰ   |
+        Acc   | τὸν     τὴν    !τὸ   |    | τοὺς    τὰς     τὰ   |
+        Gen   | τοῦ     τῆς     τοῦ  |    | τῶν     τῶν     τῶν  |
+        Dat   | τῳ      τῃ      τῳ   |    | τοῖς    ταῖς    τοῖς |
+              +----------------------+    +----------------------+
 
-definite article:
-    note: there is no indefinite article in greek
-    the definite article helps parse the noun after it
-                        mas         fem         neu
-                        ----        ----        ----
-    singular:
-        nominative      ὁ (RB)      ἡ           τό
-        genitive        τοῦ         τῆς         τοῦ
-        dative          τῷ          τῇ          τῷ
-        accusative      τόν         τήν         τό      (some use acute -> grave)
-    plural:
-        nominative      οἱ          αἱ          τά      (some use acute -> grave)
-        genitive        τῶν         τῶν         τῶν
-        dative          τοῖς        ταῖς        τοῖς
-        accusative      τούς        τάς         τά
+                masculine           feminine            neuter
+                S       P           S       P           S       P
+              +---------------+   +---------------+   +---------------+
+        Nom   |!ὁ      !οἱ    |   |!ἡ      !αἱ    |   |!τὸ      τὰ    |
+        Acc   | τὸν     τοὺς  |   | τὴν     τὰς   |   |!τὸ      τὰ    |
+        Gen   | τοῦ     τῶν   |   | τῆς     τῶν   |   | τοῦ     τῶν   |
+        Dat   | τῳ      τοῖς  |   | τῃ      ταῖς  |   | τῳ      τοῖς  |
+              +---------------+   +---------------+   +---------------+
+
+        rules:
+            use the article for the object owned by a genative
+                ὁ λόγος αυτού
+            used for:
+                names of people
+                abstract nouns
+                    ὁ ανθρωπος -> humanity
+                    ὁ νὀμος -> the law -OR- law
+                monotheistic God
+                    ὁ θεος, τὸν θεον
+    indefinite article:
+        none in greek (English "a")
+
+    declensions:
+        patterns:
+            Gen P -> ων
+            Dat S -> [ῳῃ]
+        first declension
+                    rules:
+                        S2 when stem ends [σ ξ ζ] (subset of "s" sounds)
+                        S3 when stem ends [ρ vowel]
+
+                    feminine (η,α)  fem alts
+                    S1  P           S2      S3
+                  +--------+      +-----+ +-----+
+            Nom   | η   αι |      | α   | | α   |    S2 replaces α for η for Nom,Acc
+            Acc   | ην  ας |      | αν  | | αν  |
+            Gen   | ης  ων |      | ης  | | ας  |    S3 replaces α for η for Gen,Dat
+            Dat   | ῃ   αις|      | ῃ   | | ᾳ   |
+                  +--------+      +-----+ +-----+
+
+        second declension
+                    rules:
+                        neuter-P nouns take a singular verb
+
+                    masculine (o)   neuter (ο,α)
+                    S   P           S   P
+                  +--------+      +--------+    patterns:
+            Nom   | ος  οι |      | ον  α  |        neuter -> Nom == Acc
+            Acc   | ον  ους|      | ον  α  |        Gen,Dat -> masculine == neuter
+            Gen   | ου  ων |      | ου  ων |
+            Dat   | ῳ   οις|      | ῳ   οις|
+                  +--------+      +--------+
+
+        vocative
+            rules:
+                for masculine S: ος -> ε (λογος -> λογε)
+                all other follow nominative
+                sometimes vocative work proceeded by ω (Oh)
+
+irregulars:
+    3588 ὁ, ἡ, τὸ Article the
+        singlular:
+           !ὁ      !ἡ      !τὸ
+            τὸν     τὴν    !τὸ
+            τοῦ     τῆς     τοῦ
+            τῳ      τῃ      τῳ
+        plural:
+           !οἱ     !αἱ      τὰ
+            τοὺς    τὰς     τὰ
+            τῶν     τῶν     τῶν
+            τοῖς    ταῖς    τοῖς
+    846 αὐτός, αὐτή, αὐτό Pers.pr. he, she, it, they, them, same
+        singlular:
+            αυτός   αυτή   !αυτό
+            αυτόν   αυτήν  !αυτό
+            αυτόυ   αυτής   αυτού
+            αυτῳ    αυτῃ    αυτῳ
+        plural:
+            αυτοι   αυται   αυτα
+            αυτους  αυτας   αυτα
+            αυτων   αυτων   αυτων
+            αυτοις  αυταις  αυτοις
+    2424 Ἰησοῦς, οῦ, ὁ n.m. Jesus
+        singular:
+            Ιησοῦς
+            Ιησοῦν
+            Ιησοῦ
+            Ιησοῦ
+
+
+OLDER BELOW
+inflections:
+    rules:
+        sameness:
+            (nominative|accusative, neuter):
+                all singluar same
+                all plural same
+            (genitive|dative, masculine|neuter):
+                all masculine same
+                all neuter same
+        (first, singular, genitive|dative):
+            α -> η
+                except after (ε|ι|ρ)
+        (singular, dative):
+            ηι -> ῃ (iota subscript)
+            αι -> ᾳ (iota subscript)
+            οι -> ῳ (iota subscript) (stem vowel "lengthens", called ablaut)
+        long vowels eat short vowles before them:
+            (nominative|accusative, neu):
+                οα -> α
+            (plural, genative):
+                οων -> ων
+                αων -> ων
+                ηων -> ων
+        (plural, nominative|accusative, neu):
+            αα -> α
 
 prepositions:
     <noun|verb> <preposition> <object of preposition>

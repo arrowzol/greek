@@ -1,0 +1,382 @@
+for compound verbs:
+    verb = prep + verb (single word)
+
+    experience elision
+        definition:
+            drop final vowel of the prep (replace with ')
+                if the stem of the next word starts with a vowel
+                I see this in the NT text
+
+        applies to prepositions:
+            ἀπο      575 Prep. from, away from
+            δια     1223 Prep. through, on account of
+            ἐπι     1909 Prep. on, to, against, on the basis of, at
+            κατα    2596 Prep. down from, against, according to, throughout, during
+            μετα    3326 Prep. with, after
+            παρα    3844 Prep. from, in the presence of
+            ὑπο     5259 Prep. by, under, about
+
+        the other "elision"
+            the preposition ἐκ becomes ἐξ
+                if the stem starts with a vowel
+
+cheet sheet:
+    general
+        +acc - extension, movement towards
+        +gen - separation or kind, movement away
+        +dat - location
+
+    time:
+        before: πρὀ +gen (separation)
+        boxed:
+            until: ἕως
+        after: μετα +acc
+    general moving around:
+        moving:
+            in: εις +acc (moving towards)
+            out: εκ +gen (moving away)
+            onto: επἰ
+        being at:
+            in:
+            out:
+            onto: επἰ
+
+definitions:
+    εξω έξω +gen: OUT
+        uses: https://biblehub.com/greek/strongs_1854.htm
+        https://lsj.gr/wiki/%CE%AD%CE%BE%CF%89
+        ?
+            standing OUTSIDE
+            cast OUT the bad
+            he went OUT of the city
+            threw him OUT of the city
+            dragged him OUT of the city
+            Jesus was OUT in a desolate place
+            sent them OUT of the city
+            OUTSIDE the door
+            Lazarus, come OUT
+            bring him OUT to you
+            sought them OUT in foreign cities
+            who were OUTSIDE of God
+
+
+    δια διά +acc: BECAUSE OF Object, +gen: THROUGH Object
+        uses: https://biblehub.com/greek/strongs_1223.htm
+        https://lsj.gr/wiki/%CE%B4%CE%B9%CE%AC
+        ?
+            spoken by God THROUGH the prophets
+            written BY the prophet
+            word FROM the mouth of God
+            enter THROUGH the narrow gate
+            walk THROUGH that way
+            hated by all THROUGH (because of) my name
+            (context) ... THROUGH this I tell you
+            seeds CAME THROUGH the soil
+
+    ενωπιον ενώπιον PRESENCE OF
+        uses: https://biblehub.com/greek/strongs_1799.htm
+        ?
+            in the sight OF God
+            stand IN the presence of God
+            worship BEFORE me
+            stood up BEFORE them
+            shall be denied BEFORE the angels
+            joy IN THE PRESENCE OF the angels
+            justify themselves IN THE PRESENCE OF men
+            ate it IN FRONT OF them
+            carry my name BEFORE the gentiles
+
+    keys:
+        nouns:
+            NFS - Nominative Femenine Singular
+            AMS - Accusative Masculine Singular
+            AMP - Accusative Masculine Plural
+            AFS - Accusative Femenine Singular
+            ANP - Accusative Neuter Plural
+            ANS - Accusative Neuter Singular
+            NMS - Nominative Masculine Singular
+            GMS - Genative Masculine Singular
+            GMP - Genative Masculine Plural
+            GFS - Genative Femenine Singular
+            DNS - Dative Neuter Singular
+            AS - Accusative Singular
+            GS - Genative Singular
+        verbs:
+            FIM - Future Indicative Middle
+            FIA - Future Indicative Active
+            AIM - Aorist Indicative Middle
+            AIA - Aorist Indicative Active
+            PMA - Present Imperative Active
+            PPA - Present Participle Active
+
+    εις +acc: move into
+        uses: https://biblehub.com/greek/strongs_1519.htm
+        into physical location, geography:
+            (Mt 2:1) απο east arived(V-AIM-3P) εις Jerusalem(N-ANP)
+            (Mt 2:8) sent(V-APA-NMS) them(PPro-AMP-3) εις Bethlehem(N-AFS)
+            (Mt 2:11) come(V-APA-NMP) εις the house(N-AFS)
+            (Mt 2:12) withdrew(V-AIA-3P) εις the country(N-AFS) αυτῶν(PPro-GMP-3)
+            (Mt 2:13) flee(V-PMA-2S) εις Egypt(N-AFS)
+            (Mt 2:14) withdrew(V-AIA-3S) εις Egypt(N-AFS)
+            (Mt 2:20) go(V-PMM/P-2S) εισ land(N-AFS) Israel(N-GMS)
+            (Mt 2:22) withdrew(V-AIA-3S) εις the district(N-ANP) the Galilee(N-GFS)
+            (Mt 4:13) dwelt εις Kapernam(N-AFS)
+            (Mt 4:24) went-out(V-VAIA-3S) news(N-NFS) αυτου εις all(Adj) the Syria(N-AFS)
+            (Mt 5:35) do not swear at all :
+                neither εν the heaven(N-DMS) ... ,
+                nor εν the earth(N-DFS) ... ,
+                not εις Jerusamem(N-ANP) ... ,
+                neither εν the head of-you(PPro-G2S) ...
+            also: departed εις
+        into physical location, non-geography:
+            (Mt 3:10) εις fire(N-ANS) thrown(V-PIM/P-3S)
+            (Mt 3:12) gather(V-FIA-2S) the wheat(N-AMS) αυτου(PPro-GMS-3) εις the barn(N-AFS)
+            (Mt 4:18) cast(V-PPA-AMP) net(N-ANS) εις the sea(N-AFS)
+            also: εις the wilderness, εις the holy city, εις mountain(N) ηιγη(Adj), εις prison(N-AFS)
+        into spiritual location:
+            (Mt 5:20) no(Adv) not(Adv) enter(V-ASA-2P) εις the kingdom(N-AFS) the heaven(N-GMP)
+            (Mt 5:22) liable(Adj) will-be(V-FIM-3S) εις the hell(N-AFS) the fire(N-GNS)
+            (Mt 5:29,30) not(Adv) all(Adj) the body(N-NNS) you(PPro-G.S-2) be-cast(V-ASP-3S) εις hell(N-AFS)
+        into physical thing:
+            (Mt 5:39) whoever(RelPro-NMS) you(PPro-AS-2) strike(V-PIA-3S) εις the right(Adj) cheek(N-AFS) of-you(PPro-GS-2)
+            COMPLEX: (Mt 5:13) εις nothing(Adj-ANS) being-effective(V-PIA-3S) any-longer(Adv) if ...
+        into mental/spiritual state:
+            (Mt 3:11) baptize(V-PIA-1S) εν water(N-DNS) εις repentance(N-AFS)
+
+    εν X INSIDE Object
+        uses: https://biblehub.com/greek/strongs_1722.htm
+        physical bubble:
+            conceived IN her
+            born IN Bethleham
+            saw the star IN the east
+            a voice IN Rama crying
+            preaching IN the wilderness
+            baptize you IN water
+            sickness IN the people
+            IN the house
+            father IN heaven
+        time bubble:
+            IN the time of Herod
+        social bubble:
+            least AMOUNG the rulers
+            IN whom am well pleased
+        idea bubble:
+            sat IN darkness
+            adultery IN his heart
+            giving IN secret
+            Solomon IN his glory
+            bean IN the eye
+
+    εκ εκ +gen: X comes/moves FROM Object
+        uses: https://biblehub.com/greek/strongs_1537.htm
+        born from:
+            Jesus born FROM Mary
+            with child FROM the Holy Spirit
+        to leave:
+            FROM Egypt I called my son
+            came FROM far away
+            come FROM the (heart/mouth)
+            sign FROM heaven
+        X from Y:
+            a voice FROM heaven
+            take the beam FROM your eye
+            he came out FROM the tombs
+
+    απο απὸ από +gen: X comes/moves FROM Object
+        uses: https://biblehub.com/greek/strongs_575.htm
+        meaning:
+            +gen:
+                time, lower bound in time (FROM X [to Y]) (από X ἔως Y):
+                    FROM THE TIME OF Abraham (Mt 1:17)
+                    FROM THE TIME OF Abraham to David (Mt 1:17)
+                    FROM some event TO another event (Mt 1:17)
+                place/object/power/ability/person/state:
+                    save the people(nom) FROM the sin(gen) (Mt 1:21)
+                    Joseph(nom) woke FROM sleep(gen) (Mt 1:24)
+                    wise men(nom) FROM the east(gen)
+                    FROM two years(gen) and under
+                    garment(acc) FROM hair(gen) camel(gen)
+                    deliver us FROM evil(gen)
+                    FROM the fruits(gen) them(gen) you shall know them
+                    coming FROM the mountain(gen) (Mt 8:1)
+                    learn wisdom FROM Jesus
+                    risen FROM the dead
+                    cried out FROM fear
+                    save His people FROM their sins
+                    cloths FROM camel's hair
+                    letters removed FROM the law
+                    borrow FROM someone
+                    FROM their fruits you will know them
+                    wisdom is justified FROM her children
+                    suffered much FROM someone
+                    deamon came FROM him
+                    eat FROM the crumbs
+                    come out FROM the water
+                    depart FROM me
+                    rejected FROM society
+                    he was standing away FROM me
+
+    εως έως +gen: until
+        uses: https://biblehub.com/greek/strongs_2193.htm
+        meaning:
+            upper bound in time ([from Y] UNTIL X) ([από Y] ἔως X)
+                from Abraham UNTIL David
+                did not know her UNTIL she gave birth
+                it went before them UNTIL they arrived
+                remained UNTIL the death of Herod
+                letters removed from the law UNTIL ...
+
+    επι επί +acc: ONTO +gen: ON, TIME +dat: ON, IN, BASED ON
+        uses: https://biblehub.com/greek/strongs_1909.htm
+        meaning:
+            +acc: Y ONTO X
+                the dove landed ON him
+                set him UPON the top
+                leave your gift ON the alter
+                the sun rises ONTO the evil(acc) and the good(acc)
+                put a lamp ONTO a lampstand(acc) (Mt 5:15)
+            +acc: ([from Y] TO X) (από Y επί X)
+                comming ONTO the baptism(acc) him(gen) (Mt 3:7)
+                from Galilee TO Jordan
+            +gen: time
+                FROM Abraham to David
+                AT THE TIME OF destruction (Mt 1:11)
+            +gen: Y ON X
+                ON their hands they will lift you up (Mt 4:6)
+            +dat: BASED ON
+                do not live BY bread alone (Mt 4:4)
+                not by bread, but BY every word
+
+    κατα κατά +acc: according to, +gen: against
+        uses: https://biblehub.com/greek/strongs_2596.htm
+        meaning:
+            +acc: according to, governed by, caused by
+                [an angel(nom) lord(gen) IN dream(acc)] appeared ... (Mt 1:20)
+                warned(V) IN dream(acc) ...
+                kill ... ACCORDING TO the time they saw the star
+                the heard(nom) rushed(V) ACCORDING TO the steep bank(acc) into(εις) the sea(acc)
+                    and perished(V) in(εν) the waters(acc) (Mt 8:32)
+                ACCORDING TO the faith(acc) you(gen)
+                he will give(V) ACCORDING TO the deads(acc) him(gen)
+            +gen
+                if brother(nom) you(gen) has(V) something AGAINST you(gen), leave there
+
+
+    μετα μετά +acc: after (time) +gen: with
+        uses: https://biblehub.com/greek/strongs_3326.htm
+        meaning:
+            +acc (time):
+                AFTER carrying away to babalyon
+                AFTER 6 days Jesus takes Peter and James ...
+            +gen:
+                WITH us God
+                and all Jerusalem WITH him
+                found the child WITH Mary
+
+    προ πρό time: before (time)
+        uses: https://biblehub.com/greek/strongs_4253.htm
+        +gen:
+            time of event:
+                // before you ask
+                (Mt 6:8)
+                    nom:[ father(N-NMS) of-you(PP-G2P) ]
+                    acc:[ of-things(RP-GNP) acc:[ need(N-AFS) ]
+                    you-have(V-PIA-2P)
+                    προ the you(PP-A2P) ask(V-ANA)
+                // before the time of torment
+                (Mt 8:29) you-come(V-AIA-2S) here(Adv) προ time(N-GMS) torment(V-ANA) us(PP-A1P)
+                // before the flood
+                (Mt 24:38) εν the days(N-DFP) those(DPro-DFP) the(A-DFP) προ the flood(N-GMS)
+                (Lk 2:21) called(V-APP-NNS) ὑπο the angel(N-GMS) προ the conceived(V-ANP) he(PPro-AM3S) εν the womb(N-DFS)
+            time of:
+                // who came before you're time
+                (Mt 5:12) persecuted(V-AIA-3P) the prophets(N-AMP) the προ you(PPro-G2P)
+            presence of someone:
+                (Mt 11:10) I(PPro-N1A) send(V-PIA-1S) the messenger(N-AMS) of-me(PPro-G1S) προ face(N-GNS) of-you(PPro-G2S)
+                (Mk 1:2) send(V-PIA-1S) the messenger(N-AMS) of-me(PPro-G1S) προ face(N-GNS) of-you(PPro-G2S)
+            ?
+
+    --------------------------------------------------
+    παρα παρά
+        uses: https://biblehub.com/greek/strongs_3844.htm
+        meaning (time):
+            +acc: NN alongside NA
+                walking BY the sea(acc)
+                sat BY the sea(acc)
+                some seeds fell ALONG the path(acc)
+                they put them AT his feet(acc)
+                sitting BESIDE the road(acc)
+                I say to you OF noone-great-faith(acc) in Israel(dat) have I found (Mt 8:10) ??
+                teach BY the sea(acc)
+            +gen: move from (gen)
+                // FROM/NEAR them
+                the time(acc) he inquired FROM them(gen) (Mt 2:16b)
+                chief(acc) of corner(gen) OF/(FROM BESIDE) God(gen) (Mt 21:42)
+                it will be done to/for them(dat) BY the father(gen) of me(gen) (Mt 18:19)
+
+                // a N is in close proximity to the +gen N
+                those(nom) (BELONGING TO) him(gen) went out to seize him(acc)
+                all spend the(acc) OF herself
+
+                // NG has NA
+                seeking FROM him(gen) a sign(acc) (Mk 8:11)
+                he sent
+                    προς the farmers(acc)
+                    a servant(acc)
+                    that FROM the farmers(gen)
+                    receive
+                    απο the fruit(gen) of the vinyard(gen)
+            +dat:
+                // NG has/can give NA
+                a reward(acc) you don't have FROM the father(dat) of you(gen) (Mt 6:1b)
+                WITH man(dat), this is impossible, WITH God(dat), all things are possible (Mt 19:26)
+                seven brothers(nom) were AMOUNG us(dat) seven brothers (Mt 22:25)
+                was spread, the report(nom) AMOUNG the jews(dat)
+    συν σύν 
+        uses: https://biblehub.com/greek/strongs_4862.htm
+        meaning:
+            received(V) mine(acc) WITH interest(dat) (Mt 25:27)
+            die(V) WITH you(dat) (Mt 26:35)
+            robers(acc) crucified(V) WITH him(dat)
+            gave(V) to those WITH him(dat)
+    --------------------------------------------------
+
+    προς πρός +acc: towards
+        uses: https://biblehub.com/greek/strongs_4314.htm
+            meaning:
+                do not return TO Herod (Mt 2:12)
+                they were going out TO him (Mt 3:5)
+                the ax TO the root of the tree is applied (Mt 3:10)
+                Jesus came from X to Y TOWARDS John
+                I need to be baptised by you, but you come TOWARDS me?
+                strike AGAINST a stone the foot of you
+                look at woman TO lust for her
+
+    περι περί +acc: around, approximately :gen: concerning, about
+        uses: https://biblehub.com/greek/strongs_4012.htm
+            meaning:
+                +acc:
+                    belt AROUND his waist (Mt 3:4)
+                    a great crowd AROUND him (Mt 8:18)
+                +gen
+                    search FOR/CONCERNING the child (Mt 2:8)
+                    give orders CONCERNING you (Mt 4:6)
+                    FOR/ABOUT clothing, why are you concerned? (Mt 6:28)
+                    compassion FOR/ABOUT them (Mt 9:36)
+                    spoke CONCERNING John (Mt 11:7)
+
+    ὑπερ ὑρἐρ
+        uses: https://biblehub.com/greek/strongs_5228.htm
+
+
+    Irg.adv
+        πῶς - how?
+        πού - where?
+
+    ου ουκ ουχ - not (1st 2nd 3rd?)
+        ου - before a consonant
+        ουκ - use before a smooth vowel
+        ουχ - use before an aspirated vowel
+
+        uses: https://biblehub.com/greek/strongs_3756.htm
+

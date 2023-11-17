@@ -1,0 +1,229 @@
+parts:
+    five parts:
+        person (1st, 2nd, 3rd)
+            1, 2, 3
+        number (singular, plural)
+            S, P
+        tense (present, future, imperfect, aorist, pluperfect, perfect, future-perfect)
+            pres, fut, impef, aor, plu, perf, fperf
+        mood (indicative, imperative, subjunctive, infinitive, optative, participles)
+            indic, imper, subj, infin, opta, parti
+        voice (active, passive, middle)
+            act, pas, mid
+
+inflections(conjugate/congugation):
+    some rules:
+        augment: for "past time"
+        augment when startswith vowel -> lengthen vowel (α -> η, ε -> η, ο -> ω)
+        formula
+            imperfect uses the stem from perfect
+            imperfect = augment + present tense stem + secondary endings
+            regular aorist active indicative = augment + verb stem + aorist active endings
+        verbs ending in -εω are "εω verbs"
+            ε is at the end of the stem, and can contract when it touches a vowel from the ending
+            εε -> ει
+            εο -> ου
+            ε(long vowel) -> (long vowel)
+                εω -> ω
+                εει -> ει
+                εου -> ου
+        movable ν:
+            ν at the end of the <ending> only used when the next word start with a vowel
+    endings:
+                            active                  passive
+                            ------------            ------------
+                            S:(ν,σ,ν)               S:(μην,?,ετο)
+                            P:(μεν,τε,σιν/σαν)      P:(μεθα,σθε,ντο)
+
+            tense:future/present (ο/ε) mood:indicative
+                future: <stem> + ς + <ending>
+                present: <stem> + <ending>
+
+                voice:active            voice:middle/passive
+                    S       P               S       P
+                +---------------------+ +---------------------+
+            1st |   -ω      -ομεν     | |   -ομαι   -ομεθα    |
+            2nd |   -εις    -ετε      | |   -η      -εσθε     |
+            3rd |   -ει     -ουσιν    | |   -εται   -ονται    |
+                +---------------------+ +---------------------+
+
+            tense:imperfect mood:indicative
+                imperfect: ε + <stem> + <ending>
+
+                voice:active            voice:middle/passive (ο/ε)
+                +---------------------+ +---------------------+
+                |   -ον     -ομεν     | |   -ομην   -ομεθα    |
+                |   -ες     -ετε      | |   -ου     -εσθε     |
+                |   -ε(ν)   -ον       | |   -ετο    -οντο     |
+                +---------------------+ +---------------------+
+
+            tense:aorist mood:indicative (σα)
+                aorist: ε + <stem> + σ + <ending>
+
+                voice:active            voice:middle/passive
+                +---------------------+ +---------------------+
+                |   -α     -αμεν      | |   -αμην  -αμεθα     |
+                |   -ας    -ατε       | |   -ω     -ασθε      |
+                |   -εν    -αν        | |   -ατο   -αντο      |
+                +---------------------+ +---------------------+
+
+agreement:
+    the nominative noun's number (S or P) must match the verb's number
+    when 1st or 2nd person is used for the verb, very often no subject is provided
+
+net:
+    V
+    mood
+        N - infinitive (no person, no number)
+        I - indicative - true statement/question
+        M - imperative - command
+        S - subjunctive - hypothetical, wishes, possibilities
+        P - participles?
+        ? - optative
+    tense
+        A - aorist - past, only once
+        P - present
+        R - perfect
+        F - future
+        L - pluperfect
+        I - imperfect
+        ? - future-perfect
+    voice
+        A - active
+        P - passive
+        M - middle
+        O - ?
+        D - ?
+    ?
+    ?
+    person [123]
+    number [SP]
+
+parts:
+    five parts:
+        person (1st, 2nd, 3rd)
+        number (singular, plural)
+        tense (present, future, imperfect, aorist, pluperfect, perfect, future-perfect)
+        mood (indicative, imperative, subjunctive, infinitive, optative, participles)
+        voice (active, passive, middle)
+
+    tense:
+
+        view 1: from [https://daedalus.umkc.edu/FirstGreekBook/JWW_FGB5.html]
+            organized:
+                            secondary       primary
+                            ------------    --------------------------
+                            past            present     future
+                            ------------    -------     --------------
+                ongoing  |  imperfect       present     future
+                undefined|  pluperfect      perfect     future perfect
+                simple   |  ------------------aorist------------------
+
+            aspect:
+                ongoing
+                undefined
+                simple
+
+            time-line
+                     ..............................................>    imperfect (aspect undefined)
+                                         ..........................>    present
+                                                             ......>    future
+                  ......*                                               pluperfect
+                                      ......*                           perfect
+                                                             ......*    future perfect
+                     *                                                  aorist
+                past <-----(=========================)-----> future
+                            present (now time bubble)
+        view 2:
+            present: present time and repeating or progressing into the future
+            future:
+                simple:
+                progressive:
+                repeated:
+            perfect: present time and completed, started and completed in the "now time bubble"
+            pluperfect: "more than completed", "past perfect tense".  past time and completed
+            future perfect: in the future but will complete
+                very rare
+            imperfect:
+                in the past, but progressive, not complete
+                ongoing, continuous action
+            aorist: past time, simple, only once
+    voice:
+        active: subject does the action
+            transitive
+            intransitive
+        passive: subject receives the action
+        middle: subject does and receives the action
+    mood:
+        view 1:
+            finite:
+                real:
+                    indicative: true statements and questions
+                    imperative: command
+                hypothetical:
+                    subjunctive: hypothetical, unreal, wishes, conditions, possibilities
+                    infinitive: verbal-noun, no person, no number
+            optative:
+            participles: verbal-noun
+
+            (infinitive, optative): filter(conditions/prohibitions), purpose, suppositions:
+
+        view 2:
+            indicative: factual, reality
+            subjunctive: possible (might, should) of doing an action
+            imperative: command to do something
+            infinitive: "to take the keys"
+
+            optative: "permission"
+    person: 1st, 2nd, 3rd
+    number: singluar/plural
+
+irregulars:
+    1510 εἰμι v. I am, exist, mood:indicative
+        tense:present voice:active
+        +-------------------------+
+        |   εἰμί        ἐσμέν     |
+        |   εἶ          ἐστέ      |
+        |   ἐστί(ν)     εἰσί(ν)   |
+        +-------------------------+
+        tense:imperfect voice:active
+        +-------------------------+
+        |   ἤμην        ἦμεν(ἤμεθα)
+        |   ἦς(ἤσθα)    ἦτε       |
+        |   ἦν          ἦσαν      |
+        +-------------------------+
+        tense:future voice:middle
+        +-------------------------+
+        |   ἔσομαι      ἐσόμεθα   |
+        |   ἔσῃ         ἔσεσθε    |
+        |   ἔσται       ἔσονται   |
+        +-------------------------+
+
+
+sample (3089 λυω v. I loose, untie, release, destroy)
+    tense:present voice:active mood:indicative
+        λύω         λύομεν
+        λύεις       λύετε
+        λύει        λύουσι
+    tense:imperfect voice:active mood:indicative
+        ἔλυον       ἐλύομεν
+        ἔλυες       ἐλύετε
+        ἔλυεν       ἔλυον
+    tense:imperfect voice:passive mood:indicative
+        ἐλυόμην     ἐλυόμεθα
+        ἐλύου       ἐλύεσθε
+        ἐλύετο      ἐλύοντο
+    tense:aorist voice:active mode:indicative
+        ἔλυσα       ἐλύσαμεν
+        ἔλυσας      ἐλύσατε
+        ἔλυσεν      ἔλυσαν
+    tense:aorist voice:middle mode:indicative
+        ἐλυσάμην    ἐλυσάμεθα
+        ἐλύσω       ἐλύσασθε
+        ἐλύσατο     ἐλύσαντο
+
+    βλέπ
+        βλέπ-ω      βλἐπ-ομεν
+        βλἐπ-εις    βλἐπ-ετε
+        βλἐπ-ει     βλἐπ-ουσι
+

@@ -1,0 +1,65 @@
+I. NOUNS
+    Inflection:
+        Case:
+            1. Subjective - the subject "(he/she/they) did something"
+            2. Possessive - the owner "(his/her/their) car did something"
+            3. Objective - the object of the sentence "I told (him/her/them)"
+        Number:
+            1. Singular - he/she/his/her/him
+            2. Plural - they/their/them
+        Gender:
+            1. Male - he/his/him
+            2. Female - she/her
+            3. Neuter - they/them
+    Preposition:
+        under, on, over, ...
+    Prepositional Phrase:
+        Preposition + Object
+II. VERBS
+    A. Person - matches the subject
+        1st - sender - I (hit) you
+            I (am) cold
+            I (hit) Edie
+        2nd - receiver - you (hit) X
+            you (are) cold
+            you (hit) Edie
+        3rd - other - he (hits) X
+            he (is) cold
+            he (hits) Edie // 3rd singular
+            they (hit) Edie
+    B.Number
+        1. Singular
+        2. Plural
+    C. Tense - primary (but secondary in Greek)
+        1. Present
+            eat
+        2. Past
+            ate
+        3. Past Participle
+            eaten
+    D. Voice
+        1. Active
+            subject does the action (of the verb)
+        2. Passive
+            subject receives the action (of the verb)
+    E. Aspect - secondary (but primary in Greek)
+        1. Continuous - an ongoing process
+            I was studying
+        2. Perfect - finished
+            I have studied
+        3. Undefined
+            I studied last night
+III. CLAUSES- HAS SUBJECT AND VERB
+    A. Dependent/Subordinate
+    B. Independent/Insubordinate
+    C. Types of Clauses
+        1. Concessive
+        2. Temporal
+        3. Relative-Starts with Rel. Pron.
+IV. CONJUNCTIONS
+    A. Coordinating (connect independent Clauses)
+    B. Subordinate- begin a dependent clause and often link it to an independent clause.
+V. PHRASES
+    A. Prepositional-begin with preposition, has object
+    B. Participial- begins with participle
+VI. "PHRASING"

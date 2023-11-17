@@ -1,76 +1,112 @@
-url: https://en.wikipedia.org/wiki/Greek_alphabet
-mac: System Preferences -> Keyboard -> Input Sources -> + -> Greek - Polytonic
+resources:
+    url: https://en.wikipedia.org/wiki/Greek_alphabet
 
-num cap low name        key     pronounce name
-1   Α   α   alpha       A       "al-pha"
-2   Β   β   beta        B       "be-ta"
-3   Γ   γ   gamma       G       "gam-a"
-4   Δ   δ   delta       D       "del-ta"
-5   Ε   ε   epsilon     E       "ep-si-lon"
-7   Ζ   ζ   zeta        Z       "zea-ta"
-8   Η   η   eta         H       "ea-ta"
-9   Θ   θ   theta       U       "thea-ta"
-10  Ι   ι   iota        I       "yo-(td)a|i-o-ta"
-20  Κ   κ   kappa       K       "kap-a"
-30  Λ   λ   lambda      L       "lam-da"
-40  Μ   μ   mu          M       "meu"
-50  Ν   ν   nu          N       "new"
-60  Ξ   ξ   xi          J       "(k)ze"
-70  Ο   ο   omicron     O       "o-me-cron"
-80  Π   π   pi          P       "pie"
-100 Ρ   ρ   rho         R       "(rh)ow"
-200 Σ   σς  sigma       SW      "sig-ma"
-300 Τ   τ   tao         T       "tao"
-400 Υ   υ   upsilon     Y       "oop-so-lawn"
-500 Φ   φ   phi         F       "phee"
-600 Χ   χ   chi         X       "chee"
-700 Ψ   ψ   psi         C       "(ps)ee"
-800 Ω   ω   omega       V       "oh-mae-ga"
+macos:
+    System Preferences -> Keyboard -> Text Input -> Input Sources -> + -> Greek - Polytonic
+    switch: Ctl-Opt-Spc
 
-for numbers
-6   Ϛ   ϛ   digamma     opt-o
-90  Ϟ   ϟ   koppa       opt-z
-900 Ϡ   ϡ   sampi       opt-c
+all together:
+    all: αβγδεζηθικλμνξοπρστυφχψω
+        written with:
+            above only: δθλ
+            below only: γημρφχψ
+            above and below: βζξ
+    short vowels: ᾰεῐοῠ
+    long vowels : ᾱηῑωῡ
 
-etc
-    Ϲ   ϲ - lunate sigma    opt-S
+    long only vowels : ηω
+    short only vowels: εο
+    short and long vowels: αιυ
 
-consonants: βγδζθκλμνξπρστφχψ
-long vowels : ᾱηῑωῡ
-short vowels: ᾰεῐοῠ
+the letters:
+    num cap low name        name        key     name of letter
+    1   Α   α   alpha       αλφα        A       [al]pine-[fu]n
+    2   Β   β   beta        βητα        B       [bay]-[tu]ck
+    3   Γ   γ   gamma       γαμμα       G       [gam]ble-[u]p
+    4   Δ   δ   delta       δελτα       D       [del]egate-[tu]ck
+    5   Ε   ε   epsilon     εψιλον      E       [ep]ic-[si]t-lawn
+    7   Ζ   ζ   zeta        ζητα        Z       [za]ny-[tu]ck
+    8   Η   η   eta         ητα         H       h[ey]-[tu]ck
+    9   Θ   θ   theta       θητα        U       thea-[tu]ck
+    10  Ι   ι   iota        ιωτα        I       [ee]l-[yo]ke-[ta]da
+    20  Κ   κ   kappa       καππα       K       [cap]-[u]p
+    30  Λ   λ   lambda      λαμβδα      L       [lamb]-[du]mp
+    40  Μ   μ   mu          μυ          M       moo
+    50  Ν   ν   nu          νυ          N       new
+    60  Ξ   ξ   xi          ξι          J       [k][see]
+    70  Ο   ο   omicron     ομικρον     O       ah-[mi]ss-cron
+    80  Π   π   pi          πι          P       pee
+    100 Ρ   ρ   rho         ῥω          R       row
+    200 Σ   σς  sigma       σιγμα       SW      [sig]nal-[mu]ch
+    300 Τ   τ   tao         ταυ         T       tao
+    400 Υ   υ   upsilon     υψιλον      Y       up-[si]t-lawn
+    500 Φ   φ   phi         φι          F       fee
+    600 Χ   χ   chi         χι          X       key                 he
+    700 Ψ   ψ   psi         ψι          C       li[ps][E]
+    800 Ω   ω   omega       ωμεγα       V       oh-may-[gu]m
 
-accents (keyboard: ";[]" imagined as "/~\" accents):
-    ;       άέίόύήώ     acute (/)
-    ]       ὰὲὶὸὺὴὼ     grave (\)
-    [       ᾶ-ῖ-ῦῆῶ     circumflex (~)
-smooth breathing marks (keyboard: single-quote, looks like smooth mark):
-    '       ἀἐἰὀὐἠὠ     smooth (s)
-    /       ἄἔἴὄὔἤὤ     smooth + acute
-    =       ἂἒἲὂὒἢὢ     smooth + grave
-    -       ἆ-ἶ-ὖἦὦ     smooth + circumflex
-rough breathing marks (keyboard: double-quote, shift the smooth mark):
-    "       ἁἑἱὁὑἡὡ     rough (r)
-    ?       ἅἕἵὅὕἥὥ     rough + acute
-    +       ἃἓἳὃὓἣὣ     rough + grave
-    _       ἇ-ἷ-ὗἧὧ     rough + circumflex
-iota subscripts (keyboard: opt-i, for "iota"):
-    o-i     ᾳ----ῃῳ     iota subscript
-    o-i;    ᾴ----ῄῴ     iota + acute
-    o-i]    ᾲ----ῂῲ     iota + grave
-    o-i[    ᾷ----ῇῷ     iota + circumflex
-    o-i'    ᾀ----ᾐᾠ     iota + smooth
-    o-i"    ᾁ----ῇῷ     iota + rough
-long and short vowels (keyboard: opt-l/shift-opt-l, l for "long"):
-    o-l     ᾰ-ῐ-ῠ--     short vowels (S)
-    s-o-l   ᾱ-ῑ-ῡ--     long vowels (L)
-            ᾱ́-?-?--
-vowel stuff:
-    :       --ϊ-ϋ--     "double dots"
-    W       --ΐ-ΰ--     "double dots" + acute
+    for numbers
+    6   Ϛ   ϛ   digamma                 opt-o
+    90  Ϟ   ϟ   koppa                   opt-z
+    900 Ϡ   ϡ   sampi                   opt-c
+
+    etc
+        Ϲ   ϲ - lunate sigma            opt-S
 
 punctuation (modern):
-    ,   ,   break a clause
-    .   .   period drawn low, end a sentence
-    o-9 ·   dot drawn center, like english (:), "raised dot" types with opt-9
-    ;   ;   like english (?)
+    (,)     break a clause
+    (.)     period drawn low, end a sentence
+    (·)     like english (:) or (;), above the line dot, raised dot
+    (;)     Question
+    (')     marks a final vowel dropped because it's followed by a leading vowel of another word
+
+things to know:
+    Capital letters are used less frequently in Greek than in English;
+        only for the beginning of speech, paragraphs and names
+        (i.e. not for the start of sentences).
+
+keyboard accents, breathing, etc:
+    accents (keyboard: ";[]" imagined as "/~\" accents):
+        ;       άέίόύήώ     acute (/)
+        ]       ὰὲὶὸὺὴὼ     grave (\)
+        [       ᾶ-ῖ-ῦῆῶ     circumflex (~)
+    smooth breathing marks (keyboard: single-quote, looks like smooth mark):
+        '       ἀἐἰὀὐἠὠ     smooth (s)
+        /       ἄἔἴὄὔἤὤ     smooth + acute
+        =       ἂἒἲὂὒἢὢ     smooth + grave
+        -       ἆ-ἶ-ὖἦὦ     smooth + circumflex
+    rough breathing marks (keyboard: double-quote, shift the smooth mark):
+        "       ἁἑἱὁὑἡὡ     rough (r)
+        ?       ἅἕἵὅὕἥὥ     rough + acute
+        +       ἃἓἳὃὓἣὣ     rough + grave
+        _       ἇ-ἷ-ὗἧὧ     rough + circumflex
+    iota subscripts (keyboard: opt-i, for "iota"):
+        o-i     ᾳ----ῃῳ     iota subscript
+        o-i;    ᾴ----ῄῴ     iota + acute
+        o-i]    ᾲ----ῂῲ     iota + grave
+        o-i[    ᾷ----ῇῷ     iota + circumflex
+    iota subscripts and smooth breathing marks
+        o-i'    ᾀ----ᾐᾠ     iota + smooth
+        o-i';   ᾄ----ᾔᾤ     iota + smooth + acute
+        o-i'[   ᾆ----ᾖᾦ     iota + smooth + circumflex
+        o-i']   ᾂ----ᾒᾢ     iota + smooth + grave
+    iota subscripts and rough breathing marks
+        o-i"    ᾁ----ῇῷ     iota + rough
+        o-i";   ᾅ----ᾕᾥ     iota + rough + acute
+        o-i"[   ᾇ----ᾗᾧ     iota + rough + circumflex
+        o-i"]   ᾃ----ᾓᾣ     iota + rough + grave
+    long and short vowels (keyboard: opt-l/shift-opt-l, l for "long"):
+        o-l     ᾰ-ῐ-ῠ--     short vowels (S)
+        s-o-l   ᾱ-ῑ-ῡ--     long vowels (L)
+                ᾱ́-?-?--
+    vowel stuff:
+        :       --ϊ-ϋ--     umlaut - not a diphthong
+        W       --ΐ-ΰ--     umlaut + acute
+
+    punctuation (modern):
+        ,   ,   comma (as in English)
+        .   .   period (as in English)
+        o-9 ·   raised dot - like English (: or ;)
+        q   ;   question - like english (?)
+        ᾿       missing vowel at the end of certain prepositions
 
