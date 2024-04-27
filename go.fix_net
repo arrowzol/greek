@@ -4,7 +4,7 @@ import sys
 import greek_letter as gl
 
 
-ignore = set(['᾿', '῎', '῞', '῏', '῾'])
+ignore = set(['῎', '῞', '῏', '῾'])
 is_ok = set(['·'])
 
 _net_chars = {

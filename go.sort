@@ -1,15 +1,15 @@
 #!/usr/local/bin/python3
 
 import sys
+import greek_letter as gl
 
 if len(sys.argv) == 1:
     fh = sys.stdin
 else:
     fh = open(sys.argv[1])
-payload = list((line.rstrip() for line in fh))
-
+payload = list((gl.clean_word(line, keep_rough=False), line) for line in map(str.rstrip, fh))
 payload.sort()
 
-for line in payload:
-    print(line)
+for clean_line, orig_line in payload:
+    print(orig_line)
 
