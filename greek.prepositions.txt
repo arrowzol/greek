@@ -407,7 +407,9 @@ cheat sheet:
         +dat - location
 
 
- .-->.x             επι     +acc: [move] onto
+==================== MOVING and LOCATED
+
+ .-->.x             επι     +acc: [move] onto, to
      .x             επι     +gen: [located] in/on
 (  .--)->.          εκ/εξ   +gen: [move] out of
 (  .<-)--.          εις     +acc: [move] into
@@ -424,6 +426,7 @@ x
 x.                  παρα    +dat: [located] alongside
 x
 
+==================== LOCATED
 
    . x              ενωπιον +acc: [located] in the presence of/in front of
 (  .  )             εν      +dat: [located] in
@@ -437,16 +440,21 @@ x/.                 μετα    +gen: [located] next-to with in space or thought
 x/./x               συν     +dat: [located] same/mixed with
 
 
+==================== TIME
 
-                  --- also: +gen: located next-to
-                 |
-----------------------> (time)
+      --------------- similar: προς +gen: [move] towards
+     |            --- also: +gen: located next-to
+     |           |
+-----------------|----> (time)
    (προ)   x   (μετα)           (+gen +acc) [one time] before/after
 ....ἑως....x....απο....         (+gen +gen) [time range] before/after
-                 |
-                  --- also: +gen: [move] away
+     |           |
+     |            --- also: +gen: [move] away
+      --------------- can mean "until" some future trigger event (x in the pic)
 
     (.)             επι     +gen: in the time of
+
+==================== CAUSED BY
 
 κατα    +acc: according to/influenced by +gen: against
 περι    +gen: concerning, about
